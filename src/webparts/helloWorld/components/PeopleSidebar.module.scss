@@ -1,0 +1,22 @@
+.sidebar {
+  box-sizing: border-box;
+  border: 1px solid rgba(8, 34, 68, 0.2);
+  border-radius: 20px;
+  padding: 26px;
+  width: 220px;
+  flex-shrink: 0;
+}
+
+.title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 25px;
+  color: #082244;
+  margin: 0;
+}
+
+@media (max-width: 960px) {
+  .sidebar {
+    width: 100%;
+  }
+}

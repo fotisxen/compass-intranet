@@ -1,0 +1,43 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "compass-intranet-client-side-solution",
+    "id": "23b1e9a3-50ed-4585-bfdf-401f1b47f980",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.23.2"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "Compass intranet home page, site-wide header/footer, and AI assistant chat"
+      },
+      "longDescription": {
+        "default": "Compass intranet home page, site-wide header/footer, and AI assistant chat"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "compass-intranet Feature",
+        "description": "Activates the Compass site-wide header/footer (Application Customizer) on this site when the app is installed here.",
+        "id": "7fa5937f-cb05-4c35-963d-d0a0aa259b51",
+        "version": "1.0.0.0",
+        "assets": {
+          "elementManifests": ["elements.xml"]
+        }
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/compass-intranet.sppkg"
+  }
+}

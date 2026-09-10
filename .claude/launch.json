@@ -1,0 +1,24 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "spfx-local-workbench",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["heft", "start", "--clean"],
+      "port": 4321,
+      "url": "https://localhost:4321"
+    },
+    {
+      "name": "helloworld-standalone-preview",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["C:\\Users\\fotis\\AppData\\Local\\Temp\\claude\\C--Users-fotis-my-intranet-demo2-my-intranet-demo\\2a45b1dd-77f2-449f-894e-3214e171f9e4\\scratchpad\\preview\\serve.js"],
+      "port": 5500
+    },
+    {
+      "name": "intranet-home-preview",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["preview-src/serve.js"],
+      "port": 5600
+    }
+  ]
+}

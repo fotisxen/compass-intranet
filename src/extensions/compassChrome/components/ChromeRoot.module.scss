@@ -1,0 +1,40 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 34, 68, 0.45);
+  z-index: 999;
+}
+
+.chatPanel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 640px;
+  max-width: calc(100vw - 48px);
+  max-height: calc(100vh - 96px);
+  overflow: auto;
+  z-index: 1000;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.closeButton {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 50%;
+  background: #f3f2f1;
+  color: #082244;
+  font-size: 14px;
+  cursor: pointer;
+  z-index: 1;
+
+  &:hover {
+    background: #e1dfdd;
+  }
+}

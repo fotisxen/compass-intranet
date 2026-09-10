@@ -1,0 +1,104 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 260px;
+}
+
+.titleCard {
+  box-sizing: border-box;
+  border: 1px solid rgba(8, 34, 68, 0.2);
+  border-radius: 20px;
+  padding: 26px;
+  min-height: 220px;
+}
+
+.title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 25px;
+  color: #082244;
+  margin: 0;
+}
+
+.eventCard {
+  background: #c7d7e6;
+  border-radius: 20px;
+  padding: 26px;
+  box-sizing: border-box;
+}
+
+.eventDate,
+.eventTitle {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  color: #000000;
+  margin: 0;
+}
+
+.mediaRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 18px 0;
+}
+
+.eventImage {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: #082244;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.eventFooter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 20px;
+  border: 1px solid #082244;
+  border-radius: 18px;
+  background: transparent;
+  color: #082244;
+  font-family: 'Inter', sans-serif;
+  font-size: 12.5px;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover {
+    background: #082244;
+    color: #ffffff;
+  }
+}
+
+.arrowButton {
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  border: 0.7px solid rgba(8, 34, 68, 0.5);
+  background: transparent;
+  color: #082244;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+
+  &:hover {
+    background: rgba(8, 34, 68, 0.08);
+  }
+}

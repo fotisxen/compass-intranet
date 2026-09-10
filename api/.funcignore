@@ -1,0 +1,9 @@
+*.ts
+!dist/**/*.js
+.vscode
+.git*
+.gitignore
+local.settings.json.template
+node_modules
+src
+tsconfig.json

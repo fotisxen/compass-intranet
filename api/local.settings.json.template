@@ -1,0 +1,13 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "",
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "OPENAI_API_KEY": "<your-openai-api-key>",
+    "OPENAI_MODEL": "gpt-4o-mini",
+    "ALLOWED_ORIGIN": "https://<your-tenant>.sharepoint.com"
+  },
+  "Host": {
+    "CORS": "*"
+  }
+}

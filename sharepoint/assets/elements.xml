@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <CustomAction
+    Title="CompassChromeApplicationCustomizer"
+    Location="ClientSideExtension.ApplicationCustomizer"
+    ClientSideComponentId="5be0c925-5720-48c6-a508-65f92ed52b31"
+    ClientSideComponentProperties="{&quot;companyName&quot;:&quot;Compass&quot;,&quot;chatApiUrl&quot;:&quot;&quot;}">
+  </CustomAction>
+</Elements>

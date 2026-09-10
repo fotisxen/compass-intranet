@@ -1,0 +1,53 @@
+.mapWrap {
+  position: relative;
+  border-radius: 30px;
+  overflow: hidden;
+  height: 100%;
+  min-height: 420px;
+}
+
+.map {
+  height: 100%;
+  width: 100%;
+  min-height: 420px;
+  background: #d9e8f5;
+}
+
+.tag {
+  position: absolute;
+  left: 24px;
+  bottom: 24px;
+  z-index: 400;
+  background: #082244;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  padding: 7px 18px;
+  border-radius: 18px;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background: #0b2c5c;
+  }
+}
+
+// Leaflet's attribution control is required to stay visible by
+// OpenStreetMap's usage policy, but it doesn't need to be loud — this
+// targets Leaflet's own global class name (not a scss-module class) to
+// make it small and quiet instead of hiding it.
+:global(.leaflet-control-attribution) {
+  font-size: 9px !important;
+  padding: 0 4px !important;
+  background: rgba(255, 255, 255, 0.6) !important;
+}
+
+.popup {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+
+  strong {
+    display: block;
+    margin-bottom: 2px;
+  }
+}

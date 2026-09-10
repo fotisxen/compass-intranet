@@ -1,0 +1,199 @@
+.header {
+  background: #ffffff;
+  position: relative;
+  // Leaflet's own controls/attribution use z-index up to 1000 internally,
+  // so the header (and its dropdown) needs to clear that comfortably to
+  // stay above the Fleet map instead of being hidden behind it.
+  z-index: 1500;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 64px;
+  max-width: 1440px;
+  margin: 0 auto;
+  gap: 24px;
+  flex-wrap: wrap;
+  line-height: 1;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.brandMark {
+  width: 24px;
+  height: 23px;
+  flex-shrink: 0;
+}
+
+.brandName {
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 1;
+  color: #082244;
+  white-space: nowrap;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 40px;
+  flex-wrap: wrap;
+  line-height: 1;
+}
+
+.navItem {
+  position: relative;
+}
+
+.navLink {
+  display: inline-block;
+  color: #000000;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1;
+  white-space: nowrap;
+
+  &:hover {
+    color: #082244;
+    text-decoration: underline;
+  }
+}
+
+.navLinkActive {
+  color: #082244;
+  text-decoration: underline;
+}
+
+// The 14px visual gap between the nav link and the panel lives as padding
+// on this (invisible, unstyled) wrapper rather than as a margin on the
+// panel itself — that keeps the gap inside the hoverable element instead
+// of being a dead zone the cursor has to cross, which was closing the
+// menu before it could reach it.
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  padding-top: 14px;
+  z-index: 200;
+}
+
+.dropdownInner {
+  display: flex;
+  gap: 40px;
+  background: #ffffff;
+  border-radius: 30px;
+  padding: 28px 32px;
+  box-shadow: 0 16px 40px rgba(8, 34, 68, 0.16);
+}
+
+.dropdownColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 160px;
+}
+
+.dropdownGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.dropdownHeading {
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 1.1px;
+  color: #082244;
+  margin-bottom: 4px;
+  white-space: nowrap;
+}
+
+.dropdownLink {
+  display: block;
+  padding: 4px 0;
+  font-size: 16px;
+  letter-spacing: 0.02em;
+  color: #082244;
+  text-decoration: none;
+  white-space: nowrap;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.assistant {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  line-height: 1;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+.assistantLabel {
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1;
+  color: #000000;
+  white-space: nowrap;
+}
+
+.assistantSubmit {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid #082244;
+  color: #082244;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 13px;
+}
+
+.assistant:hover .assistantSubmit {
+  background: #082244;
+  color: #ffffff;
+}
+
+@media (max-width: 960px) {
+  .bar {
+    padding: 16px 24px;
+  }
+
+  .nav {
+    gap: 20px;
+    order: 3;
+    width: 100%;
+  }
+
+  .dropdownInner {
+    flex-direction: column;
+    gap: 20px;
+    max-width: calc(100vw - 48px);
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+
+  .dropdownColumn {
+    min-width: 0;
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-extension-manifest.schema.json",
+  "id": "5be0c925-5720-48c6-a508-65f92ed52b31",
+  "alias": "CompassChromeApplicationCustomizer",
+  "componentType": "Extension",
+  "extensionType": "ApplicationCustomizer",
+
+  "version": "*",
+  "manifestVersion": 2,
+
+  "requiresCustomScript": false,
+
+  "preconfiguredEntries": [{
+    "groupId": "5c03119e-3074-46fd-976b-c60198311f70",
+    "group": { "default": "Advanced" },
+    "title": { "default": "Compass Chrome" },
+    "description": { "default": "Site-wide Compass header and footer, injected into the Top/Bottom page placeholders" },
+    "officeFabricIconFontName": "Page",
+    "properties": {
+      "companyName": "Compass",
+      "chatApiUrl": ""
+    }
+  }]
+}

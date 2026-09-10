@@ -1,0 +1,121 @@
+.card {
+  position: relative;
+  border-radius: 20px;
+  padding: 24px 40px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  box-sizing: border-box;
+}
+
+.arrowButton {
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  border: 0.7px solid rgba(8, 34, 68, 0.5);
+  background: transparent;
+  color: #082244;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+
+  &:hover {
+    background: rgba(8, 34, 68, 0.08);
+  }
+}
+
+.avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: #082244;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.heading {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.3;
+  color: #082244;
+  margin: 0;
+  width: 140px;
+  flex-shrink: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.nameBlock {
+  // Never shrink below the name/title's own natural width — with nowrap
+  // text, allowing that (min-width: 0) would let long names overflow
+  // visually into the details column instead of the row wrapping.
+  flex-shrink: 0;
+}
+
+.name {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: #082244;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 11px;
+  color: rgba(8, 34, 68, 0.6);
+  margin: 3px 0 0;
+  white-space: nowrap;
+}
+
+.newTitle {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  color: #082244;
+  margin: 2px 0 0;
+  white-space: nowrap;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fieldLabel {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 8.5px;
+  letter-spacing: 0.8px;
+  color: rgba(8, 34, 68, 0.5);
+}
+
+.fieldValue {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  color: #082244;
+  white-space: nowrap;
+}
