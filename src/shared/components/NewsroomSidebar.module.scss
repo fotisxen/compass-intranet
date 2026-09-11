@@ -1,0 +1,52 @@
+.sidebar {
+  box-sizing: border-box;
+  border: 1px solid rgba(8, 34, 68, 0.2);
+  border-radius: 20px;
+  padding: 26px;
+  width: 220px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.sidebarTitle {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 25px;
+  color: #082244;
+  margin: 0;
+}
+
+.tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tab {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  letter-spacing: 0.02em;
+  color: rgba(8, 34, 68, 0.82);
+  text-decoration: none;
+  cursor: default;
+}
+
+.tabActive {
+  color: #082244;
+  text-decoration: underline;
+}
+
+.tabHighlighted {
+  background: linear-gradient(90deg, rgba(8, 34, 68, 0.82) 0%, rgba(170, 20, 23, 0.82) 58.17%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    width: 100%;
+  }
+}

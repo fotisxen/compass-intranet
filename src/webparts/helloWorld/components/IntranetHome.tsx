@@ -5,7 +5,8 @@ import { ensureInterFont } from '../../../shared/components/ensureFonts';
 import PublicHolidays from './PublicHolidays';
 import EventsWidget from './EventsWidget';
 import FleetMap from './FleetMap';
-import NewsSection from './NewsSection';
+import NewsroomSidebar from '../../../shared/components/NewsroomSidebar';
+import NewsCard from '../../../shared/components/NewsCard';
 import PeopleSidebar from './PeopleSidebar';
 import PersonSpotlightCard from './PersonSpotlightCard';
 import WorkAnniversaries from './WorkAnniversaries';
@@ -38,7 +39,14 @@ export default class IntranetHome extends React.Component<IIntranetHomeProps> {
           </div>
 
           <div className={styles.section}>
-            <NewsSection spHttpClient={this.props.spHttpClient} siteUrl={this.props.siteUrl} />
+            <div className={styles.newsWrap}>
+              <NewsroomSidebar />
+              <div className={styles.newsGrid}>
+                <NewsCard spHttpClient={this.props.spHttpClient} siteUrl={this.props.siteUrl} position={1} />
+                <NewsCard spHttpClient={this.props.spHttpClient} siteUrl={this.props.siteUrl} position={2} />
+                <NewsCard spHttpClient={this.props.spHttpClient} siteUrl={this.props.siteUrl} position={3} />
+              </div>
+            </div>
           </div>
 
           <div className={styles.peopleRow}>

@@ -10,6 +10,22 @@
         }
       ]
     },
+    "news-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/news/NewsWebPart.js",
+          "manifest": "./src/webparts/news/NewsWebPart.manifest.json"
+        }
+      ]
+    },
+    "news-card-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/newsCard/NewsCardWebPart.js",
+          "manifest": "./src/webparts/newsCard/NewsCardWebPart.manifest.json"
+        }
+      ]
+    },
     "compass-chrome-application-customizer": {
       "components": [
         {
@@ -21,6 +37,8 @@
   },
   "externals": {},
   "localizedResources": {
-    "HelloWorldWebPartStrings": "lib/webparts/helloWorld/loc/{locale}.js"
+    "HelloWorldWebPartStrings": "lib/webparts/helloWorld/loc/{locale}.js",
+    "NewsWebPartStrings": "lib/webparts/news/loc/{locale}.js",
+    "NewsCardWebPartStrings": "lib/webparts/newsCard/loc/{locale}.js"
   }
 }

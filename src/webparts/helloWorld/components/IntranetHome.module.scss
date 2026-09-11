@@ -33,6 +33,25 @@
   margin-bottom: 40px;
 }
 
+.newsWrap {
+  display: flex;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.newsGrid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 18px;
+}
+
+@media (max-width: 900px) {
+  .newsWrap {
+    flex-direction: column;
+  }
+}
+
 .peopleRow {
   display: flex;
   gap: 24px;
