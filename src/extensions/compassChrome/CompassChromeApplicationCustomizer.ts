@@ -13,6 +13,8 @@ import Footer from '../../shared/components/Footer';
 export interface ICompassChromeApplicationCustomizerProperties {
   companyName?: string;
   chatApiUrl?: string;
+  chatResourceUri?: string;
+  chatQueryUrl?: string;
 }
 
 export default class CompassChromeApplicationCustomizer
@@ -33,7 +35,12 @@ export default class CompassChromeApplicationCustomizer
       this._topPlaceholder = this.context.placeholderProvider.tryCreateContent(PlaceholderName.Top);
       if (this._topPlaceholder && this._topPlaceholder.domElement) {
         ReactDom.render(
-          React.createElement(ChromeRoot, { chatApiUrl: this.properties.chatApiUrl || '' }),
+          React.createElement(ChromeRoot, {
+            chatApiUrl: this.properties.chatApiUrl || '',
+            aadHttpClientFactory: this.context.aadHttpClientFactory,
+            chatResourceUri: this.properties.chatResourceUri,
+            chatQueryUrl: this.properties.chatQueryUrl
+          }),
           this._topPlaceholder.domElement
         );
       }

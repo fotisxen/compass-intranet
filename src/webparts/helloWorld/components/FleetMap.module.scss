@@ -30,6 +30,59 @@
   &:hover {
     background: #0b2c5c;
   }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.75;
+  }
+}
+
+.loadingOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 500;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: rgba(8, 34, 68, 0.35);
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  pointer-events: none;
+}
+
+.spinner {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+  animation: fleetSpin 0.8s linear infinite;
+}
+
+@keyframes fleetSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// L.divIcon wraps its html in a box with a white background/border by
+// default — the port/underway markers below draw their own shape, so that
+// default chrome needs to be stripped.
+:global(.leaflet-div-icon) {
+  background: transparent;
+  border: none;
+}
+
+.portMarker,
+.underwayMarker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 // Leaflet's attribution control is required to stay visible by
@@ -50,4 +103,70 @@
     display: block;
     margin-bottom: 2px;
   }
+}
+
+:global(.leaflet-popup-content-wrapper) {
+  border-radius: 10px;
+}
+
+.vesselCard {
+  font-family: 'Inter', sans-serif;
+  min-width: 190px;
+}
+
+.vesselCardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.vesselCardTitle {
+  font-weight: 700;
+  font-size: 15px;
+  color: #082244;
+}
+
+.statusBadgeAtSea,
+.statusBadgeAtPort {
+  flex: none;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.statusBadgeAtSea {
+  background: #e6f4ea;
+  color: #1e7b34;
+}
+
+.statusBadgeAtPort {
+  background: #fdf0dc;
+  color: #a9660e;
+}
+
+.vesselCardSub {
+  color: #6b7280;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.vesselCardDetails {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  row-gap: 6px;
+  column-gap: 12px;
+  font-size: 13px;
+}
+
+.vesselCardLabel {
+  color: #6b7280;
+}
+
+.vesselCardValue {
+  color: #111827;
+  font-weight: 500;
 }

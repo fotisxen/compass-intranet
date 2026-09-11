@@ -5,6 +5,8 @@
     "FUNCTIONS_WORKER_RUNTIME": "node",
     "OPENAI_API_KEY": "<your-openai-api-key>",
     "OPENAI_MODEL": "gpt-4o-mini",
+    "FLEET_API_URL": "<fleet-positions-api-url-without-the-code-param>",
+    "FLEET_API_KEY": "<fleet-positions-api-key>",
     "ALLOWED_ORIGIN": "https://<your-tenant>.sharepoint.com"
   },
   "Host": {

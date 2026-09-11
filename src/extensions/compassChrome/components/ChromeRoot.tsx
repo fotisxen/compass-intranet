@@ -1,4 +1,5 @@
 import * as React from 'react';
+import type { AadHttpClientFactory } from '@microsoft/sp-http';
 import styles from './ChromeRoot.module.scss';
 import Header from '../../../shared/components/Header';
 import ChatWidget from '../../../shared/components/ChatWidget';
@@ -6,6 +7,9 @@ import { ensureInterFont } from '../../../shared/components/ensureFonts';
 
 export interface IChromeRootProps {
   chatApiUrl: string;
+  aadHttpClientFactory?: AadHttpClientFactory;
+  chatResourceUri?: string;
+  chatQueryUrl?: string;
 }
 
 export interface IChromeRootState {
@@ -41,7 +45,12 @@ export default class ChromeRoot extends React.Component<IChromeRootProps, IChrom
             <div className={styles.backdrop} onClick={this._closeChat} />
             <div className={styles.chatPanel}>
               <button className={styles.closeButton} onClick={this._closeChat} aria-label="Close assistant chat">✕</button>
-              <ChatWidget apiUrl={this.props.chatApiUrl} />
+              <ChatWidget
+                apiUrl={this.props.chatApiUrl}
+                aadHttpClientFactory={this.props.aadHttpClientFactory}
+                chatResourceUri={this.props.chatResourceUri}
+                chatQueryUrl={this.props.chatQueryUrl}
+              />
             </div>
           </>
         )}

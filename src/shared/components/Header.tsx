@@ -6,18 +6,6 @@ export interface IHeaderProps {
   onOpenAssistant: () => void;
 }
 
-// The dropdown items are stand-ins for real SharePoint pages that don't
-// exist yet — each gets its own distinct, stable slug so links behave like
-// real (if currently empty) destinations rather than an inert "#" for
-// every item, ready to be swapped for the actual page URL once it exists.
-function slugify(label: string): string {
-  return `#${label
-    .toLowerCase()
-    .replace(/&/g, 'and')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '')}`;
-}
-
 export interface IHeaderState {
   openItem?: string;
 }
@@ -79,18 +67,22 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                 onMouseEnter={() => item.columns && this._open(item.label)}
                 onMouseLeave={() => item.columns && this._scheduleClose()}
               >
-                <a
-                  href="#"
-                  className={`${styles.navLink} ${openItem === item.label ? styles.navLinkActive : ''}`}
-                  onClick={e => {
-                    e.preventDefault();
-                    if (item.columns) {
+                {item.columns ? (
+                  <a
+                    href="#"
+                    className={`${styles.navLink} ${openItem === item.label ? styles.navLinkActive : ''}`}
+                    onClick={e => {
+                      e.preventDefault();
                       this._toggle(item.label);
-                    }
-                  }}
-                >
-                  {item.label}
-                </a>
+                    }}
+                  >
+                    {item.label}
+                  </a>
+                ) : (
+                  <a href={item.href || '#'} className={styles.navLink}>
+                    {item.label}
+                  </a>
+                )}
 
                 {item.columns && openItem === item.label && (
                   <div className={styles.dropdown}>
@@ -99,14 +91,22 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                         <div className={styles.dropdownColumn} key={columnIndex}>
                           {column.map((group, groupIndex) => (
                             <div className={styles.dropdownGroup} key={groupIndex}>
-                              {group.heading && <div className={styles.dropdownHeading}>{group.heading}</div>}
+                              {group.heading && (
+                                group.headingHref ? (
+                                  <a href={group.headingHref} className={styles.dropdownHeading}>
+                                    {group.heading}
+                                  </a>
+                                ) : (
+                                  <div className={styles.dropdownHeading}>{group.heading}</div>
+                                )
+                              )}
                               {group.items.map(link => (
                                 <a
-                                  key={link}
-                                  href={slugify(link)}
+                                  key={link.label}
+                                  href={link.href}
                                   className={styles.dropdownLink}
                                 >
-                                  {link}
+                                  {link.label}
                                 </a>
                               ))}
                             </div>

@@ -1,12 +1,19 @@
+export interface INavLink {
+  label: string;
+  href: string;
+}
+
 export interface INavGroup {
   heading?: string;
-  items: string[];
+  headingHref?: string;
+  items: INavLink[];
 }
 
 export type INavColumn = INavGroup[];
 
 export interface INavItem {
   label: string;
+  href?: string;
   columns?: INavColumn[];
 }
 
@@ -16,7 +23,12 @@ export const NAV_ITEMS: INavItem[] = [
     columns: [
       [
         {
-          items: ['Starbulk Overview', 'Policies', 'Environmental, Social & Governance', 'Buildings & Facilities']
+          items: [
+            { label: 'Starbulk Overview', href: '/sites/Intranet/SitePages/Corporate-Profile.aspx' },
+            { label: 'Policies', href: '/sites/Intranet/SitePages/Regulations-and-Policies.aspx' },
+            { label: 'Environmental, Social & Governance', href: '/sites/Intranet/SitePages/Environmental,-Social-&-Governance.aspx' },
+            { label: 'Buildings & Facilities', href: '/sites/Intranet/SitePages/Buildings-&-Facilities.aspx' }
+          ]
         }
       ]
     ]
@@ -27,21 +39,47 @@ export const NAV_ITEMS: INavItem[] = [
       [
         {
           heading: 'HUMAN RESOURCES',
-          items: ['Welcome Aboard!', 'Health & Safety', 'Open Positions', 'Vacation & Absences', 'Building Maintenance']
+          headingHref: '/sites/Intranet/SitePages/Human-Resources.aspx',
+          items: [
+            { label: 'Welcome Aboard!', href: '/sites/Intranet/SitePages/Onboarding---Welcome-Aboard!.aspx' },
+            { label: 'Health & Safety', href: '/sites/Intranet/SitePages/Health,-Safety-and-Emergency.aspx' },
+            { label: 'Open Positions', href: '/sites/Intranet/SitePages/Career-Opportunities.aspx' },
+            { label: 'Vacation & Absences', href: '/sites/Intranet/SitePages/Vacation-&-Absences.aspx' },
+            { label: 'Building Maintenance', href: '/sites/Intranet/SitePages/Building-Maintenance.aspx' }
+          ]
         },
         {
           heading: 'VOLUNTEERING',
-          items: ['Blood Donation', 'Beach Clean-ups', 'Together We Run']
+          headingHref: '/sites/Intranet/SitePages/Volunteering.aspx',
+          items: [
+            { label: 'Blood Donation', href: '/sites/Intranet/SitePages/Blood-donation.aspx' },
+            { label: 'Beach Clean-ups', href: '/sites/Intranet/SitePages/Beach-Clean-up.aspx' },
+            { label: 'Together We Run', href: '/sites/Intranet/SitePages/Together-we-Run.aspx' }
+          ]
         }
       ],
       [
         {
           heading: 'EMPLOYEE TOOLS & RESOURCES',
-          items: ['SAP', 'Whistleblowing Platform', 'Data Protection', 'Company Mobile & Laptop', 'IT Support', 'Brand & Identity Guidelines']
+          headingHref: '/sites/Intranet/SitePages/Digital-Hub.aspx',
+          items: [
+            { label: 'SAP', href: '/sites/Intranet/SitePages/SAP---HRMS.aspx' },
+            { label: 'Whistleblowing Platform', href: '/sites/Intranet/SitePages/Whistleblower-Platform.aspx' },
+            { label: 'Data Protection', href: '/sites/Intranet/SitePages/Data-Protection---GDPR.aspx' },
+            { label: 'Company Mobile & Laptop', href: '/sites/Intranet/SitePages/Company-Mobile.aspx' },
+            { label: 'IT Support', href: '/sites/Intranet/SitePages/IT-Support---Helpdesk.aspx' },
+            { label: 'Brand & Identity Guidelines', href: '/sites/Intranet/SitePages/Corporate-Identity.aspx' }
+          ]
         },
         {
           heading: 'WELLBEING & BENEFITS',
-          items: ['Health Insurance', 'Mental Health Hotline', 'Education Allowance', 'Employee Discounts']
+          headingHref: '/sites/Intranet/SitePages/Wellbeing-&-Benefits.aspx',
+          items: [
+            { label: 'Health Insurance', href: '/sites/Intranet/SitePages/Health-Insurance.aspx' },
+            { label: 'Mental Health Hotline', href: '/sites/Intranet/SitePages/Mental-Health-Hotline.aspx' },
+            { label: 'Education Allowance', href: '/sites/Intranet/SitePages/Education-Allowance.aspx' },
+            { label: 'Employee Discounts', href: '/sites/Intranet/SitePages/Employee-Discounts.aspx' }
+          ]
         }
       ]
     ]
@@ -51,12 +89,16 @@ export const NAV_ITEMS: INavItem[] = [
     columns: [
       [
         {
-          items: ['Corporate', 'Fleet', 'People & Culture', 'Open Positions']
+          items: [
+            { label: 'Internal Company Announcements', href: '/sites/Intranet/SitePages/Internal-Company-Announcements.aspx' },
+            { label: 'Organizational Developments', href: '/sites/Intranet/SitePages/Organizational-Developments.aspx' }
+          ]
         }
       ]
     ]
   },
   {
-    label: 'Fleet'
+    label: 'Fleet',
+    href: '/sites/Intranet/SitePages/Fleet.aspx'
   }
 ];

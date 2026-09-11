@@ -27,13 +27,34 @@ const scssNamespacedPlugin = {
   }
 };
 
+// Real SPFx packages like @microsoft/sp-http pull in Microsoft-internal
+// dependencies (@msinternal/*, @azure/msal-browser-*-1p) that only resolve
+// inside the actual SPFx webpack build (heft build already verifies that
+// works). This preview has no real SharePoint context to call anyway, so
+// components importing @microsoft/sp-http get a tiny stub instead — just
+// enough shape (SPHttpClient.configurations.v1) for the import to resolve;
+// the fake spHttpClient passed from entry.tsx handles the actual behavior.
+const spHttpStubPlugin = {
+  name: 'sp-http-stub',
+  setup(build) {
+    build.onResolve({ filter: /^@microsoft\/sp-http$/ }, args => ({
+      path: args.path,
+      namespace: 'sp-http-stub'
+    }));
+    build.onLoad({ filter: /.*/, namespace: 'sp-http-stub' }, () => ({
+      contents: 'exports.SPHttpClient = { configurations: { v1: {} } };',
+      loader: 'js'
+    }));
+  }
+};
+
 await esbuild.build({
   absWorkingDir: root,
   entryPoints: [path.join(__dirname, 'entry.tsx')],
   bundle: true,
   outfile: path.join(__dirname, 'dist', 'bundle.js'),
   loader: { '.tsx': 'tsx', '.ts': 'ts' },
-  plugins: [scssNamespacedPlugin],
+  plugins: [scssNamespacedPlugin, spHttpStubPlugin],
   define: { 'process.env.NODE_ENV': '"development"' },
   logLevel: 'info'
 });

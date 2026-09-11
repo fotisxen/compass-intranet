@@ -1,27 +1,101 @@
 import * as React from 'react';
+import { SPHttpClient, type SPHttpClientResponse } from '@microsoft/sp-http';
 import styles from './EventsWidget.module.scss';
-import { events } from './data/mockData';
+import { events as mockEvents, type IEvent } from './data/mockData';
+
+export interface IEventsWidgetProps {
+  spHttpClient: SPHttpClient;
+  siteUrl: string;
+}
 
 export interface IEventsWidgetState {
   index: number;
+  events: IEvent[];
 }
 
-export default class EventsWidget extends React.Component<Record<string, never>, IEventsWidgetState> {
-  constructor(props: Record<string, never>) {
+// The real "Upcoming Events" widget on the live site reads from a plain
+// SharePoint Events list (Title + EventDate) — this is that list's GUID,
+// found in the page's own web part configuration.
+const UPCOMING_EVENTS_LIST_ID = 'dd3316a0-3bc0-4d4c-acff-71851299dad7';
+const PAGE_SIZE = 10;
+
+interface ISpEventItem {
+  Title: string;
+  EventDate: string;
+}
+
+interface ISpListItemsResponse {
+  value: ISpEventItem[];
+}
+
+function pad2(n: number): string {
+  return n < 10 ? `0${n}` : `${n}`;
+}
+
+function formatDisplayDate(iso: string): string {
+  const d = new Date(iso);
+  return `${pad2(d.getDate())}.${pad2(d.getMonth() + 1)}.${d.getFullYear()}`;
+}
+
+function initialsFor(title: string): string {
+  const initials = title
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map(w => w.charAt(0).toUpperCase())
+    .join('');
+  return initials || 'EV';
+}
+
+export default class EventsWidget extends React.Component<IEventsWidgetProps, IEventsWidgetState> {
+  constructor(props: IEventsWidgetProps) {
     super(props);
-    this.state = { index: 0 };
+    this.state = { index: 0, events: mockEvents };
+  }
+
+  public componentDidMount(): void {
+    this._loadEvents().catch(() => {
+      // Real list couldn't be loaded — the mock data already in state
+      // stays as a fallback so the widget never renders empty.
+    });
+  }
+
+  private async _loadEvents(): Promise<void> {
+    const { spHttpClient, siteUrl } = this.props;
+    const today = new Date().toISOString();
+    const endpoint =
+      `${siteUrl}/_api/web/lists(guid'${UPCOMING_EVENTS_LIST_ID}')/items` +
+      `?$select=Title,EventDate&$filter=EventDate ge datetime'${today}'&$orderby=EventDate asc&$top=${PAGE_SIZE}`;
+
+    const response: SPHttpClientResponse = await spHttpClient.get(endpoint, SPHttpClient.configurations.v1);
+    if (!response.ok) {
+      return;
+    }
+
+    const data: ISpListItemsResponse = await response.json();
+    if (!data.value || data.value.length === 0) {
+      return;
+    }
+
+    const events: IEvent[] = data.value.map(item => ({
+      date: formatDisplayDate(item.EventDate),
+      title: item.Title,
+      initials: initialsFor(item.Title)
+    }));
+
+    this.setState({ events, index: 0 });
   }
 
   private _prev = (): void => {
-    this.setState(prev => ({ index: (prev.index - 1 + events.length) % events.length }));
+    this.setState(prev => ({ index: (prev.index - 1 + prev.events.length) % prev.events.length }));
   };
 
   private _next = (): void => {
-    this.setState(prev => ({ index: (prev.index + 1) % events.length }));
+    this.setState(prev => ({ index: (prev.index + 1) % prev.events.length }));
   };
 
   public render(): React.ReactElement {
-    const event = events[this.state.index];
+    const event = this.state.events[this.state.index];
 
     return (
       <div className={styles.wrap}>

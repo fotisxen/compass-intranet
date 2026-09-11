@@ -27,6 +27,7 @@
   border-radius: 6px;
   max-width: 85%;
   word-wrap: break-word;
+  white-space: pre-wrap;
 }
 
 .userMessage {
@@ -41,6 +42,34 @@
   background: #f3f2f1;
   color: "[theme:bodyText, default: #323130]";
   color: var(--bodyText);
+}
+
+.mdHeading {
+  font-weight: 600;
+  margin: 0.35em 0 0.15em;
+}
+
+.mdListItem {
+  margin-left: 0.25em;
+}
+
+.mdSpacer {
+  height: 0.4em;
+}
+
+.citations {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+  margin-top: 0.5em;
+  padding-top: 0.5em;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.citationLink {
+  font-size: 0.85em;
+  color: "[theme:link, default:#03787c]";
+  color: var(--link);
 }
 
 .error {

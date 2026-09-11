@@ -35,6 +35,12 @@
           "elementManifests": ["elements.xml"]
         }
       }
+    ],
+    "webApiPermissionRequests": [
+      {
+        "resource": "api://1bc53e14-c0fd-41d3-a318-ba88918961b1",
+        "scope": "user_impersonation"
+      }
     ]
   },
   "paths": {

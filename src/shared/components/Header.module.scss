@@ -113,12 +113,18 @@
 }
 
 .dropdownHeading {
+  display: block;
   font-weight: 600;
   font-size: 13px;
   letter-spacing: 1.1px;
   color: #082244;
   margin-bottom: 4px;
   white-space: nowrap;
+  text-decoration: none;
+}
+
+a.dropdownHeading:hover {
+  text-decoration: underline;
 }
 
 .dropdownLink {
