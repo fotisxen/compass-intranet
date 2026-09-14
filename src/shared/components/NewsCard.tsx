@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SPHttpClient, type SPHttpClientResponse } from '@microsoft/sp-http';
 import styles from './NewsCard.module.scss';
-import { news as mockNews, type INewsItem } from './data/newsMockData';
+import { news as mockNews } from './data/newsMockData';
 
 export interface INewsCardProps {
   spHttpClient: SPHttpClient;
@@ -10,8 +10,11 @@ export interface INewsCardProps {
   position?: number;
 }
 
-interface ISpNewsItem extends INewsItem {
+interface ISpNewsItem {
+  title: string;
+  date: string;
   url: string;
+  imageUrl?: string;
 }
 
 export interface INewsCardState {
@@ -94,9 +97,11 @@ export default class NewsCard extends React.Component<INewsCardProps, INewsCardS
   public render(): React.ReactElement {
     const { item } = this.state;
 
+    const thumbStyle = item.imageUrl ? { backgroundImage: `url(${item.imageUrl})` } : undefined;
+
     return (
       <div className={styles.card}>
-        <div className={styles.thumb} />
+        <div className={styles.thumb} style={thumbStyle} />
         <div className={styles.body}>
           <h4 className={styles.title}>{item.title}</h4>
           <div className={styles.footerRow}>
