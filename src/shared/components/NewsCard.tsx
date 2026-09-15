@@ -3,15 +3,13 @@ import { SPHttpClient, type SPHttpClientResponse } from '@microsoft/sp-http';
 import styles from './NewsCard.module.scss';
 import { news as mockNews } from './data/newsMockData';
 
-// Set this to the real internal field name for the promoted news pages'
-// category column once it exists (get it from the "Internal Company
-// Announcements" page's list schema — same way UPCOMING_EVENTS_LIST_ID's
-// BannerUrl field was confirmed for EventsWidget: view the page source or
-// its network requests and find the field name backing each category
-// anchor). Once set, _loadItem below adds it to the real $filter and
-// category filtering starts working against live SharePoint data instead
-// of the mock fallback.
-const NEWS_CATEGORY_FIELD_NAME: string | undefined = undefined;
+// Real internal field name for the promoted news pages' category column,
+// confirmed from the "Internal Company Announcements" page's own News web
+// part filter config (Choice field, internal name "NewsCategory", display
+// name "News Category"). With this set, _loadItem below adds it to the
+// real $filter and category filtering runs against live SharePoint data
+// instead of the mock fallback.
+const NEWS_CATEGORY_FIELD_NAME: string | undefined = 'NewsCategory';
 
 export interface INewsCardProps {
   spHttpClient: SPHttpClient;
