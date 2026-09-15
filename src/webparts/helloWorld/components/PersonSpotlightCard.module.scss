@@ -15,7 +15,7 @@
   border: 0.7px solid rgba(8, 34, 68, 0.5);
   background: transparent;
   color: #082244;
-  font-size: 11px;
+  font-size: 0.6875em;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -38,14 +38,14 @@
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  font-size: 22px;
+  font-size: 1.375em;
   flex-shrink: 0;
 }
 
 .heading {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 0.875em;
   line-height: 1.3;
   color: #082244;
   margin: 0;
@@ -67,7 +67,7 @@
 .name {
   font-family: 'Inter', sans-serif;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 0.875em;
   color: #082244;
   margin: 0;
   white-space: nowrap;
@@ -76,7 +76,7 @@
 .title {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
-  font-size: 11px;
+  font-size: 0.6875em;
   color: rgba(8, 34, 68, 0.6);
   margin: 3px 0 0;
   white-space: nowrap;
@@ -85,7 +85,7 @@
 .newTitle {
   font-family: 'Inter', sans-serif;
   font-weight: 700;
-  font-size: 11px;
+  font-size: 0.6875em;
   color: #082244;
   margin: 2px 0 0;
   white-space: nowrap;
@@ -107,7 +107,7 @@
 .fieldLabel {
   font-family: 'Inter', sans-serif;
   font-weight: 600;
-  font-size: 8.5px;
+  font-size: 0.5313em;
   letter-spacing: 0.8px;
   color: rgba(8, 34, 68, 0.5);
 }
@@ -115,7 +115,7 @@
 .fieldValue {
   font-family: 'Inter', sans-serif;
   font-weight: 600;
-  font-size: 11px;
+  font-size: 0.6875em;
   color: #082244;
   white-space: nowrap;
 }

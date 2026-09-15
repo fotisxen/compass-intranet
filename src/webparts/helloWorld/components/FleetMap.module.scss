@@ -2,14 +2,15 @@
   position: relative;
   border-radius: 30px;
   overflow: hidden;
-  height: 100%;
-  min-height: 420px;
+  width: 100%;
+  // Matches the 1099x626 reference size at a 1440px-wide viewport, then
+  // scales proportionally with the column's actual width at other sizes.
+  aspect-ratio: 1099 / 626;
 }
 
 .map {
   height: 100%;
   width: 100%;
-  min-height: 420px;
   background: #d9e8f5;
 }
 
@@ -21,7 +22,7 @@
   background: #082244;
   color: #ffffff;
   font-family: 'Inter', sans-serif;
-  font-size: 13px;
+  font-size: 0.8125em;
   padding: 7px 18px;
   border-radius: 18px;
   border: none;
@@ -49,7 +50,7 @@
   background: rgba(8, 34, 68, 0.35);
   color: #ffffff;
   font-family: 'Inter', sans-serif;
-  font-size: 14px;
+  font-size: 0.875em;
   font-weight: 600;
   text-align: center;
   pointer-events: none;
@@ -97,7 +98,7 @@
 
 .popup {
   font-family: 'Inter', sans-serif;
-  font-size: 13px;
+  font-size: 0.8125em;
 
   strong {
     display: block;
@@ -124,14 +125,14 @@
 
 .vesselCardTitle {
   font-weight: 700;
-  font-size: 15px;
+  font-size: 0.9375em;
   color: #082244;
 }
 
 .statusBadgeAtSea,
 .statusBadgeAtPort {
   flex: none;
-  font-size: 11px;
+  font-size: 0.6875em;
   font-weight: 600;
   padding: 2px 9px;
   border-radius: 999px;
@@ -150,7 +151,7 @@
 
 .vesselCardSub {
   color: #6b7280;
-  font-size: 12px;
+  font-size: 0.75em;
   margin-bottom: 8px;
 }
 
@@ -159,7 +160,7 @@
   grid-template-columns: 96px 1fr;
   row-gap: 6px;
   column-gap: 12px;
-  font-size: 13px;
+  font-size: 0.8125em;
 }
 
 .vesselCardLabel {

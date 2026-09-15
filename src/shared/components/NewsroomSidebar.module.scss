@@ -8,12 +8,15 @@
   display: flex;
   flex-direction: column;
   gap: 18px;
+  // Same app-wide scale as IntranetHome's .page — needed here too since
+  // this also renders standalone as its own web part, outside that tree.
+  font-size: clamp(14px, 1.38889vw, 28px);
 }
 
 .sidebarTitle {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
-  font-size: 25px;
+  font-size: 1.5625em;
   color: #082244;
   margin: 0;
 }
@@ -24,13 +27,19 @@
   gap: 12px;
 }
 
+.tabRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .tab {
   font-family: 'Inter', sans-serif;
-  font-size: 16px;
+  font-size: 1em;
   letter-spacing: 0.02em;
   color: rgba(8, 34, 68, 0.82);
   text-decoration: none;
-  cursor: default;
+  cursor: pointer;
 }
 
 .tabActive {
@@ -38,11 +47,32 @@
   text-decoration: underline;
 }
 
+.arrowButton {
+  flex-shrink: 0;
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  border: 0.7px solid rgba(8, 34, 68, 0.5);
+  background: transparent;
+  color: #082244;
+  font-size: 0.6875em;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(8, 34, 68, 0.08);
+  }
+}
+
 .tabHighlighted {
   background: linear-gradient(90deg, rgba(8, 34, 68, 0.82) 0%, rgba(170, 20, 23, 0.82) 58.17%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  text-decoration: none;
 }
 
 @media (max-width: 900px) {

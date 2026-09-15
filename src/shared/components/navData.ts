@@ -90,8 +90,11 @@ export const NAV_ITEMS: INavItem[] = [
       [
         {
           items: [
-            { label: 'Internal Company Announcements', href: '/sites/Intranet/SitePages/Internal-Company-Announcements.aspx' },
-            { label: 'Organizational Developments', href: '/sites/Intranet/SitePages/Organizational-Developments.aspx' }
+            { label: 'Corporate', href: '/sites/Intranet/SitePages/Internal-Company-Announcements.aspx#corporate-news' },
+            { label: 'Fleet', href: '/sites/Intranet/SitePages/Internal-Company-Announcements.aspx#fleet-updates' },
+            { label: 'People & Purpose', href: '/sites/Intranet/SitePages/Internal-Company-Announcements.aspx#people-culture-news' },
+            { label: 'Organizational Development', href: '/sites/Intranet/SitePages/Organizational-Developments.aspx' },
+            { label: 'Open Positions', href: '/sites/Intranet/SitePages/Career-Opportunities.aspx#open' }
           ]
         }
       ]

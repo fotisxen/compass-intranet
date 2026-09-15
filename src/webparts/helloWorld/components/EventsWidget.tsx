@@ -104,8 +104,10 @@ export default class EventsWidget extends React.Component<IEventsWidgetProps, IE
         </div>
 
         <div className={styles.eventCard}>
-          <p className={styles.eventDate}>{event.date}</p>
-          <p className={styles.eventTitle}>{event.title}</p>
+          <div className={styles.textGroup}>
+            <p className={styles.eventDate}>{event.date}</p>
+            <p className={styles.eventTitle}>{event.title}</p>
+          </div>
           <div className={styles.mediaRow}>
             <button className={styles.arrowButton} onClick={this._prev} aria-label="Previous event">←</button>
             <div className={styles.eventImage}>{event.initials}</div>

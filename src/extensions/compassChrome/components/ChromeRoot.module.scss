@@ -18,6 +18,9 @@
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
   border-radius: 12px;
   background: #ffffff;
+  // Base for .closeButton, which sits next to ChatWidget here rather than
+  // inside it — same app-wide scale as IntranetHome's .page.
+  font-size: clamp(14px, 1.38889vw, 28px);
 }
 
 .closeButton {
@@ -30,7 +33,7 @@
   border-radius: 50%;
   background: #f3f2f1;
   color: #082244;
-  font-size: 14px;
+  font-size: 0.875em;
   cursor: pointer;
   z-index: 1;
 

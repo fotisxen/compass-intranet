@@ -26,6 +26,14 @@
         }
       ]
     },
+    "chat-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/chat/ChatWebPart.js",
+          "manifest": "./src/webparts/chat/ChatWebPart.manifest.json"
+        }
+      ]
+    },
     "compass-chrome-application-customizer": {
       "components": [
         {
@@ -39,6 +47,7 @@
   "localizedResources": {
     "HelloWorldWebPartStrings": "lib/webparts/helloWorld/loc/{locale}.js",
     "NewsWebPartStrings": "lib/webparts/news/loc/{locale}.js",
-    "NewsCardWebPartStrings": "lib/webparts/newsCard/loc/{locale}.js"
+    "NewsCardWebPartStrings": "lib/webparts/newsCard/loc/{locale}.js",
+    "ChatWebPartStrings": "lib/webparts/chat/loc/{locale}.js"
   }
 }

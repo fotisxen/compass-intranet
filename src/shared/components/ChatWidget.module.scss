@@ -4,6 +4,9 @@
   padding: 1.75em;
   padding-right: 2.75em;
   box-sizing: border-box;
+  // Same app-wide scale as IntranetHome's .page — this renders into its
+  // own placeholder/web part outside that DOM tree, so it needs its own base.
+  font-size: clamp(14px, 1.38889vw, 28px);
 }
 
 .messages {

@@ -6,6 +6,9 @@
   // stay above the Fleet map instead of being hidden behind it.
   z-index: 1500;
   font-family: 'Inter', 'Segoe UI', sans-serif;
+  // Same app-wide scale as IntranetHome's .page — this renders into its
+  // own placeholder outside that DOM tree, so it needs its own base.
+  font-size: clamp(14px, 1.38889vw, 28px);
 }
 
 .bar {
@@ -36,7 +39,7 @@
 
 .brandName {
   font-weight: 700;
-  font-size: 28px;
+  font-size: 1.75em;
   line-height: 1;
   color: #082244;
   white-space: nowrap;
@@ -61,7 +64,7 @@
   display: inline-block;
   color: #000000;
   text-decoration: none;
-  font-size: 16px;
+  font-size: 1em;
   font-weight: 400;
   line-height: 1;
   white-space: nowrap;
@@ -115,7 +118,7 @@
 .dropdownHeading {
   display: block;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 0.8125em;
   letter-spacing: 1.1px;
   color: #082244;
   margin-bottom: 4px;
@@ -130,7 +133,7 @@ a.dropdownHeading:hover {
 .dropdownLink {
   display: block;
   padding: 4px 0;
-  font-size: 16px;
+  font-size: 1em;
   letter-spacing: 0.02em;
   color: #082244;
   text-decoration: none;
@@ -156,7 +159,7 @@ a.dropdownHeading:hover {
 
 .assistantLabel {
   font-weight: 700;
-  font-size: 15px;
+  font-size: 0.9375em;
   line-height: 1;
   color: #000000;
   white-space: nowrap;
@@ -172,7 +175,7 @@ a.dropdownHeading:hover {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  font-size: 13px;
+  font-size: 0.8125em;
 }
 
 .assistant:hover .assistantSubmit {

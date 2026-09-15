@@ -1,0 +1,25 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+  "id": "dfacca04-191b-4386-ac40-6c790a48ffe8",
+  "alias": "ChatWebPart",
+  "componentType": "WebPart",
+
+  "version": "*",
+  "manifestVersion": 2,
+
+  "requiresCustomScript": false,
+  "supportedHosts": ["SharePointWebPart", "TeamsPersonalApp", "TeamsTab", "SharePointFullPage"],
+  "supportsThemeVariants": true,
+
+  "preconfiguredEntries": [{
+    "groupId": "5c03119e-3074-46fd-976b-c60198311f70", // Advanced
+    "group": { "default": "Advanced" },
+    "title": { "default": "Compass AI Chat" },
+    "description": { "default": "Standalone AskStarBulk assistant panel, for testing the real AAD-secured backend independently of the site-wide header." },
+    "officeFabricIconFontName": "OfficeChat",
+    "properties": {
+      "chatResourceUri": "api://1bc53e14-c0fd-41d3-a318-ba88918961b1",
+      "chatQueryUrl": "https://func-askstarbulk-prod-apa6gyb7exfxhmbe.westeurope-01.azurewebsites.net/api/query"
+    }
+  }]
+}

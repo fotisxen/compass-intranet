@@ -5,6 +5,9 @@
   display: flex;
   flex-direction: column;
   min-height: 380px;
+  // Same app-wide scale as IntranetHome's .page — needed here too since
+  // this also renders standalone as its own web part, outside that tree.
+  font-size: clamp(14px, 1.38889vw, 28px);
 }
 
 // Fixed 62/38 split (not content-driven) so every card's photo/text ratio
@@ -32,7 +35,7 @@
   margin: 0;
   font-family: 'Inter', sans-serif;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 0.875em;
   line-height: 18px;
   color: #ffffff;
   display: -webkit-box;
@@ -50,7 +53,7 @@
 
 .date {
   font-family: 'Inter', sans-serif;
-  font-size: 11px;
+  font-size: 0.6875em;
   color: #ffffff;
 }
 
@@ -64,7 +67,7 @@
   background: transparent;
   color: #ffffff;
   font-family: 'Inter', sans-serif;
-  font-size: 11px;
+  font-size: 0.6875em;
   cursor: pointer;
   white-space: nowrap;
 

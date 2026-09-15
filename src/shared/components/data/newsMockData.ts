@@ -7,14 +7,16 @@ export interface INewsItem {
 export interface INewsCategory {
   label: string;
   highlighted?: boolean;
+  /** Where the round arrow button next to the selected tab links to. Defaults to '#'. */
+  href?: string;
 }
 
 export const newsCategories: INewsCategory[] = [
-  { label: 'All news' },
-  { label: 'Corporate' },
-  { label: 'Fleet' },
-  { label: 'People & Culture' },
-  { label: 'Open Positions', highlighted: true }
+  { label: 'Corporate', href: '/sites/Intranet/SitePages/Internal-Company-Announcements.aspx#corporate-news' },
+  { label: 'Fleet', href: '/sites/Intranet/SitePages/Internal-Company-Announcements.aspx#fleet-updates' },
+  { label: 'People & Purpose', href: '/sites/Intranet/SitePages/Internal-Company-Announcements.aspx#people-culture-news' },
+  { label: 'Organizational Development', href: '/sites/Intranet/SitePages/Organizational-Developments.aspx' },
+  { label: 'Open Positions', href: '/sites/Intranet/SitePages/Career-Opportunities.aspx#open', highlighted: true }
 ];
 
 export const news: INewsItem[] = [
