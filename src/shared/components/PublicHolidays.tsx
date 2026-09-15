@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SPHttpClient, type SPHttpClientResponse } from '@microsoft/sp-http';
 import styles from './PublicHolidays.module.scss';
-import { holidays as mockHolidays, type IHoliday } from './data/holidaysMockData';
+import { type IHoliday } from './data/holidaysMockData';
 
 export interface IPublicHolidaysProps {
   spHttpClient: SPHttpClient;
@@ -34,13 +34,13 @@ function formatShortDate(iso: string): string {
 export default class PublicHolidays extends React.Component<IPublicHolidaysProps, IPublicHolidaysState> {
   constructor(props: IPublicHolidaysProps) {
     super(props);
-    this.state = { holidays: mockHolidays };
+    this.state = { holidays: [] };
   }
 
   public componentDidMount(): void {
     this._loadHolidays().catch(() => {
-      // Real list couldn't be loaded — the mock data already in state
-      // stays as a fallback so the widget never renders empty.
+      // Real list couldn't be loaded — leave holidays empty rather than
+      // show fabricated ones.
     });
   }
 
@@ -73,12 +73,18 @@ export default class PublicHolidays extends React.Component<IPublicHolidaysProps
     return (
       <div className={styles.widget}>
         <div className={styles.heading}>PUBLIC HOLIDAYS</div>
-        {this.state.holidays.map(h => (
-          <div className={styles.row} key={h.date + h.label}>
-            <span className={styles.date}>{h.date}</span>
-            <span className={styles.label}>{h.label}</span>
+        {this.state.holidays.length > 0 ? (
+          this.state.holidays.map(h => (
+            <div className={styles.row} key={h.date + h.label}>
+              <span className={styles.date}>{h.date}</span>
+              <span className={styles.label}>{h.label}</span>
+            </div>
+          ))
+        ) : (
+          <div className={styles.row}>
+            <span className={styles.label}>No upcoming holidays</span>
           </div>
-        ))}
+        )}
       </div>
     );
   }

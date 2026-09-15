@@ -36,23 +36,6 @@ interface IAskStarBulkResponse {
   citations?: IChatCitation[];
 }
 
-// Used only while no real assistant is configured — e.g. testing the chat
-// panel's own layout and scroll behavior before a backend is reachable.
-// Lengths are deliberately mixed (one-liners next to multi-line paragraphs)
-// so a real conversation's worth of scrolling gets exercised.
-const MOCK_REPLIES: string[] = [
-  'Sure, I can help with that. What specifically are you trying to find?',
-  "Good question! Let me walk you through it.\n\nStar Bulk's fleet operates across several vessel classes, and the Fleet section under Newsroom has the latest updates on individual ship movements and port calls.",
-  "I don't have a definitive answer for that one, but the HR team on the My Workplace page should be able to help.",
-  "Here's a quick summary:\n\n1. Check the Public Holidays widget on the homepage for office closures.\n2. Vacation requests go through SAP HRMS.\n3. For anything urgent, reach out to your line manager directly.",
-  'Got it — noted!',
-  "That depends on your department. Fleet Operations and Chartering each have slightly different processes, so it's worth checking the relevant policy under Company Profile → Policies.",
-  'Absolutely, happy to help with that.',
-  "Thanks for the context. I'd recommend starting with the Digital Hub page — it links out to most of the internal tools you'd need, including SAP and the IT Helpdesk.",
-  "I'm a mock reply right now — the real assistant isn't connected in this environment yet, but the chat panel itself is fully wired up and ready.",
-  'Let me know if there’s anything else I can help you find on the intranet!'
-];
-
 // Renders the small subset of markdown the real assistant actually sends
 // (#/##/### headings, **bold**, "- "/"* " bullets, "1. " numbered lists)
 // without pulling in a markdown library or touching innerHTML.
@@ -102,8 +85,6 @@ function renderMarkdownLite(text: string): React.ReactNode {
 }
 
 export default class ChatWidget extends React.Component<IChatWidgetProps, IChatWidgetState> {
-  private _mockReplyIndex = 0;
-
   constructor(props: IChatWidgetProps) {
     super(props);
     this.state = { messages: [], input: '', isLoading: false };
@@ -139,7 +120,10 @@ export default class ChatWidget extends React.Component<IChatWidgetProps, IChatW
     }
 
     if (!this.props.apiUrl) {
-      this._sendMock();
+      this.setState({
+        isLoading: false,
+        error: 'The assistant is not configured for this site yet.'
+      });
       return;
     }
 
@@ -199,22 +183,6 @@ export default class ChatWidget extends React.Component<IChatWidgetProps, IChatW
           error: 'Something went wrong reaching the assistant. Please try again.'
         });
       });
-  }
-
-  // No real assistant configured — reply from the local pool instead of
-  // erroring, so the panel can be exercised end to end before the backend
-  // is deployed.
-  private _sendMock(): void {
-    const reply = MOCK_REPLIES[this._mockReplyIndex % MOCK_REPLIES.length];
-    this._mockReplyIndex++;
-
-    const delay = 500 + Math.random() * 700;
-    setTimeout(() => {
-      this.setState(prev => ({
-        messages: [...prev.messages, { role: 'assistant', content: reply }],
-        isLoading: false
-      }));
-    }, delay);
   }
 
   public render(): React.ReactElement<IChatWidgetProps> {

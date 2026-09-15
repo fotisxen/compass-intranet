@@ -3,7 +3,7 @@ import styles from './Footer.module.scss';
 
 export interface IFooterProps {
   companyName: string;
-  /** Real quote endpoint (GetStockPrice) on the same Azure Function App as the fleet API. Falls back to the static demo tickers below when absent or unreachable. */
+  /** Real quote endpoint (GetStockPrice) on the same Azure Function App as the fleet API. Tickers stay hidden when absent or unreachable — no placeholder numbers are shown. */
   stockApiUrl?: string;
 }
 
@@ -18,13 +18,6 @@ interface IStockTicker {
   changePct: string;
   price: string;
 }
-
-// Demo-only placeholder shown until the real GetStockPrice fetch resolves
-// (or if stockApiUrl isn't configured) so the footer never renders empty.
-const STOCK_TICKERS: IStockTicker[] = [
-  { symbol: 'SBLK', changePct: '+2,0% ↑', price: '$26.56' },
-  { symbol: '.SPX', changePct: '+2,2% ↑', price: '$14.56' }
-];
 
 interface IStockApiEntry {
   symbol: string;
@@ -50,13 +43,13 @@ function formatChangePct(pct: number): string {
 export default class Footer extends React.Component<IFooterProps, IFooterState> {
   constructor(props: IFooterProps) {
     super(props);
-    this.state = { tickers: STOCK_TICKERS };
+    this.state = { tickers: [] };
   }
 
   public componentDidMount(): void {
     this._loadTickers().catch(() => {
-      // Real quotes unavailable — the static demo tickers already in state
-      // stay as a fallback so the footer never renders empty.
+      // Real quotes unavailable — leave tickers empty rather than show
+      // placeholder numbers that would look like a working live feed.
     });
   }
 
@@ -111,15 +104,17 @@ export default class Footer extends React.Component<IFooterProps, IFooterState> 
             </div>
           </div>
 
-          <div className={styles.tickers}>
-            {tickers.map(t => (
-              <div className={styles.tickerRow} key={t.symbol}>
-                <span className={styles.tickerSymbol}>{t.symbol}</span>
-                <span className={styles.tickerChange}>{t.changePct}</span>
-                <span className={styles.tickerPrice}>{t.price}</span>
-              </div>
-            ))}
-          </div>
+          {tickers.length > 0 && (
+            <div className={styles.tickers}>
+              {tickers.map(t => (
+                <div className={styles.tickerRow} key={t.symbol}>
+                  <span className={styles.tickerSymbol}>{t.symbol}</span>
+                  <span className={styles.tickerChange}>{t.changePct}</span>
+                  <span className={styles.tickerPrice}>{t.price}</span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </footer>
     );

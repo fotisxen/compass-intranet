@@ -1,15 +1,12 @@
 import * as React from 'react';
 import { SPHttpClient, type SPHttpClientResponse } from '@microsoft/sp-http';
 import styles from './NewsCard.module.scss';
-import { news as mockNews } from './data/newsMockData';
 
 // Real internal field name for the promoted news pages' category column,
 // confirmed from the "Internal Company Announcements" page's own News web
 // part filter config (Choice field, internal name "NewsCategory", display
-// name "News Category"). With this set, _loadItem below adds it to the
-// real $filter and category filtering runs against live SharePoint data
-// instead of the mock fallback.
-const NEWS_CATEGORY_FIELD_NAME: string | undefined = 'NewsCategory';
+// name "News Category").
+const NEWS_CATEGORY_FIELD_NAME = 'NewsCategory';
 
 export interface INewsCardProps {
   spHttpClient: SPHttpClient;
@@ -28,7 +25,7 @@ interface ISpNewsItem {
 }
 
 export interface INewsCardState {
-  item: ISpNewsItem;
+  item?: ISpNewsItem;
 }
 
 interface ISpListItem {
@@ -41,32 +38,16 @@ interface ISpListItemsResponse {
   value: ISpListItem[];
 }
 
-function mockItemAt(position: number, categoryFilter?: string): ISpNewsItem {
-  const pool = categoryFilter ? mockNews.filter(n => n.category === categoryFilter) : mockNews;
-  if (pool.length === 0) {
-    return { title: `No articles in "${categoryFilter}" yet`, date: '', url: '#' };
-  }
-  const item = pool[(position - 1) % pool.length];
-  return { ...item, url: '#' };
-}
-
 export default class NewsCard extends React.Component<INewsCardProps, INewsCardState> {
   constructor(props: INewsCardProps) {
     super(props);
-    this.state = { item: mockItemAt(props.position || 1, props.categoryFilter) };
+    this.state = { item: undefined };
   }
 
   public componentDidMount(): void {
-    if (this.props.categoryFilter && !NEWS_CATEGORY_FIELD_NAME) {
-      // No real category field wired yet — stay on the mock item already
-      // in state rather than show unfiltered real results under a
-      // category label the user didn't ask for.
-      return;
-    }
     this._loadItem().catch(() => {
       // Real news couldn't be loaded (no promoted pages yet, permissions,
-      // network) — the mock item already set in state stays as a fallback
-      // so the card never renders empty.
+      // network) — leave the card empty rather than show a fabricated item.
     });
   }
 
@@ -75,13 +56,9 @@ export default class NewsCard extends React.Component<INewsCardProps, INewsCardS
       return;
     }
 
-    this.setState({ item: mockItemAt(this.props.position || 1, this.props.categoryFilter) });
-
-    if (this.props.categoryFilter && !NEWS_CATEGORY_FIELD_NAME) {
-      return;
-    }
+    this.setState({ item: undefined });
     this._loadItem().catch(() => {
-      // Same silent-fallback as componentDidMount.
+      // Same empty-on-failure behavior as componentDidMount.
     });
   }
 
@@ -95,7 +72,7 @@ export default class NewsCard extends React.Component<INewsCardProps, INewsCardS
     // recent promoted article, so dropping this web part multiple times
     // with position 1, 2, 3... reproduces the original 3-card grid.
     let filter = 'PromotedState eq 2';
-    if (categoryFilter && NEWS_CATEGORY_FIELD_NAME) {
+    if (categoryFilter) {
       filter += ` and ${NEWS_CATEGORY_FIELD_NAME} eq '${categoryFilter}'`;
     }
 
@@ -127,6 +104,10 @@ export default class NewsCard extends React.Component<INewsCardProps, INewsCardS
 
   public render(): React.ReactElement {
     const { item } = this.state;
+
+    if (!item) {
+      return <></>;
+    }
 
     const thumbStyle = item.imageUrl ? { backgroundImage: `url(${item.imageUrl})` } : undefined;
 

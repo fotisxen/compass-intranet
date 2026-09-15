@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SPHttpClient, type SPHttpClientResponse } from '@microsoft/sp-http';
 import styles from './EventsWidget.module.scss';
-import { events as mockEvents, type IEvent } from './data/eventsMockData';
+import { type IEvent } from './data/eventsMockData';
 
 export interface IEventsWidgetProps {
   spHttpClient: SPHttpClient;
@@ -51,13 +51,13 @@ function initialsFor(title: string): string {
 export default class EventsWidget extends React.Component<IEventsWidgetProps, IEventsWidgetState> {
   constructor(props: IEventsWidgetProps) {
     super(props);
-    this.state = { index: 0, events: mockEvents };
+    this.state = { index: 0, events: [] };
   }
 
   public componentDidMount(): void {
     this._loadEvents().catch(() => {
-      // Real list couldn't be loaded — the mock data already in state
-      // stays as a fallback so the widget never renders empty.
+      // Real list couldn't be loaded — leave events empty rather than
+      // show fabricated ones.
     });
   }
 
@@ -89,16 +89,22 @@ export default class EventsWidget extends React.Component<IEventsWidgetProps, IE
   }
 
   private _prev = (): void => {
+    if (this.state.events.length === 0) {
+      return;
+    }
     this.setState(prev => ({ index: (prev.index - 1 + prev.events.length) % prev.events.length }));
   };
 
   private _next = (): void => {
+    if (this.state.events.length === 0) {
+      return;
+    }
     this.setState(prev => ({ index: (prev.index + 1) % prev.events.length }));
   };
 
   public render(): React.ReactElement {
-    const event = this.state.events[this.state.index];
-    const imageStyle = event.imageUrl ? { backgroundImage: `url(${event.imageUrl})` } : undefined;
+    const { events, index } = this.state;
+    const event = events[index];
 
     return (
       <div className={styles.wrap}>
@@ -106,22 +112,28 @@ export default class EventsWidget extends React.Component<IEventsWidgetProps, IE
           <h3 className={styles.title}>Upcoming Events</h3>
         </div>
 
-        <div className={styles.eventCard}>
-          <div className={styles.textGroup}>
-            <p className={styles.eventDate}>{event.date}</p>
-            <p className={styles.eventTitle}>{event.title}</p>
-          </div>
-          <div className={styles.mediaRow}>
-            <button className={styles.arrowButton} onClick={this._prev} aria-label="Previous event">←</button>
-            <div className={styles.eventImage} style={imageStyle}>
-              {!event.imageUrl && event.initials}
+        {event ? (
+          <div className={styles.eventCard}>
+            <div className={styles.textGroup}>
+              <p className={styles.eventDate}>{event.date}</p>
+              <p className={styles.eventTitle}>{event.title}</p>
             </div>
-            <button className={styles.arrowButton} onClick={this._next} aria-label="Next event">→</button>
+            <div className={styles.mediaRow}>
+              <button className={styles.arrowButton} onClick={this._prev} aria-label="Previous event">←</button>
+              <div className={styles.eventImage} style={event.imageUrl ? { backgroundImage: `url(${event.imageUrl})` } : undefined}>
+                {!event.imageUrl && event.initials}
+              </div>
+              <button className={styles.arrowButton} onClick={this._next} aria-label="Next event">→</button>
+            </div>
+            <div className={styles.eventFooter}>
+              <button className={styles.pill}>Read more →</button>
+            </div>
           </div>
-          <div className={styles.eventFooter}>
-            <button className={styles.pill}>Read more →</button>
+        ) : (
+          <div className={styles.eventCard}>
+            <p className={styles.eventDate}>No upcoming events</p>
           </div>
-        </div>
+        )}
       </div>
     );
   }
