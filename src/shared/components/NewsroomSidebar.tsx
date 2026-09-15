@@ -2,23 +2,33 @@ import * as React from 'react';
 import styles from './NewsroomSidebar.module.scss';
 import { newsCategories } from './data/newsMockData';
 
+export interface INewsroomSidebarProps {
+  /** Controlled selection, e.g. when composed inside IntranetHome so News Cards can filter to match. Falls back to internal state when omitted (standalone web part use). */
+  selectedLabel?: string;
+  onSelect?: (label: string) => void;
+}
+
 export interface INewsroomSidebarState {
   selectedLabel?: string;
 }
 
-export default class NewsroomSidebar extends React.Component<Record<string, never>, INewsroomSidebarState> {
-  constructor(props: Record<string, never>) {
+export default class NewsroomSidebar extends React.Component<INewsroomSidebarProps, INewsroomSidebarState> {
+  constructor(props: INewsroomSidebarProps) {
     super(props);
     this.state = {};
   }
 
   private _select = (label: string): ((e: React.MouseEvent) => void) => (e: React.MouseEvent): void => {
     e.preventDefault();
-    this.setState({ selectedLabel: label });
+    if (this.props.onSelect) {
+      this.props.onSelect(label);
+    } else {
+      this.setState({ selectedLabel: label });
+    }
   };
 
   public render(): React.ReactElement {
-    const { selectedLabel } = this.state;
+    const selectedLabel = this.props.onSelect ? this.props.selectedLabel : this.state.selectedLabel;
 
     return (
       <div className={styles.sidebar}>
