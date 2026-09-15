@@ -45,14 +45,3 @@ export const anniversaries: IAnniversary[] = [
   { name: 'Giorgos Stefanidis', role: 'Operations Manager', years: 20, initials: 'GS' },
   { name: 'Anna Georgiou', role: 'Finance Controller', years: 1, initials: 'AG' }
 ];
-
-export interface IStockTicker {
-  symbol: string;
-  changePct: string;
-  price: string;
-}
-
-export const stockTickers: IStockTicker[] = [
-  { symbol: 'SBLK', changePct: '+2,0% ↑', price: '$26.56' },
-  { symbol: 'STK2', changePct: '+2,2% ↑', price: '$14.56' }
-];

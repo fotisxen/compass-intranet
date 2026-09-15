@@ -15,6 +15,7 @@ export interface ICompassChromeApplicationCustomizerProperties {
   chatApiUrl?: string;
   chatResourceUri?: string;
   chatQueryUrl?: string;
+  stockApiUrl?: string;
 }
 
 export default class CompassChromeApplicationCustomizer
@@ -50,7 +51,10 @@ export default class CompassChromeApplicationCustomizer
       this._bottomPlaceholder = this.context.placeholderProvider.tryCreateContent(PlaceholderName.Bottom);
       if (this._bottomPlaceholder && this._bottomPlaceholder.domElement) {
         ReactDom.render(
-          React.createElement(Footer, { companyName: this.properties.companyName || 'Compass' }),
+          React.createElement(Footer, {
+            companyName: this.properties.companyName || 'Compass',
+            stockApiUrl: this.properties.stockApiUrl
+          }),
           this._bottomPlaceholder.domElement
         );
       }

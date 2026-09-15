@@ -23,6 +23,14 @@ const fakeSpHttpClient = {
 // open this preview as http://localhost:5600/?fleetApiUrl=http://localhost:7071/api/fleet
 const fleetApiUrl = new URLSearchParams(window.location.search).get('fleetApiUrl') || undefined;
 
+// The stock-quote route on the same Function App needs no key/proxy (it's a
+// plain public CORS-enabled endpoint), so unlike fleetApiUrl above this one
+// defaults straight to the real production URL — override with
+// ?stockApiUrl=... only if you need to point at something else.
+const stockApiUrl =
+  new URLSearchParams(window.location.search).get('stockApiUrl') ||
+  'https://bpcstarbulkwebapi.azurewebsites.net/api/GetStockPrice';
+
 ReactDom.render(React.createElement(ChromeRoot, { chatApiUrl: '' }), document.getElementById('chrome-top'));
 
 // Compass Holidays is its own standalone web part now, placed right under
@@ -82,4 +90,4 @@ ReactDom.render(
   }),
   document.getElementById('root')
 );
-ReactDom.render(React.createElement(Footer, { companyName: 'Compass' }), document.getElementById('chrome-bottom'));
+ReactDom.render(React.createElement(Footer, { companyName: 'Compass', stockApiUrl }), document.getElementById('chrome-bottom'));

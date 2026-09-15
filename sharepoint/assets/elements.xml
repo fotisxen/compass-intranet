@@ -4,6 +4,6 @@
     Title="CompassChromeApplicationCustomizer"
     Location="ClientSideExtension.ApplicationCustomizer"
     ClientSideComponentId="5be0c925-5720-48c6-a508-65f92ed52b31"
-    ClientSideComponentProperties="{&quot;companyName&quot;:&quot;Compass&quot;,&quot;chatApiUrl&quot;:&quot;&quot;,&quot;chatResourceUri&quot;:&quot;api://1bc53e14-c0fd-41d3-a318-ba88918961b1&quot;,&quot;chatQueryUrl&quot;:&quot;https://func-askstarbulk-prod-apa6gyb7exfxhmbe.westeurope-01.azurewebsites.net/api/query&quot;}">
+    ClientSideComponentProperties="{&quot;companyName&quot;:&quot;Compass&quot;,&quot;chatApiUrl&quot;:&quot;&quot;,&quot;chatResourceUri&quot;:&quot;api://1bc53e14-c0fd-41d3-a318-ba88918961b1&quot;,&quot;chatQueryUrl&quot;:&quot;https://func-askstarbulk-prod-apa6gyb7exfxhmbe.westeurope-01.azurewebsites.net/api/query&quot;,&quot;stockApiUrl&quot;:&quot;https://bpcstarbulkwebapi.azurewebsites.net/api/GetStockPrice&quot;}">
   </CustomAction>
 </Elements>
