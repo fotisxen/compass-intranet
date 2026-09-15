@@ -14,22 +14,37 @@ export interface IIntranetHomeProps {
   siteUrl: string;
 }
 
-export default class IntranetHome extends React.Component<IIntranetHomeProps> {
+export interface IIntranetHomeState {
+  selectedNewsCategory?: string;
+}
+
+export default class IntranetHome extends React.Component<IIntranetHomeProps, IIntranetHomeState> {
+  constructor(props: IIntranetHomeProps) {
+    super(props);
+    this.state = {};
+  }
+
   public componentDidMount(): void {
     ensureInterFont();
   }
 
+  private _onSelectNewsCategory = (label: string): void => {
+    this.setState({ selectedNewsCategory: label });
+  };
+
   public render(): React.ReactElement {
+    const { selectedNewsCategory } = this.state;
+
     return (
       <div className={styles.page}>
         <div className={styles.main}>
           <div className={styles.section}>
             <div className={styles.newsWrap}>
-              <NewsroomSidebar />
+              <NewsroomSidebar selectedLabel={selectedNewsCategory} onSelect={this._onSelectNewsCategory} />
               <div className={styles.newsGrid}>
-                <NewsCard spHttpClient={this.props.spHttpClient} siteUrl={this.props.siteUrl} position={1} />
-                <NewsCard spHttpClient={this.props.spHttpClient} siteUrl={this.props.siteUrl} position={2} />
-                <NewsCard spHttpClient={this.props.spHttpClient} siteUrl={this.props.siteUrl} position={3} />
+                <NewsCard spHttpClient={this.props.spHttpClient} siteUrl={this.props.siteUrl} position={1} categoryFilter={selectedNewsCategory} />
+                <NewsCard spHttpClient={this.props.spHttpClient} siteUrl={this.props.siteUrl} position={2} categoryFilter={selectedNewsCategory} />
+                <NewsCard spHttpClient={this.props.spHttpClient} siteUrl={this.props.siteUrl} position={3} categoryFilter={selectedNewsCategory} />
               </div>
             </div>
           </div>

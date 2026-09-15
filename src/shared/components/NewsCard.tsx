@@ -3,11 +3,23 @@ import { SPHttpClient, type SPHttpClientResponse } from '@microsoft/sp-http';
 import styles from './NewsCard.module.scss';
 import { news as mockNews } from './data/newsMockData';
 
+// Set this to the real internal field name for the promoted news pages'
+// category column once it exists (get it from the "Internal Company
+// Announcements" page's list schema — same way UPCOMING_EVENTS_LIST_ID's
+// BannerUrl field was confirmed for EventsWidget: view the page source or
+// its network requests and find the field name backing each category
+// anchor). Once set, _loadItem below adds it to the real $filter and
+// category filtering starts working against live SharePoint data instead
+// of the mock fallback.
+const NEWS_CATEGORY_FIELD_NAME: string | undefined = undefined;
+
 export interface INewsCardProps {
   spHttpClient: SPHttpClient;
   siteUrl: string;
   /** 1-based position among promoted news items, most recent first. Defaults to 1 (latest). */
   position?: number;
+  /** Matches an INewsCategory label from the Newsroom sidebar's selection. */
+  categoryFilter?: string;
 }
 
 interface ISpNewsItem {
@@ -31,18 +43,28 @@ interface ISpListItemsResponse {
   value: ISpListItem[];
 }
 
-function mockItemAt(position: number): ISpNewsItem {
-  const item = mockNews[(position - 1) % mockNews.length];
+function mockItemAt(position: number, categoryFilter?: string): ISpNewsItem {
+  const pool = categoryFilter ? mockNews.filter(n => n.category === categoryFilter) : mockNews;
+  if (pool.length === 0) {
+    return { title: `No articles in "${categoryFilter}" yet`, date: '', url: '#' };
+  }
+  const item = pool[(position - 1) % pool.length];
   return { ...item, url: '#' };
 }
 
 export default class NewsCard extends React.Component<INewsCardProps, INewsCardState> {
   constructor(props: INewsCardProps) {
     super(props);
-    this.state = { item: mockItemAt(props.position || 1) };
+    this.state = { item: mockItemAt(props.position || 1, props.categoryFilter) };
   }
 
   public componentDidMount(): void {
+    if (this.props.categoryFilter && !NEWS_CATEGORY_FIELD_NAME) {
+      // No real category field wired yet — stay on the mock item already
+      // in state rather than show unfiltered real results under a
+      // category label the user didn't ask for.
+      return;
+    }
     this._loadItem().catch(() => {
       // Real news couldn't be loaded (no promoted pages yet, permissions,
       // network) — the mock item already set in state stays as a fallback
@@ -51,18 +73,22 @@ export default class NewsCard extends React.Component<INewsCardProps, INewsCardS
   }
 
   public componentDidUpdate(prevProps: INewsCardProps): void {
-    if (prevProps.position === this.props.position) {
+    if (prevProps.position === this.props.position && prevProps.categoryFilter === this.props.categoryFilter) {
       return;
     }
 
-    this.setState({ item: mockItemAt(this.props.position || 1) });
+    this.setState({ item: mockItemAt(this.props.position || 1, this.props.categoryFilter) });
+
+    if (this.props.categoryFilter && !NEWS_CATEGORY_FIELD_NAME) {
+      return;
+    }
     this._loadItem().catch(() => {
       // Same silent-fallback as componentDidMount.
     });
   }
 
   private async _loadItem(): Promise<void> {
-    const { spHttpClient, siteUrl } = this.props;
+    const { spHttpClient, siteUrl, categoryFilter } = this.props;
     const position = this.props.position || 1;
 
     // "Site Pages" filtered to PromotedState eq 2 is how SharePoint marks a
@@ -70,9 +96,14 @@ export default class NewsCard extends React.Component<INewsCardProps, INewsCardS
     // (most recent first) and taking the last one gives the Nth most
     // recent promoted article, so dropping this web part multiple times
     // with position 1, 2, 3... reproduces the original 3-card grid.
+    let filter = 'PromotedState eq 2';
+    if (categoryFilter && NEWS_CATEGORY_FIELD_NAME) {
+      filter += ` and ${NEWS_CATEGORY_FIELD_NAME} eq '${categoryFilter}'`;
+    }
+
     const endpoint =
       `${siteUrl}/_api/web/lists/GetByTitle('Site Pages')/items` +
-      `?$select=Title,FileRef,Created&$filter=PromotedState eq 2&$orderby=Created desc&$top=${position}`;
+      `?$select=Title,FileRef,Created&$filter=${filter}&$orderby=Created desc&$top=${position}`;
 
     const response: SPHttpClientResponse = await spHttpClient.get(endpoint, SPHttpClient.configurations.v1);
 
