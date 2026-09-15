@@ -4,6 +4,9 @@
   gap: 16px;
   width: 220px;
   flex-shrink: 0;
+  // Same app-wide scale as IntranetHome's .page — needed here too since
+  // this also renders standalone as its own web part, outside that tree.
+  font-size: clamp(14px, 1.38889vw, 28px);
 }
 
 .titleCard {
@@ -60,7 +63,9 @@
   width: 90px;
   height: 90px;
   border-radius: 50%;
-  background: #082244;
+  background-color: #082244;
+  background-size: cover;
+  background-position: center;
   color: #ffffff;
   display: flex;
   align-items: center;

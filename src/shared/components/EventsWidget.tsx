@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SPHttpClient, type SPHttpClientResponse } from '@microsoft/sp-http';
 import styles from './EventsWidget.module.scss';
-import { events as mockEvents, type IEvent } from './data/mockData';
+import { events as mockEvents, type IEvent } from './data/eventsMockData';
 
 export interface IEventsWidgetProps {
   spHttpClient: SPHttpClient;
@@ -22,6 +22,7 @@ const PAGE_SIZE = 10;
 interface ISpEventItem {
   Title: string;
   EventDate: string;
+  BannerUrl?: string;
 }
 
 interface ISpListItemsResponse {
@@ -65,7 +66,7 @@ export default class EventsWidget extends React.Component<IEventsWidgetProps, IE
     const today = new Date().toISOString();
     const endpoint =
       `${siteUrl}/_api/web/lists(guid'${UPCOMING_EVENTS_LIST_ID}')/items` +
-      `?$select=Title,EventDate&$filter=EventDate ge datetime'${today}'&$orderby=EventDate asc&$top=${PAGE_SIZE}`;
+      `?$select=Title,EventDate,BannerUrl&$filter=EventDate ge datetime'${today}'&$orderby=EventDate asc&$top=${PAGE_SIZE}`;
 
     const response: SPHttpClientResponse = await spHttpClient.get(endpoint, SPHttpClient.configurations.v1);
     if (!response.ok) {
@@ -80,7 +81,8 @@ export default class EventsWidget extends React.Component<IEventsWidgetProps, IE
     const events: IEvent[] = data.value.map(item => ({
       date: formatDisplayDate(item.EventDate),
       title: item.Title,
-      initials: initialsFor(item.Title)
+      initials: initialsFor(item.Title),
+      imageUrl: item.BannerUrl || undefined
     }));
 
     this.setState({ events, index: 0 });
@@ -96,6 +98,7 @@ export default class EventsWidget extends React.Component<IEventsWidgetProps, IE
 
   public render(): React.ReactElement {
     const event = this.state.events[this.state.index];
+    const imageStyle = event.imageUrl ? { backgroundImage: `url(${event.imageUrl})` } : undefined;
 
     return (
       <div className={styles.wrap}>
@@ -110,7 +113,9 @@ export default class EventsWidget extends React.Component<IEventsWidgetProps, IE
           </div>
           <div className={styles.mediaRow}>
             <button className={styles.arrowButton} onClick={this._prev} aria-label="Previous event">←</button>
-            <div className={styles.eventImage}>{event.initials}</div>
+            <div className={styles.eventImage} style={imageStyle}>
+              {!event.imageUrl && event.initials}
+            </div>
             <button className={styles.arrowButton} onClick={this._next} aria-label="Next event">→</button>
           </div>
           <div className={styles.eventFooter}>

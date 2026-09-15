@@ -1,23 +1,3 @@
-export interface IHoliday {
-  date: string;
-  label: string;
-}
-
-export interface IEvent {
-  date: string;
-  title: string;
-  initials: string;
-}
-
-export const holidays: IHoliday[] = [
-  { date: 'AUG 15', label: 'GR offices closed' },
-  { date: 'OCT 28', label: 'GR offices closed' }
-];
-
-export const events: IEvent[] = [
-  { date: '14.09.2026', title: 'Marketing Workshop', initials: 'MW' }
-];
-
 export interface IPersonSpotlight {
   name: string;
   title: string;

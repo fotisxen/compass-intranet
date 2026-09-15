@@ -2,8 +2,6 @@ import * as React from 'react';
 import type { SPHttpClient } from '@microsoft/sp-http';
 import styles from './IntranetHome.module.scss';
 import { ensureInterFont } from '../../../shared/components/ensureFonts';
-import PublicHolidays from './PublicHolidays';
-import EventsWidget from './EventsWidget';
 import NewsroomSidebar from '../../../shared/components/NewsroomSidebar';
 import NewsCard from '../../../shared/components/NewsCard';
 import PeopleSidebar from './PeopleSidebar';
@@ -25,14 +23,6 @@ export default class IntranetHome extends React.Component<IIntranetHomeProps> {
     return (
       <div className={styles.page}>
         <div className={styles.main}>
-          <div className={styles.holidaysRow}>
-            <PublicHolidays spHttpClient={this.props.spHttpClient} siteUrl={this.props.siteUrl} />
-          </div>
-
-          <div className={styles.heroRow}>
-            <EventsWidget spHttpClient={this.props.spHttpClient} siteUrl={this.props.siteUrl} />
-          </div>
-
           <div className={styles.section}>
             <div className={styles.newsWrap}>
               <NewsroomSidebar />

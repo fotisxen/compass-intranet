@@ -1,6 +1,8 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import HelloWorld from '../src/webparts/helloWorld/components/HelloWorld';
+import PublicHolidays from '../src/shared/components/PublicHolidays';
+import EventsWidget from '../src/shared/components/EventsWidget';
 import FleetMap from '../src/shared/components/FleetMap';
 import ChromeRoot from '../src/extensions/compassChrome/components/ChromeRoot';
 import Footer from '../src/shared/components/Footer';
@@ -23,45 +25,61 @@ const fleetApiUrl = new URLSearchParams(window.location.search).get('fleetApiUrl
 
 ReactDom.render(React.createElement(ChromeRoot, { chatApiUrl: '' }), document.getElementById('chrome-top'));
 
-// Compass Fleet Map is a separate web part from Compass Home now, so on the
-// real page the closest match to "map beside Upcoming Events" is a 2-column
-// section: Compass Home in the left column, Compass Fleet Map in the right
-// — since Compass Home starts with Holidays then Events, the map ends up
-// sitting visually next to that top portion, not scoped to Events alone.
-// Mirrored here as one flex row instead of two separate containers.
+// Compass Holidays is its own standalone web part now, placed right under
+// the nav — same original position, own container/row.
 ReactDom.render(
   React.createElement(
     'div',
     {
       style: {
         display: 'flex',
-        alignItems: 'flex-start',
-        gap: 24,
+        justifyContent: 'flex-end',
         maxWidth: 1440,
         margin: '0 auto',
+        padding: '24px 64px 0',
         boxSizing: 'border-box',
         background: '#ffffff'
       }
     },
-    // .main inside HelloWorld already contributes the page's standard 64px
-    // left margin via its own padding, so this column adds none itself.
+    React.createElement(PublicHolidays, { spHttpClient: fakeSpHttpClient as never, siteUrl: 'https://example.sharepoint.com/sites/demo' })
+  ),
+  document.getElementById('holidays-root')
+);
+
+// Compass Events and Compass Fleet Map are both standalone web parts —
+// this reproduces dropping them side by side into a real SharePoint
+// 2-column section (same flex row/gap/stretch the original heroRow used),
+// which is what actually produces the matched-height layout.
+ReactDom.render(
+  React.createElement(
+    'div',
+    {
+      style: {
+        display: 'flex',
+        gap: 24,
+        alignItems: 'stretch',
+        maxWidth: 1440,
+        margin: '0 auto',
+        padding: '20px 64px 0',
+        boxSizing: 'border-box',
+        background: '#ffffff'
+      }
+    },
+    React.createElement(EventsWidget, { spHttpClient: fakeSpHttpClient as never, siteUrl: 'https://example.sharepoint.com/sites/demo' }),
     React.createElement(
       'div',
-      { style: { flex: 1, minWidth: 0 } },
-      React.createElement(HelloWorld, {
-        spHttpClient: fakeSpHttpClient as never,
-        siteUrl: 'https://example.sharepoint.com/sites/demo'
-      })
-    ),
-    // Padding-right here stands in for the page's standard 64px right
-    // margin, since this column sits outside HelloWorld's own .main.
-    React.createElement(
-      'div',
-      { style: { width: 500, flexShrink: 0, marginTop: 24, paddingRight: 64, boxSizing: 'border-box' } },
+      { style: { flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' } },
       React.createElement(FleetMap, { fleetApiUrl })
     )
   ),
-  document.getElementById('root')
+  document.getElementById('fleet-map-root')
 );
 
+ReactDom.render(
+  React.createElement(HelloWorld, {
+    spHttpClient: fakeSpHttpClient as never,
+    siteUrl: 'https://example.sharepoint.com/sites/demo'
+  }),
+  document.getElementById('root')
+);
 ReactDom.render(React.createElement(Footer, { companyName: 'Compass' }), document.getElementById('chrome-bottom'));
