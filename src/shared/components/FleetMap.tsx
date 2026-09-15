@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import styles from './FleetMap.module.scss';
-import { offices } from './data/mockData';
+import { offices } from './data/fleetMockData';
 
 const LEAFLET_CSS_URL = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
 const LEAFLET_CSS_ID = 'leaflet-cdn-css';

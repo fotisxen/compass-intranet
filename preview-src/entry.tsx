@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import HelloWorld from '../src/webparts/helloWorld/components/HelloWorld';
+import EventsWidget from '../src/shared/components/EventsWidget';
 import FleetMap from '../src/shared/components/FleetMap';
 import ChromeRoot from '../src/extensions/compassChrome/components/ChromeRoot';
 import Footer from '../src/shared/components/Footer';
@@ -22,22 +23,40 @@ const fakeSpHttpClient = {
 const fleetApiUrl = new URLSearchParams(window.location.search).get('fleetApiUrl') || undefined;
 
 ReactDom.render(React.createElement(ChromeRoot, { chatApiUrl: '' }), document.getElementById('chrome-top'));
+
+// Compass Events and Compass Fleet Map are both standalone web parts now —
+// this reproduces dropping them side by side into a real SharePoint
+// 2-column section (same flex row/gap/stretch the original heroRow used).
+ReactDom.render(
+  React.createElement(
+    'div',
+    {
+      style: {
+        display: 'flex',
+        gap: 24,
+        alignItems: 'stretch',
+        maxWidth: 1440,
+        margin: '0 auto',
+        padding: '24px 64px 0',
+        boxSizing: 'border-box',
+        background: '#ffffff'
+      }
+    },
+    React.createElement(EventsWidget, { spHttpClient: fakeSpHttpClient as never, siteUrl: 'https://example.sharepoint.com/sites/demo' }),
+    React.createElement(
+      'div',
+      { style: { flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' } },
+      React.createElement(FleetMap, { fleetApiUrl })
+    )
+  ),
+  document.getElementById('fleet-map-root')
+);
+
 ReactDom.render(
   React.createElement(HelloWorld, {
     spHttpClient: fakeSpHttpClient as never,
     siteUrl: 'https://example.sharepoint.com/sites/demo'
   }),
   document.getElementById('root')
-);
-// Fleet Map is now its own standalone web part (Compass Fleet Map), placed
-// on the page separately from Compass Home — mirrored here as its own
-// render into its own container, wrapped to match the page's margins.
-ReactDom.render(
-  React.createElement(
-    'div',
-    { style: { maxWidth: 1440, margin: '0 auto', padding: '0 64px 48px', boxSizing: 'border-box' } },
-    React.createElement(FleetMap, { fleetApiUrl })
-  ),
-  document.getElementById('fleet-map-root')
 );
 ReactDom.render(React.createElement(Footer, { companyName: 'Compass' }), document.getElementById('chrome-bottom'));

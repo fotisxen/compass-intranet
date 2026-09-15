@@ -6,6 +6,9 @@
   // Matches the 1099x626 reference size at a 1440px-wide viewport, then
   // scales proportionally with the column's actual width at other sizes.
   aspect-ratio: 1099 / 626;
+  // Same app-wide scale as IntranetHome's .page — needed here too since
+  // this also renders standalone as its own web part, outside that tree.
+  font-size: clamp(14px, 1.38889vw, 28px);
 }
 
 .map {

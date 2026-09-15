@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SPHttpClient, type SPHttpClientResponse } from '@microsoft/sp-http';
 import styles from './EventsWidget.module.scss';
-import { events as mockEvents, type IEvent } from './data/mockData';
+import { events as mockEvents, type IEvent } from './data/eventsMockData';
 
 export interface IEventsWidgetProps {
   spHttpClient: SPHttpClient;
