@@ -11,14 +11,8 @@
 .main {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 0 64px 48px;
+  padding: 36px 64px 48px;
   box-sizing: border-box;
-}
-
-.holidaysRow {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 36px;
 }
 
 .section {
@@ -73,7 +67,7 @@
 
 @media (max-width: 960px) {
   .main {
-    padding: 0 24px 32px;
+    padding: 24px 24px 32px;
   }
 
   .peopleRow,

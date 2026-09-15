@@ -1,8 +1,3 @@
-export interface IHoliday {
-  date: string;
-  label: string;
-}
-
 export interface IPersonSpotlight {
   name: string;
   title: string;
@@ -18,11 +13,6 @@ export interface IAnniversary {
   years: number;
   initials: string;
 }
-
-export const holidays: IHoliday[] = [
-  { date: 'AUG 15', label: 'GR offices closed' },
-  { date: 'OCT 28', label: 'GR offices closed' }
-];
 
 export const welcomeAboard: IPersonSpotlight = {
   name: 'Maria Papadopoulou',

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import HelloWorld from '../src/webparts/helloWorld/components/HelloWorld';
+import PublicHolidays from '../src/shared/components/PublicHolidays';
 import EventsWidget from '../src/shared/components/EventsWidget';
 import FleetMap from '../src/shared/components/FleetMap';
 import ChromeRoot from '../src/extensions/compassChrome/components/ChromeRoot';
@@ -24,6 +25,27 @@ const fleetApiUrl = new URLSearchParams(window.location.search).get('fleetApiUrl
 
 ReactDom.render(React.createElement(ChromeRoot, { chatApiUrl: '' }), document.getElementById('chrome-top'));
 
+// Compass Holidays is also its own standalone web part now, placed right
+// under the nav — same original position, own container/row.
+ReactDom.render(
+  React.createElement(
+    'div',
+    {
+      style: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+        maxWidth: 1440,
+        margin: '0 auto',
+        padding: '24px 64px 0',
+        boxSizing: 'border-box',
+        background: '#ffffff'
+      }
+    },
+    React.createElement(PublicHolidays, { spHttpClient: fakeSpHttpClient as never, siteUrl: 'https://example.sharepoint.com/sites/demo' })
+  ),
+  document.getElementById('holidays-root')
+);
+
 // Compass Events and Compass Fleet Map are both standalone web parts now —
 // this reproduces dropping them side by side into a real SharePoint
 // 2-column section (same flex row/gap/stretch the original heroRow used).
@@ -37,7 +59,7 @@ ReactDom.render(
         alignItems: 'stretch',
         maxWidth: 1440,
         margin: '0 auto',
-        padding: '24px 64px 0',
+        padding: '20px 64px 0',
         boxSizing: 'border-box',
         background: '#ffffff'
       }
