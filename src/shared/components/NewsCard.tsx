@@ -8,15 +8,6 @@ export interface INewsCardProps {
   siteUrl: string;
   /** 1-based position among promoted news items, most recent first. Defaults to 1 (latest). */
   position?: number;
-  /**
-   * Matches an INewsCategory label from the Newsroom sidebar's selection.
-   * Only filters the mock fallback data — the real "Site Pages" promoted
-   * items have no category field yet, so while a filter is active this
-   * skips the live SharePoint fetch entirely rather than show unfiltered
-   * real results under a category label. Wiring real filtering needs a
-   * Category column added to Site Pages plus a matching $filter here.
-   */
-  categoryFilter?: string;
 }
 
 interface ISpNewsItem {
@@ -40,25 +31,18 @@ interface ISpListItemsResponse {
   value: ISpListItem[];
 }
 
-function mockItemAt(position: number, categoryFilter?: string): ISpNewsItem {
-  const pool = categoryFilter ? mockNews.filter(n => n.category === categoryFilter) : mockNews;
-  if (pool.length === 0) {
-    return { title: `No articles in "${categoryFilter}" yet`, date: '', url: '#' };
-  }
-  const item = pool[(position - 1) % pool.length];
+function mockItemAt(position: number): ISpNewsItem {
+  const item = mockNews[(position - 1) % mockNews.length];
   return { ...item, url: '#' };
 }
 
 export default class NewsCard extends React.Component<INewsCardProps, INewsCardState> {
   constructor(props: INewsCardProps) {
     super(props);
-    this.state = { item: mockItemAt(props.position || 1, props.categoryFilter) };
+    this.state = { item: mockItemAt(props.position || 1) };
   }
 
   public componentDidMount(): void {
-    if (this.props.categoryFilter) {
-      return;
-    }
     this._loadItem().catch(() => {
       // Real news couldn't be loaded (no promoted pages yet, permissions,
       // network) — the mock item already set in state stays as a fallback
@@ -67,15 +51,11 @@ export default class NewsCard extends React.Component<INewsCardProps, INewsCardS
   }
 
   public componentDidUpdate(prevProps: INewsCardProps): void {
-    if (prevProps.position === this.props.position && prevProps.categoryFilter === this.props.categoryFilter) {
+    if (prevProps.position === this.props.position) {
       return;
     }
 
-    this.setState({ item: mockItemAt(this.props.position || 1, this.props.categoryFilter) });
-
-    if (this.props.categoryFilter) {
-      return;
-    }
+    this.setState({ item: mockItemAt(this.props.position || 1) });
     this._loadItem().catch(() => {
       // Same silent-fallback as componentDidMount.
     });

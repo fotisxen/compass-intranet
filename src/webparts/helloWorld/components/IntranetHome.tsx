@@ -2,6 +2,8 @@ import * as React from 'react';
 import type { SPHttpClient } from '@microsoft/sp-http';
 import styles from './IntranetHome.module.scss';
 import { ensureInterFont } from '../../../shared/components/ensureFonts';
+import PublicHolidays from './PublicHolidays';
+import EventsWidget from './EventsWidget';
 import NewsroomSidebar from '../../../shared/components/NewsroomSidebar';
 import NewsCard from '../../../shared/components/NewsCard';
 import PeopleSidebar from './PeopleSidebar';
@@ -14,37 +16,30 @@ export interface IIntranetHomeProps {
   siteUrl: string;
 }
 
-export interface IIntranetHomeState {
-  selectedNewsCategory?: string;
-}
-
-export default class IntranetHome extends React.Component<IIntranetHomeProps, IIntranetHomeState> {
-  constructor(props: IIntranetHomeProps) {
-    super(props);
-    this.state = {};
-  }
-
+export default class IntranetHome extends React.Component<IIntranetHomeProps> {
   public componentDidMount(): void {
     ensureInterFont();
   }
 
-  private _onSelectNewsCategory = (label: string): void => {
-    this.setState({ selectedNewsCategory: label });
-  };
-
   public render(): React.ReactElement {
-    const { selectedNewsCategory } = this.state;
-
     return (
       <div className={styles.page}>
         <div className={styles.main}>
+          <div className={styles.holidaysRow}>
+            <PublicHolidays spHttpClient={this.props.spHttpClient} siteUrl={this.props.siteUrl} />
+          </div>
+
+          <div className={styles.heroRow}>
+            <EventsWidget spHttpClient={this.props.spHttpClient} siteUrl={this.props.siteUrl} />
+          </div>
+
           <div className={styles.section}>
             <div className={styles.newsWrap}>
-              <NewsroomSidebar selectedLabel={selectedNewsCategory} onSelect={this._onSelectNewsCategory} />
+              <NewsroomSidebar />
               <div className={styles.newsGrid}>
-                <NewsCard spHttpClient={this.props.spHttpClient} siteUrl={this.props.siteUrl} position={1} categoryFilter={selectedNewsCategory} />
-                <NewsCard spHttpClient={this.props.spHttpClient} siteUrl={this.props.siteUrl} position={2} categoryFilter={selectedNewsCategory} />
-                <NewsCard spHttpClient={this.props.spHttpClient} siteUrl={this.props.siteUrl} position={3} categoryFilter={selectedNewsCategory} />
+                <NewsCard spHttpClient={this.props.spHttpClient} siteUrl={this.props.siteUrl} position={1} />
+                <NewsCard spHttpClient={this.props.spHttpClient} siteUrl={this.props.siteUrl} position={2} />
+                <NewsCard spHttpClient={this.props.spHttpClient} siteUrl={this.props.siteUrl} position={3} />
               </div>
             </div>
           </div>

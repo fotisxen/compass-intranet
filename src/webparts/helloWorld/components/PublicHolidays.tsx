@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SPHttpClient, type SPHttpClientResponse } from '@microsoft/sp-http';
 import styles from './PublicHolidays.module.scss';
-import { holidays as mockHolidays, type IHoliday } from './data/holidaysMockData';
+import { holidays as mockHolidays, type IHoliday } from './data/mockData';
 
 export interface IPublicHolidaysProps {
   spHttpClient: SPHttpClient;

@@ -27,43 +27,15 @@
   gap: 12px;
 }
 
-.tabRow {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
 .tab {
   font-family: 'Inter', sans-serif;
   font-size: 1em;
   letter-spacing: 0.02em;
   color: rgba(8, 34, 68, 0.82);
   text-decoration: none;
-  cursor: pointer;
-}
-
-.tabActive {
-  color: #082244;
-  text-decoration: underline;
-}
-
-.arrowButton {
-  flex-shrink: 0;
-  width: 19px;
-  height: 19px;
-  border-radius: 50%;
-  border: 0.7px solid rgba(8, 34, 68, 0.5);
-  background: transparent;
-  color: #082244;
-  font-size: 0.6875em;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
 
   &:hover {
-    background: rgba(8, 34, 68, 0.08);
+    text-decoration: underline;
   }
 }
 

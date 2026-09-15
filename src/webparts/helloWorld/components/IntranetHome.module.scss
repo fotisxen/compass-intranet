@@ -11,8 +11,21 @@
 .main {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 36px 64px 48px;
+  padding: 0 64px 48px;
   box-sizing: border-box;
+}
+
+.holidaysRow {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 36px;
+}
+
+.heroRow {
+  display: flex;
+  gap: 24px;
+  align-items: stretch;
+  margin-bottom: 40px;
 }
 
 .section {
@@ -67,9 +80,10 @@
 
 @media (max-width: 960px) {
   .main {
-    padding: 24px 24px 32px;
+    padding: 0 24px 32px;
   }
 
+  .heroRow,
   .peopleRow,
   .peopleContent {
     flex-direction: column;

@@ -42,22 +42,6 @@
         }
       ]
     },
-    "events-web-part": {
-      "components": [
-        {
-          "entrypoint": "./lib/webparts/events/EventsWebPart.js",
-          "manifest": "./src/webparts/events/EventsWebPart.manifest.json"
-        }
-      ]
-    },
-    "holidays-web-part": {
-      "components": [
-        {
-          "entrypoint": "./lib/webparts/holidays/HolidaysWebPart.js",
-          "manifest": "./src/webparts/holidays/HolidaysWebPart.manifest.json"
-        }
-      ]
-    },
     "compass-chrome-application-customizer": {
       "components": [
         {
@@ -73,8 +57,6 @@
     "NewsWebPartStrings": "lib/webparts/news/loc/{locale}.js",
     "NewsCardWebPartStrings": "lib/webparts/newsCard/loc/{locale}.js",
     "ChatWebPartStrings": "lib/webparts/chat/loc/{locale}.js",
-    "FleetMapWebPartStrings": "lib/webparts/fleetMap/loc/{locale}.js",
-    "EventsWebPartStrings": "lib/webparts/events/loc/{locale}.js",
-    "HolidaysWebPartStrings": "lib/webparts/holidays/loc/{locale}.js"
+    "FleetMapWebPartStrings": "lib/webparts/fleetMap/loc/{locale}.js"
   }
 }
