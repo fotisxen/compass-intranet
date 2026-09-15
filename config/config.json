@@ -34,6 +34,14 @@
         }
       ]
     },
+    "fleet-map-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/fleetMap/FleetMapWebPart.js",
+          "manifest": "./src/webparts/fleetMap/FleetMapWebPart.manifest.json"
+        }
+      ]
+    },
     "compass-chrome-application-customizer": {
       "components": [
         {
@@ -48,6 +56,7 @@
     "HelloWorldWebPartStrings": "lib/webparts/helloWorld/loc/{locale}.js",
     "NewsWebPartStrings": "lib/webparts/news/loc/{locale}.js",
     "NewsCardWebPartStrings": "lib/webparts/newsCard/loc/{locale}.js",
-    "ChatWebPartStrings": "lib/webparts/chat/loc/{locale}.js"
+    "ChatWebPartStrings": "lib/webparts/chat/loc/{locale}.js",
+    "FleetMapWebPartStrings": "lib/webparts/fleetMap/loc/{locale}.js"
   }
 }

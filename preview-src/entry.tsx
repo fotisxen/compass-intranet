@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import HelloWorld from '../src/webparts/helloWorld/components/HelloWorld';
+import FleetMap from '../src/shared/components/FleetMap';
 import ChromeRoot from '../src/extensions/compassChrome/components/ChromeRoot';
 import Footer from '../src/shared/components/Footer';
 
@@ -24,9 +25,19 @@ ReactDom.render(React.createElement(ChromeRoot, { chatApiUrl: '' }), document.ge
 ReactDom.render(
   React.createElement(HelloWorld, {
     spHttpClient: fakeSpHttpClient as never,
-    siteUrl: 'https://example.sharepoint.com/sites/demo',
-    fleetApiUrl
+    siteUrl: 'https://example.sharepoint.com/sites/demo'
   }),
   document.getElementById('root')
+);
+// Fleet Map is now its own standalone web part (Compass Fleet Map), placed
+// on the page separately from Compass Home — mirrored here as its own
+// render into its own container, wrapped to match the page's margins.
+ReactDom.render(
+  React.createElement(
+    'div',
+    { style: { maxWidth: 1440, margin: '0 auto', padding: '0 64px 48px', boxSizing: 'border-box' } },
+    React.createElement(FleetMap, { fleetApiUrl })
+  ),
+  document.getElementById('fleet-map-root')
 );
 ReactDom.render(React.createElement(Footer, { companyName: 'Compass' }), document.getElementById('chrome-bottom'));

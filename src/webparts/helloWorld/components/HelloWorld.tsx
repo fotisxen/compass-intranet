@@ -5,7 +5,6 @@ import IntranetHome from './IntranetHome';
 export interface IHelloWorldProps {
   spHttpClient: SPHttpClient;
   siteUrl: string;
-  fleetApiUrl?: string;
 }
 
 export default class HelloWorld extends React.Component<IHelloWorldProps> {
@@ -14,7 +13,6 @@ export default class HelloWorld extends React.Component<IHelloWorldProps> {
       <IntranetHome
         spHttpClient={this.props.spHttpClient}
         siteUrl={this.props.siteUrl}
-        fleetApiUrl={this.props.fleetApiUrl}
       />
     );
   }

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+  "id": "1e666083-f1bf-4034-9334-f460cb5235b5",
+  "alias": "FleetMapWebPart",
+  "componentType": "WebPart",
+
+  "version": "*",
+  "manifestVersion": 2,
+
+  "requiresCustomScript": false,
+  "supportedHosts": ["SharePointWebPart", "TeamsPersonalApp", "TeamsTab", "SharePointFullPage"],
+  "supportsThemeVariants": true,
+
+  "preconfiguredEntries": [{
+    "groupId": "5c03119e-3074-46fd-976b-c60198311f70", // Advanced
+    "group": { "default": "Advanced" },
+    "title": { "default": "Compass Fleet Map" },
+    "description": { "default": "Live vessel positions map, standalone so it can be swapped for another fleet-tracking web part if needed." },
+    "officeFabricIconFontName": "World",
+    "properties": {}
+  }]
+}

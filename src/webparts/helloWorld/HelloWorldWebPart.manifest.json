@@ -19,7 +19,7 @@
     "groupId": "5c03119e-3074-46fd-976b-c60198311f70", // Advanced
     "group": { "default": "Advanced" },
     "title": { "default": "Compass Home" },
-    "description": { "default": "Compass intranet home page: events, fleet map, newsroom, people spotlights and work anniversaries" },
+    "description": { "default": "Compass intranet home page: events, newsroom, people spotlights and work anniversaries. Pair with the \"Compass Fleet Map\" web part for the fleet map." },
     "officeFabricIconFontName": "Page",
     "properties": {}
   }]

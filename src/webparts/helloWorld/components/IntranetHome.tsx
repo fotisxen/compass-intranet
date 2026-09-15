@@ -4,7 +4,6 @@ import styles from './IntranetHome.module.scss';
 import { ensureInterFont } from '../../../shared/components/ensureFonts';
 import PublicHolidays from './PublicHolidays';
 import EventsWidget from './EventsWidget';
-import FleetMap from './FleetMap';
 import NewsroomSidebar from '../../../shared/components/NewsroomSidebar';
 import NewsCard from '../../../shared/components/NewsCard';
 import PeopleSidebar from './PeopleSidebar';
@@ -15,7 +14,6 @@ import { welcomeAboard, promotion } from './data/mockData';
 export interface IIntranetHomeProps {
   spHttpClient: SPHttpClient;
   siteUrl: string;
-  fleetApiUrl?: string;
 }
 
 export default class IntranetHome extends React.Component<IIntranetHomeProps> {
@@ -33,9 +31,6 @@ export default class IntranetHome extends React.Component<IIntranetHomeProps> {
 
           <div className={styles.heroRow}>
             <EventsWidget spHttpClient={this.props.spHttpClient} siteUrl={this.props.siteUrl} />
-            <div className={styles.mapColumn}>
-              <FleetMap fleetApiUrl={this.props.fleetApiUrl} />
-            </div>
           </div>
 
           <div className={styles.section}>
