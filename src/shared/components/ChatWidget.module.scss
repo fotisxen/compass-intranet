@@ -35,16 +35,14 @@
 
 .userMessage {
   align-self: flex-end;
-  background: "[theme:link, default:#03787c]";
-  background: var(--link);
+  background: #03787c;
   color: #ffffff;
 }
 
 .assistantMessage {
   align-self: flex-start;
   background: #f3f2f1;
-  color: "[theme:bodyText, default: #323130]";
-  color: var(--bodyText);
+  color: #323130;
 }
 
 .mdHeading {
@@ -71,8 +69,7 @@
 
 .citationLink {
   font-size: 0.85em;
-  color: "[theme:link, default:#03787c]";
-  color: var(--link);
+  color: #03787c;
 }
 
 .error {
@@ -96,8 +93,7 @@
   padding: 0.5em 1em;
   border: none;
   border-radius: 4px;
-  background: "[theme:link, default:#03787c]";
-  background: var(--link);
+  background: #03787c;
   color: #ffffff;
   cursor: pointer;
 
