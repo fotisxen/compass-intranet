@@ -3,4 +3,5 @@ export interface IEvent {
   title: string;
   initials: string;
   imageUrl?: string;
+  url: string;
 }

@@ -20,6 +20,7 @@ const UPCOMING_EVENTS_LIST_ID = 'dd3316a0-3bc0-4d4c-acff-71851299dad7';
 const PAGE_SIZE = 10;
 
 interface ISpEventItem {
+  Id: number;
   Title: string;
   EventDate: string;
   BannerUrl?: string;
@@ -66,7 +67,7 @@ export default class EventsWidget extends React.Component<IEventsWidgetProps, IE
     const today = new Date().toISOString();
     const endpoint =
       `${siteUrl}/_api/web/lists(guid'${UPCOMING_EVENTS_LIST_ID}')/items` +
-      `?$select=Title,EventDate,BannerUrl&$filter=EventDate ge datetime'${today}'&$orderby=EventDate asc&$top=${PAGE_SIZE}`;
+      `?$select=Id,Title,EventDate,BannerUrl&$filter=EventDate ge datetime'${today}'&$orderby=EventDate asc&$top=${PAGE_SIZE}`;
 
     const response: SPHttpClientResponse = await spHttpClient.get(endpoint, SPHttpClient.configurations.v1);
     if (!response.ok) {
@@ -82,7 +83,10 @@ export default class EventsWidget extends React.Component<IEventsWidgetProps, IE
       date: formatDisplayDate(item.EventDate),
       title: item.Title,
       initials: initialsFor(item.Title),
-      imageUrl: item.BannerUrl || undefined
+      imageUrl: item.BannerUrl || undefined,
+      // Generic SharePoint item display form — works off the list GUID
+      // alone, no need to know the list's URL-friendly name.
+      url: `${siteUrl}/_layouts/15/listform.aspx?PageType=4&ListId=${UPCOMING_EVENTS_LIST_ID}&ID=${item.Id}`
     }));
 
     this.setState({ events, index: 0 });
@@ -126,7 +130,7 @@ export default class EventsWidget extends React.Component<IEventsWidgetProps, IE
               <button className={styles.arrowButton} onClick={this._next} aria-label="Next event">→</button>
             </div>
             <div className={styles.eventFooter}>
-              <button className={styles.pill}>Read more →</button>
+              <a className={styles.pill} href={event.url}>Read more →</a>
             </div>
           </div>
         ) : (
