@@ -98,7 +98,14 @@ export default class Footer extends React.Component<IFooterProps, IFooterState> 
     const index = data.data.filter(e => e.symbol === '.SPX')[0];
     const tickers: IStockTicker[] = [sblk, index]
       .filter((e): e is IStockApiEntry => !!e)
-      .map(e => ({ symbol: e.symbol, changePct: formatChangePct(e.changePercent), price: formatPrice(e.lastTrade) }));
+      .map(e => ({
+        // The real API prefixes index tickers with "." (e.g. ".SPX") —
+        // that's just their internal convention, not something worth
+        // showing the user.
+        symbol: e.symbol.replace(/^\./, ''),
+        changePct: formatChangePct(e.changePercent),
+        price: formatPrice(e.lastTrade)
+      }));
 
     if (tickers.length > 0) {
       this.setState({ tickers });

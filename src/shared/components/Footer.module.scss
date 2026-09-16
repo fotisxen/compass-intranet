@@ -64,44 +64,46 @@
 }
 
 .tickers {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  align-items: flex-end;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  column-gap: 14px;
+  row-gap: 8px;
+  align-items: center;
   margin-left: auto;
 }
 
+// display: contents lets each row's own symbol/change/price spans become
+// direct grid items of .tickers, so those three fields line up as columns
+// across rows instead of each row sizing independently.
 .tickerRow {
-  display: flex;
-  align-items: center;
-  gap: 14px;
+  display: contents;
 }
 
 .tickerSymbol {
   font-weight: 600;
   font-size: 0.8125em;
   color: rgba(255, 255, 255, 0.6);
-  width: 40px;
+  font-variant-numeric: tabular-nums;
 }
 
 .tickerChange {
   font-weight: 700;
   font-size: 0.875em;
   color: #ffffff;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
 }
 
 .tickerPrice {
   font-weight: 600;
   font-size: 1em;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
   color: #ffffff;
 }
 
 @media (max-width: 720px) {
   .inner {
     flex-direction: column;
-  }
-
-  .tickers {
-    align-items: flex-start;
   }
 }
