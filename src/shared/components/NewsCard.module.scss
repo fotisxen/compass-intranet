@@ -7,7 +7,7 @@
   min-height: 380px;
   // Same app-wide scale as IntranetHome's .page — needed here too since
   // this also renders standalone as its own web part, outside that tree.
-  font-size: clamp(14px, 1.38889vw, 28px);
+  font-size: clamp(14px, 1.38889vw, 20px);
 }
 
 // Fixed 62/38 split (not content-driven) so every card's photo/text ratio

@@ -20,7 +20,7 @@
   background: #ffffff;
   // Base for .closeButton, which sits next to ChatWidget here rather than
   // inside it — same app-wide scale as IntranetHome's .page.
-  font-size: clamp(14px, 1.38889vw, 28px);
+  font-size: clamp(14px, 1.38889vw, 20px);
 }
 
 .closeButton {

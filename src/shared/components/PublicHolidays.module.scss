@@ -6,7 +6,7 @@
   padding-top: 12px;
   // Same app-wide scale as IntranetHome's .page — needed here too since
   // this also renders standalone as its own web part, outside that tree.
-  font-size: clamp(14px, 1.38889vw, 28px);
+  font-size: clamp(14px, 1.38889vw, 20px);
 }
 
 .heading {

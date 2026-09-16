@@ -5,7 +5,7 @@
   // 20px at a 1440px-wide viewport, scaling proportionally with viewport
   // width above/below that; every font-size elsewhere in the app is in em,
   // so this single value drives the whole app's text scale.
-  font-size: clamp(14px, 1.38889vw, 28px);
+  font-size: clamp(14px, 1.38889vw, 20px);
 }
 
 .main {

@@ -8,7 +8,7 @@
   font-family: 'Inter', 'Segoe UI', sans-serif;
   // Same app-wide scale as IntranetHome's .page — this renders into its
   // own placeholder outside that DOM tree, so it needs its own base.
-  font-size: clamp(14px, 1.38889vw, 28px);
+  font-size: clamp(14px, 1.38889vw, 20px);
 }
 
 .bar {
