@@ -6,6 +6,11 @@
   align-items: center;
   gap: 24px;
   box-sizing: border-box;
+  // .nameBlock and .details together refuse to shrink below their natural
+  // (nowrap) text width — when the card is narrower than that combined
+  // width, without this the overflow spills out of the colored background
+  // and visually bleeds into whatever sits next to this card.
+  overflow: hidden;
 }
 
 .arrowButton {
@@ -94,7 +99,10 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  flex-shrink: 0;
+  // Unlike heading/avatar/nameBlock, this can give up space when the card
+  // is squeezed — its values ellipsize (below) instead of overflowing.
+  min-width: 0;
+  flex: 1 1 auto;
 }
 
 .field {
@@ -117,4 +125,7 @@
   font-size: 0.6875em;
   color: #082244;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }

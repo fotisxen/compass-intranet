@@ -6,12 +6,18 @@
   // width above/below that; every font-size elsewhere in the app is in em,
   // so this single value drives the whole app's text scale.
   font-size: clamp(14px, 1.38889vw, 20px);
+  // Cancels the 16px padding SharePoint's own web part zone wrapper puts
+  // around this web part. That wrapper's class is a runtime-generated
+  // Griffel hash (changes across SharePoint updates, can't be targeted
+  // directly), so this pulls our own content outward instead of trying to
+  // override it.
+  margin: -16px;
 }
 
 .main {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 36px 64px 48px;
+  // padding: 36px 64px 48px;
   box-sizing: border-box;
 }
 
