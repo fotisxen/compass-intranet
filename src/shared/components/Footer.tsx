@@ -111,39 +111,41 @@ export default class Footer extends React.Component<IFooterProps, IFooterState> 
     return (
       <footer className={styles.footer}>
         <div className={styles.inner}>
-          <div className={styles.column}>
-            <span className={styles.columnLabel}>STAY CONNECTED</span>
-            <div className={styles.iconRow}>
-              {STAY_CONNECTED.map(item => (
-                <a
-                  className={styles.iconLink}
-                  key={item.label}
-                  href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title={item.label}
-                >
-                  <img src={item.icon} alt={item.label} />
-                </a>
-              ))}
+          <div className={styles.linksGroup}>
+            <div className={styles.column}>
+              <span className={styles.columnLabel}>STAY CONNECTED</span>
+              <div className={styles.iconRow}>
+                {STAY_CONNECTED.map(item => (
+                  <a
+                    className={styles.iconLink}
+                    key={item.label}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title={item.label}
+                  >
+                    <img src={item.icon} alt={item.label} />
+                  </a>
+                ))}
+              </div>
             </div>
-          </div>
 
-          <div className={styles.column}>
-            <span className={styles.columnLabel}>QUICK ACCESS</span>
-            <div className={styles.iconRow}>
-              {QUICK_ACCESS.map(item => (
-                <a
-                  className={styles.iconLink}
-                  key={item.label}
-                  href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title={item.label}
-                >
-                  <img src={item.icon} alt={item.label} />
-                </a>
-              ))}
+            <div className={styles.column}>
+              <span className={styles.columnLabel}>QUICK ACCESS</span>
+              <div className={styles.iconRow}>
+                {QUICK_ACCESS.map(item => (
+                  <a
+                    className={styles.iconLink}
+                    key={item.label}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title={item.label}
+                  >
+                    <img src={item.icon} alt={item.label} />
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
 

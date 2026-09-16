@@ -12,7 +12,15 @@
   padding: 40px 64px;
   display: flex;
   align-items: flex-start;
-  justify-content: space-between;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+// Keeps Stay Connected + Quick Access pinned together on the left,
+// regardless of whether the ticker prices on the right exist — the
+// ticker (not this group) is what shifts when it appears/disappears.
+.linksGroup {
+  display: flex;
   gap: 32px;
   flex-wrap: wrap;
 }
@@ -58,6 +66,7 @@
   flex-direction: column;
   gap: 8px;
   align-items: flex-end;
+  margin-left: auto;
 }
 
 .tickerRow {
