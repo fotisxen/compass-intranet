@@ -9,12 +9,9 @@
 .inner {
   max-width: 1440px;
   margin: 0 auto;
-  // Horizontal inset intentionally wider than IntranetHome's .main
-  // (64px): this footer renders in the page's Bottom placeholder,
-  // outside the SharePoint section that adds its own left/right
-  // padding around the page content — 80px here is what lines this
-  // up with the cards above on the real site.
-  padding: 40px 80px;
+  // Same 64px horizontal inset as IntranetHome's .main — confirmed
+  // against the real site that this lines up with the cards above.
+  padding: 40px 64px;
   display: flex;
   align-items: flex-start;
   gap: 32px;
