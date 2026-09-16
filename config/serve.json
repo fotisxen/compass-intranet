@@ -2,5 +2,22 @@
   "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/spfx-serve.schema.json",
   "port": 4321,
   "https": true,
-  "initialPage": "https://{tenantDomain}/_layouts/workbench.aspx"
+  "initialPage": "https://{tenantDomain}/_layouts/workbench.aspx",
+  "serveConfigurations": {
+    "default": {
+      "pageUrl": "https://{tenantDomain}/_layouts/workbench.aspx",
+      "customActions": {
+        "5be0c925-5720-48c6-a508-65f92ed52b31": {
+          "location": "ClientSideExtension.ApplicationCustomizer",
+          "properties": {
+            "companyName": "Compass",
+            "chatApiUrl": "",
+            "chatResourceUri": "api://1bc53e14-c0fd-41d3-a318-ba88918961b1",
+            "chatQueryUrl": "https://func-askstarbulk-prod-apa6gyb7exfxhmbe.westeurope-01.azurewebsites.net/api/query",
+            "stockApiUrl": "https://bpcstarbulkwebapi.azurewebsites.net/api/GetStockPrice"
+          }
+        }
+      }
+    }
+  }
 }
