@@ -51,10 +51,9 @@
   margin: 0;
   width: 140px;
   flex-shrink: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  // No line clamp: the heading wraps to as many lines as it needs and the
+  // card (no fixed height) grows to fit, rather than ellipsis-truncating.
+  overflow-wrap: break-word;
 }
 
 .nameBlock {
