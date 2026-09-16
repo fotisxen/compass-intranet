@@ -32,6 +32,25 @@ interface ISpListItem {
   Title: string;
   FileRef: string;
   Created: string;
+  // Site Pages' Banner Image column stores a JSON blob (serverRelativeUrl,
+  // dimensions, crop info, ...), not a plain URL string.
+  BannerImageUrl?: string;
+}
+
+interface IBannerImageField {
+  serverRelativeUrl?: string;
+}
+
+function parseBannerImageUrl(raw?: string): string | undefined {
+  if (!raw) {
+    return undefined;
+  }
+  try {
+    const parsed: IBannerImageField = JSON.parse(raw);
+    return parsed.serverRelativeUrl || undefined;
+  } catch {
+    return undefined;
+  }
 }
 
 interface ISpListItemsResponse {
@@ -78,7 +97,7 @@ export default class NewsCard extends React.Component<INewsCardProps, INewsCardS
 
     const endpoint =
       `${siteUrl}/_api/web/lists/GetByTitle('Site Pages')/items` +
-      `?$select=Title,FileRef,Created&$filter=${filter}&$orderby=Created desc&$top=${position}`;
+      `?$select=Title,FileRef,Created,BannerImageUrl&$filter=${filter}&$orderby=Created desc&$top=${position}`;
 
     const response: SPHttpClientResponse = await spHttpClient.get(endpoint, SPHttpClient.configurations.v1);
 
@@ -97,7 +116,8 @@ export default class NewsCard extends React.Component<INewsCardProps, INewsCardS
       item: {
         title: spItem.Title,
         date: new Date(spItem.Created).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' }),
-        url: spItem.FileRef
+        url: spItem.FileRef,
+        imageUrl: parseBannerImageUrl(spItem.BannerImageUrl)
       }
     });
   }

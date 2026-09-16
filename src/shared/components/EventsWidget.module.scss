@@ -36,6 +36,10 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  // Guarantees breathing room between the image row and the "Read more"
+  // pill even when the card is short (space-between alone would let them
+  // touch once there's no extra height to distribute).
+  gap: 16px;
 }
 
 .textGroup {
