@@ -111,18 +111,6 @@ export default class Footer extends React.Component<IFooterProps, IFooterState> 
     return (
       <footer className={styles.footer}>
         <div className={styles.inner}>
-          {tickers.length > 0 && (
-            <div className={styles.tickers}>
-              {tickers.map(t => (
-                <div className={styles.tickerRow} key={t.symbol}>
-                  <span className={styles.tickerSymbol}>{t.symbol}</span>
-                  <span className={styles.tickerChange}>{t.changePct}</span>
-                  <span className={styles.tickerPrice}>{t.price}</span>
-                </div>
-              ))}
-            </div>
-          )}
-
           <div className={styles.column}>
             <span className={styles.columnLabel}>STAY CONNECTED</span>
             <div className={styles.iconRow}>
@@ -158,6 +146,18 @@ export default class Footer extends React.Component<IFooterProps, IFooterState> 
               ))}
             </div>
           </div>
+
+          {tickers.length > 0 && (
+            <div className={styles.tickers}>
+              {tickers.map(t => (
+                <div className={styles.tickerRow} key={t.symbol}>
+                  <span className={styles.tickerSymbol}>{t.symbol}</span>
+                  <span className={styles.tickerChange}>{t.changePct}</span>
+                  <span className={styles.tickerPrice}>{t.price}</span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </footer>
     );

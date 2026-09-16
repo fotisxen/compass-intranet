@@ -53,8 +53,8 @@ export default class IntranetHome extends React.Component<IIntranetHomeProps, II
             <PeopleSidebar />
             <div className={styles.peopleContent}>
               <div className={styles.peopleColumn}>
-                <PersonSpotlightCard heading="Welcome Aboard" background="#F4F8FB" person={welcomeAboard} />
-                <PersonSpotlightCard heading="Promotions & Internal Transfers" background="#C7D7E6" person={promotion} />
+                <PersonSpotlightCard heading="Welcome Aboard" background="#F4F8FB" people={welcomeAboard} />
+                <PersonSpotlightCard heading="Promotions & Internal Transfers" background="#C7D7E6" people={promotion} />
               </div>
               <div className={styles.anniversariesColumn}>
                 <WorkAnniversaries />

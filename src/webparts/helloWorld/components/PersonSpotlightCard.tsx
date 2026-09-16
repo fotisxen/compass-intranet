@@ -5,7 +5,12 @@ import type { IPersonSpotlight } from './data/mockData';
 export interface IPersonSpotlightCardProps {
   heading: string;
   background: string;
-  person: IPersonSpotlight;
+  /** Hand-authored list (see data/mockData.ts) — the arrows cycle through these one at a time. */
+  people: IPersonSpotlight[];
+}
+
+export interface IPersonSpotlightCardState {
+  index: number;
 }
 
 /**
@@ -21,9 +26,23 @@ function fitFontSize(text: string, base: number, min: number, startShrinkingAt: 
   return Math.max(min, Math.round(size * 10) / 10);
 }
 
-export default class PersonSpotlightCard extends React.Component<IPersonSpotlightCardProps> {
+export default class PersonSpotlightCard extends React.Component<IPersonSpotlightCardProps, IPersonSpotlightCardState> {
+  constructor(props: IPersonSpotlightCardProps) {
+    super(props);
+    this.state = { index: 0 };
+  }
+
+  private _prev = (): void => {
+    this.setState(prev => ({ index: (prev.index - 1 + this.props.people.length) % this.props.people.length }));
+  };
+
+  private _next = (): void => {
+    this.setState(prev => ({ index: (prev.index + 1) % this.props.people.length }));
+  };
+
   public render(): React.ReactElement<IPersonSpotlightCardProps> {
-    const { heading, background, person } = this.props;
+    const { heading, background, people } = this.props;
+    const person = people[this.state.index];
 
     const nameFontSize = fitFontSize(person.name, 14, 11, 16, 0.3);
     const titleFontSize = fitFontSize(person.title, 11, 9, 20, 0.15);
@@ -31,7 +50,9 @@ export default class PersonSpotlightCard extends React.Component<IPersonSpotligh
 
     return (
       <div className={styles.card} style={{ background }}>
-        <button className={styles.arrowButton} aria-label="Previous">←</button>
+        {people.length > 1 && (
+          <button className={styles.arrowButton} onClick={this._prev} aria-label="Previous">←</button>
+        )}
 
         <p className={styles.heading}>{heading}</p>
 
@@ -55,7 +76,9 @@ export default class PersonSpotlightCard extends React.Component<IPersonSpotligh
           ))}
         </div>
 
-        <button className={styles.arrowButton} aria-label="Next">→</button>
+        {people.length > 1 && (
+          <button className={styles.arrowButton} onClick={this._next} aria-label="Next">→</button>
+        )}
       </div>
     );
   }

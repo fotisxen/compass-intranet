@@ -14,28 +14,36 @@ export interface IAnniversary {
   initials: string;
 }
 
-export const welcomeAboard: IPersonSpotlight = {
-  name: 'Maria Papadopoulou',
-  title: 'Crew Manager',
-  initials: 'MP',
-  fields: [
-    { label: 'COMPANY', value: 'Starbulk' },
-    { label: 'DEPARTMENT', value: 'Fleet Operations' },
-    { label: 'REPORTS TO', value: 'John Smith' }
-  ]
-};
+// Hand-authored, not fetched from a list — add/remove entries here to
+// change who the "Welcome Aboard" card cycles through with its arrows.
+export const welcomeAboard: IPersonSpotlight[] = [
+  {
+    name: 'Maria Papadopoulou',
+    title: 'Crew Manager',
+    initials: 'MP',
+    fields: [
+      { label: 'COMPANY', value: 'Starbulk' },
+      { label: 'DEPARTMENT', value: 'Fleet Operations' },
+      { label: 'REPORTS TO', value: 'John Smith' }
+    ]
+  }
+];
 
-export const promotion: IPersonSpotlight = {
-  name: 'Christos Markou',
-  title: 'Deck Superintendent',
-  newTitle: 'Fleet Operations Lead',
-  initials: 'CM',
-  fields: [
-    { label: 'MOVE TYPE', value: 'Promotion' },
-    { label: 'DEPARTMENT', value: 'Fleet Operations' },
-    { label: 'REPORTS TO', value: 'John Smith' }
-  ]
-};
+// Same pattern as welcomeAboard above, for the "Promotions & Internal
+// Transfers" card.
+export const promotion: IPersonSpotlight[] = [
+  {
+    name: 'Christos Markou',
+    title: 'Deck Superintendent',
+    newTitle: 'Fleet Operations Lead',
+    initials: 'CM',
+    fields: [
+      { label: 'MOVE TYPE', value: 'Promotion' },
+      { label: 'DEPARTMENT', value: 'Fleet Operations' },
+      { label: 'REPORTS TO', value: 'John Smith' }
+    ]
+  }
+];
 
 export const anniversaries: IAnniversary[] = [
   { name: 'Dimitris Perivolakis', role: 'HR Generalist', years: 1, initials: 'DP' },
