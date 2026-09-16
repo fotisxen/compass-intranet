@@ -23,11 +23,29 @@ interface ISpEventItem {
   Id: number;
   Title: string;
   EventDate: string;
+  // "Thumbnail"-type column — stores a JSON blob (serverRelativeUrl,
+  // crop info, ...) via classic REST, not a plain URL string.
   BannerUrl?: string;
 }
 
 interface ISpListItemsResponse {
   value: ISpEventItem[];
+}
+
+interface IThumbnailField {
+  serverRelativeUrl?: string;
+}
+
+function parseThumbnailUrl(raw?: string): string | undefined {
+  if (!raw) {
+    return undefined;
+  }
+  try {
+    const parsed: IThumbnailField = JSON.parse(raw);
+    return parsed.serverRelativeUrl || undefined;
+  } catch {
+    return undefined;
+  }
 }
 
 function pad2(n: number): string {
@@ -83,7 +101,7 @@ export default class EventsWidget extends React.Component<IEventsWidgetProps, IE
       date: formatDisplayDate(item.EventDate),
       title: item.Title,
       initials: initialsFor(item.Title),
-      imageUrl: item.BannerUrl || undefined,
+      imageUrl: parseThumbnailUrl(item.BannerUrl),
       // Generic SharePoint item display form — works off the list GUID
       // alone, no need to know the list's URL-friendly name.
       url: `${siteUrl}/_layouts/15/listform.aspx?PageType=4&ListId=${UPCOMING_EVENTS_LIST_ID}&ID=${item.Id}`
