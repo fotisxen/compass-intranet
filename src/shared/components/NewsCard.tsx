@@ -28,29 +28,42 @@ export interface INewsCardState {
   item?: ISpNewsItem;
 }
 
+interface IBannerImageField {
+  Description?: string;
+  Url?: string;
+  serverRelativeUrl?: string;
+}
+
 interface ISpListItem {
   Title: string;
   FileRef: string;
   Created: string;
-  // Site Pages' Banner Image column stores a JSON blob (serverRelativeUrl,
-  // dimensions, crop info, ...), not a plain URL string.
-  BannerImageUrl?: string;
+  // Site Pages' Banner Image is an "Image"-type column. Classic REST has been
+  // observed returning this both as an already-parsed { Description, Url }
+  // object and as a JSON-encoded string — handle both shapes.
+  BannerImageUrl?: string | IBannerImageField;
 }
 
-interface IBannerImageField {
-  serverRelativeUrl?: string;
-}
-
-function parseBannerImageUrl(raw?: string): string | undefined {
+function parseBannerImageUrl(raw?: string | IBannerImageField): string | undefined {
   if (!raw) {
     return undefined;
   }
-  try {
-    const parsed: IBannerImageField = JSON.parse(raw);
-    return parsed.serverRelativeUrl || undefined;
-  } catch {
+  if (typeof raw === 'object') {
+    return raw.Url || raw.serverRelativeUrl || raw.Description || undefined;
+  }
+  const trimmed = raw.trim();
+  if (!trimmed) {
     return undefined;
   }
+  if (trimmed.charAt(0) === '{') {
+    try {
+      const parsed: IBannerImageField = JSON.parse(trimmed);
+      return parsed.Url || parsed.serverRelativeUrl || parsed.Description || undefined;
+    } catch {
+      return undefined;
+    }
+  }
+  return trimmed;
 }
 
 interface ISpListItemsResponse {
@@ -129,7 +142,9 @@ export default class NewsCard extends React.Component<INewsCardProps, INewsCardS
       return <></>;
     }
 
-    const thumbStyle = item.imageUrl ? { backgroundImage: `url(${item.imageUrl})` } : undefined;
+    // Quoted url(...) — SharePoint asset paths often contain literal
+    // parentheses (e.g. "Page(3)/..."), which break an unquoted CSS url().
+    const thumbStyle = item.imageUrl ? { backgroundImage: `url("${item.imageUrl}")` } : undefined;
 
     return (
       <div className={styles.card}>

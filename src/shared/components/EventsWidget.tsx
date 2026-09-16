@@ -19,33 +19,46 @@ export interface IEventsWidgetState {
 const UPCOMING_EVENTS_LIST_ID = 'dd3316a0-3bc0-4d4c-acff-71851299dad7';
 const PAGE_SIZE = 10;
 
+interface IThumbnailField {
+  Description?: string;
+  Url?: string;
+  serverRelativeUrl?: string;
+}
+
 interface ISpEventItem {
   Id: number;
   Title: string;
   EventDate: string;
-  // "Thumbnail"-type column — stores a JSON blob (serverRelativeUrl,
-  // crop info, ...) via classic REST, not a plain URL string.
-  BannerUrl?: string;
+  // "Thumbnail"-type column. Classic REST has been observed returning this
+  // both as a JSON-encoded blob (serverRelativeUrl, crop info, ...) and as
+  // an already-parsed { Description, Url } object — handle both shapes.
+  BannerUrl?: string | IThumbnailField;
 }
 
 interface ISpListItemsResponse {
   value: ISpEventItem[];
 }
 
-interface IThumbnailField {
-  serverRelativeUrl?: string;
-}
-
-function parseThumbnailUrl(raw?: string): string | undefined {
+function parseThumbnailUrl(raw?: string | IThumbnailField): string | undefined {
   if (!raw) {
     return undefined;
   }
-  try {
-    const parsed: IThumbnailField = JSON.parse(raw);
-    return parsed.serverRelativeUrl || undefined;
-  } catch {
+  if (typeof raw === 'object') {
+    return raw.Url || raw.serverRelativeUrl || raw.Description || undefined;
+  }
+  const trimmed = raw.trim();
+  if (!trimmed) {
     return undefined;
   }
+  if (trimmed.charAt(0) === '{') {
+    try {
+      const parsed: IThumbnailField = JSON.parse(trimmed);
+      return parsed.Url || parsed.serverRelativeUrl || parsed.Description || undefined;
+    } catch {
+      return undefined;
+    }
+  }
+  return trimmed;
 }
 
 function pad2(n: number): string {
@@ -102,9 +115,10 @@ export default class EventsWidget extends React.Component<IEventsWidgetProps, IE
       title: item.Title,
       initials: initialsFor(item.Title),
       imageUrl: parseThumbnailUrl(item.BannerUrl),
-      // Generic SharePoint item display form — works off the list GUID
-      // alone, no need to know the list's URL-friendly name.
-      url: `${siteUrl}/_layouts/15/listform.aspx?PageType=4&ListId=${UPCOMING_EVENTS_LIST_ID}&ID=${item.Id}`
+      // Calendar-list items open through Event.aspx (not the generic
+      // listform.aspx display form) — confirmed against the real event's
+      // own "Read more" URL on the live site.
+      url: `${siteUrl}/_layouts/15/Event.aspx?ListGuid=${UPCOMING_EVENTS_LIST_ID}&ItemId=${item.Id}`
     }));
 
     this.setState({ events, index: 0 });
@@ -127,6 +141,10 @@ export default class EventsWidget extends React.Component<IEventsWidgetProps, IE
   public render(): React.ReactElement {
     const { events, index } = this.state;
     const event = events[index];
+    // With only one (or zero) upcoming events, cycling always lands back on
+    // the same index — the arrows would look broken rather than just idle,
+    // so hide them instead of showing dead controls.
+    const hasMultiple = events.length > 1;
 
     return (
       <div className={styles.wrap}>
@@ -140,12 +158,16 @@ export default class EventsWidget extends React.Component<IEventsWidgetProps, IE
               <p className={styles.eventDate}>{event.date}</p>
               <p className={styles.eventTitle}>{event.title}</p>
             </div>
-            <div className={styles.mediaRow}>
-              <button className={styles.arrowButton} onClick={this._prev} aria-label="Previous event">←</button>
-              <div className={styles.eventImage} style={event.imageUrl ? { backgroundImage: `url(${event.imageUrl})` } : undefined}>
+            <div className={styles.mediaRow} style={hasMultiple ? undefined : { justifyContent: 'center' }}>
+              {hasMultiple && (
+                <button className={styles.arrowButton} onClick={this._prev} aria-label="Previous event">←</button>
+              )}
+              <div className={styles.eventImage} style={event.imageUrl ? { backgroundImage: `url("${event.imageUrl}")` } : undefined}>
                 {!event.imageUrl && event.initials}
               </div>
-              <button className={styles.arrowButton} onClick={this._next} aria-label="Next event">→</button>
+              {hasMultiple && (
+                <button className={styles.arrowButton} onClick={this._next} aria-label="Next event">→</button>
+              )}
             </div>
             <div className={styles.eventFooter}>
               <a className={styles.pill} href={event.url}>Read more →</a>
