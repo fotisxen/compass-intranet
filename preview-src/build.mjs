@@ -53,7 +53,7 @@ await esbuild.build({
   entryPoints: [path.join(__dirname, 'entry.tsx')],
   bundle: true,
   outfile: path.join(__dirname, 'dist', 'bundle.js'),
-  loader: { '.tsx': 'tsx', '.ts': 'ts' },
+  loader: { '.tsx': 'tsx', '.ts': 'ts', '.png': 'dataurl', '.webp': 'dataurl' },
   plugins: [scssNamespacedPlugin, spHttpStubPlugin],
   define: { 'process.env.NODE_ENV': '"development"' },
   logLevel: 'info'
