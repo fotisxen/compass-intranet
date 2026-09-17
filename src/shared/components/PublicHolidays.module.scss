@@ -1,3 +1,22 @@
+// Same SharePoint web part zone padding as IntranetHome's .page, and the
+// same fix — cancel it on all four sides here, on its own layer, so the
+// negative margin actually widens the box (as it does for .page) instead of
+// being absorbed into .outer's centering below with no horizontal effect.
+.zone {
+  margin: -16px;
+}
+
+// Mirrors IntranetHome's .main (max-width:1440px; margin:0 auto) so this
+// centers in the viewport the same way; .widget below then sits flush-left
+// inside this instead of being centered on its own narrower width, matching
+// how .main's own content sits flush-left inside itself (its padding is
+// disabled).
+.outer {
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+}
+
 .widget {
   display: flex;
   flex-direction: column;
@@ -7,18 +26,15 @@
   // Same app-wide scale as IntranetHome's .page — needed here too since
   // this also renders standalone as its own web part, outside that tree.
   font-size: clamp(14px, 1.38889vw, 20px);
-  // Caps at the same 1440px reference as .main and centers within
-  // whatever column this sits in, so "align-items: flex-end" below lands
-  // at the same right edge as the map/cards/footer instead of whatever
-  // this web part's own SharePoint column happens to be.
-  max-width: 1440px;
+  // Matches the Newsroom row's actual content width (sidebar + gap + 3
+  // cards/2 gaps) — NOT .main's full 1440px cap, which the row doesn't
+  // actually fill. Left flush (no auto margin) inside .outer above puts
+  // "align-items: flex-end" below at the same right edge as the
+  // map/cards/footer/Work Anniversaries, which are also left-flush inside
+  // .main's own 1440px box.
+  max-width: calc(220px + 24px + 3 * min(23.2639vw, 335px) + 40px);
   width: 100%;
   box-sizing: border-box;
-  // Same SharePoint web part zone padding as IntranetHome's .page, and the
-  // same fix — cancel it here too so this stays flush with siblings placed
-  // in other zones instead of sitting inset from them (top/bottom kept as
-  // -16px; left/right use auto to also center the 1440px cap above).
-  margin: -16px auto;
 }
 
 .heading {

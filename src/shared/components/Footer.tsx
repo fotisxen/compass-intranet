@@ -117,6 +117,7 @@ export default class Footer extends React.Component<IFooterProps, IFooterState> 
 
     return (
       <footer className={styles.footer}>
+        <div className={styles.outer}>
         <div className={styles.inner}>
           <div className={styles.linksGroup}>
             <div className={styles.column}>
@@ -167,6 +168,7 @@ export default class Footer extends React.Component<IFooterProps, IFooterState> 
               ))}
             </div>
           )}
+        </div>
         </div>
       </footer>
     );

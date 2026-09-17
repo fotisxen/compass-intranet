@@ -34,21 +34,14 @@ const stockApiUrl =
 ReactDom.render(React.createElement(ChromeRoot, { chatApiUrl: '' }), document.getElementById('chrome-top'));
 
 // Compass Holidays is its own standalone web part now, placed right under
-// the nav — same original position, own container/row.
+// the nav — same original position, own container/row. No sizing/alignment
+// here: PublicHolidays' own .zone/.outer/.widget layers already span the
+// full row and align their content to the right, same as a real SharePoint
+// zone div (a plain block, same as #chrome-bottom below for Footer).
 ReactDom.render(
   React.createElement(
     'div',
-    {
-      style: {
-        display: 'flex',
-        justifyContent: 'flex-end',
-        maxWidth: 1440,
-        margin: '0 auto',
-        padding: '24px 64px 0',
-        boxSizing: 'border-box',
-        background: '#ffffff'
-      }
-    },
+    { style: { paddingTop: 24, background: '#ffffff' } },
     React.createElement(PublicHolidays, { spHttpClient: fakeSpHttpClient as never, siteUrl: 'https://example.sharepoint.com/sites/demo' })
   ),
   document.getElementById('holidays-root')
@@ -68,7 +61,9 @@ ReactDom.render(
         alignItems: 'stretch',
         maxWidth: 1440,
         margin: '0 auto',
-        padding: '20px 64px 0',
+        // No left/right padding — matches .main's own actual (disabled)
+        // padding, so this lines up the same way real SharePoint zones do.
+        padding: '20px 0 0',
         boxSizing: 'border-box',
         background: '#ffffff'
       }

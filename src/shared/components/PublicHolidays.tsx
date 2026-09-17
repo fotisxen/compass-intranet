@@ -73,19 +73,23 @@ export default class PublicHolidays extends React.Component<IPublicHolidaysProps
 
   public render(): React.ReactElement {
     return (
-      <div className={styles.widget}>
-        <div className={styles.heading}>PUBLIC HOLIDAYS</div>
-        <div className={styles.list}>
-          {this.state.holidays.length > 0 ? (
-            this.state.holidays.map(h => (
-              <div className={styles.row} key={h.date + h.label}>
-                <span className={styles.date}>{h.date}</span>
-                <span className={styles.label}>{h.label}</span>
-              </div>
-            ))
-          ) : (
-            <div className={styles.emptyRow}>No upcoming holidays</div>
-          )}
+      <div className={styles.zone}>
+        <div className={styles.outer}>
+        <div className={styles.widget}>
+          <div className={styles.heading}>PUBLIC HOLIDAYS</div>
+          <div className={styles.list}>
+            {this.state.holidays.length > 0 ? (
+              this.state.holidays.map(h => (
+                <div className={styles.row} key={h.date + h.label}>
+                  <span className={styles.date}>{h.date}</span>
+                  <span className={styles.label}>{h.label}</span>
+                </div>
+              ))
+            ) : (
+              <div className={styles.emptyRow}>No upcoming holidays</div>
+            )}
+          </div>
+        </div>
         </div>
       </div>
     );

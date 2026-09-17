@@ -11,12 +11,25 @@
   margin: -16px;
 }
 
-.inner {
+// Mirrors IntranetHome's .main exactly (max-width:1440px; margin:0 auto)
+// so this centers in the viewport the same way — .inner below then sits
+// flush-left inside this, matching how .main's own content sits flush-left
+// inside itself (its padding is disabled) instead of being centered again.
+.outer {
   max-width: 1440px;
+  width: 100%;
   margin: 0 auto;
-  // No horizontal inset — .main has none either (its own padding rule is
-  // disabled), so this needs to match that to keep Stay Connected/the
-  // ticker aligned with the cards above instead of sitting 64px inset.
+}
+
+.inner {
+  // Matches the Newsroom row's actual content width — NOT .main's full
+  // 1440px cap, which is wider than the row actually uses: 220px sidebar +
+  // 24px gap + (3 cards + 2 gaps, same formula as IntranetHome's
+  // .newsGrid). Left flush (no auto margin) inside .outer above, so this
+  // lines up Stay Connected on the left and the ticker on the right with
+  // the cards/Work Anniversaries above, which are also left-flush inside
+  // .main's own 1440px box.
+  max-width: calc(220px + 24px + 3 * min(23.2639vw, 335px) + 40px);
   padding: 40px 0;
   display: flex;
   align-items: flex-start;
