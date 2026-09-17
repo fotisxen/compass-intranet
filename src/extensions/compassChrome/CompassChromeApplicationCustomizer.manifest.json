@@ -14,10 +14,9 @@
     "groupId": "5c03119e-3074-46fd-976b-c60198311f70",
     "group": { "default": "Advanced" },
     "title": { "default": "Compass Chrome" },
-    "description": { "default": "Site-wide Compass header and footer, injected into the Top/Bottom page placeholders" },
+    "description": { "default": "Site-wide Compass header, injected into the Top page placeholder. The footer is a separate \"Compass Footer\" web part, added per-page." },
     "officeFabricIconFontName": "Page",
     "properties": {
-      "companyName": "Compass",
       "chatApiUrl": ""
     }
   }]

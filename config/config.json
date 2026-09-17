@@ -58,6 +58,14 @@
         }
       ]
     },
+    "footer-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/footer/FooterWebPart.js",
+          "manifest": "./src/webparts/footer/FooterWebPart.manifest.json"
+        }
+      ]
+    },
     "compass-chrome-application-customizer": {
       "components": [
         {
@@ -76,6 +84,7 @@
     "FleetMapWebPartStrings": "lib/webparts/fleetMap/loc/{locale}.js",
     "EventsWebPartStrings": "lib/webparts/events/loc/{locale}.js",
     "HolidaysWebPartStrings": "lib/webparts/holidays/loc/{locale}.js",
+    "FooterWebPartStrings": "lib/webparts/footer/loc/{locale}.js",
     "PropertyControlStrings": "node_modules/@pnp/spfx-property-controls/lib/loc/{locale}.js"
   }
 }

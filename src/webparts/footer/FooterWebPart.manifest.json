@@ -1,0 +1,25 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+  "id": "0f434dce-dafc-4c43-bdd8-e49760e3e1a1",
+  "alias": "FooterWebPart",
+  "componentType": "WebPart",
+
+  "version": "*",
+  "manifestVersion": 2,
+
+  "requiresCustomScript": false,
+  "supportedHosts": ["SharePointWebPart", "TeamsPersonalApp", "TeamsTab", "SharePointFullPage"],
+  "supportsThemeVariants": true,
+
+  "preconfiguredEntries": [{
+    "groupId": "5c03119e-3074-46fd-976b-c60198311f70", // Advanced
+    "group": { "default": "Advanced" },
+    "title": { "default": "Compass Footer" },
+    "description": { "default": "Compass site footer (Stay Connected / Quick Access links + stock ticker). Add as the last section on any page that should show it — it no longer appears automatically on every page." },
+    "officeFabricIconFontName": "Page",
+    "properties": {
+      "companyName": "Compass",
+      "stockApiUrl": "https://bpcstarbulkwebapi.azurewebsites.net/api/GetStockPrice"
+    }
+  }]
+}
