@@ -1,18 +1,19 @@
+@use '../styles/layout-tokens';
+
 .mapWrap {
   position: relative;
   border-radius: 30px;
   overflow: hidden;
-  // Matches the 3 Newsroom cards + their 2 gaps below (335px×3 + 20px×2 =
-  // 1045px at the 1440px reference width), instead of filling whatever
-  // width the section's column happens to be, so the two independently
-  // placed sections line up.
-  width: calc(3 * min(23.2639vw, 335px) + 40px);
-  // Set directly, independent of width — change this value alone to make
-  // the map taller/shorter. (Previously this was `aspect-ratio: 1099/626`,
-  // which tied height to whatever width the column happened to have, so
-  // widening the column also grew the height and there was no way to
-  // adjust one without the other.)
-  height: 626px;
+  // Matches the 3 Newsroom cards + their 2 gaps below, instead of filling
+  // whatever width the section's column happens to be, so the two
+  // independently placed sections line up.
+  width: var(--compass-map-w);
+  // Set directly, independent of width — change --compass-map-h alone to
+  // make the map taller/shorter. (Previously this was
+  // `aspect-ratio: 1099/626`, which tied height to whatever width the
+  // column happened to have, so widening the column also grew the height
+  // and there was no way to adjust one without the other.)
+  height: var(--compass-map-h);
   // Same app-wide scale as IntranetHome's .page — needed here too since
   // this also renders standalone as its own web part, outside that tree.
   font-size: clamp(14px, 1.38889vw, 20px);

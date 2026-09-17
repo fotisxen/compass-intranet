@@ -1,0 +1,33 @@
+// Shared layout measurements for the "3 Newsroom cards wide" row (News
+// grid, Welcome Aboard/Promotions, Work Anniversaries, Fleet Map, Footer,
+// Public Holidays) — every component below is a separately bundled SPFx
+// web part, so this file is @import'ed into each one's own .module.scss
+// rather than shared via JS. CSS custom properties (not Sass variables) on
+// purpose: they survive into the compiled output as real, runtime values,
+// so if the real page's alignment is ever off after a deployment, these
+// can be tweaked live in browser DevTools (Elements panel, find the
+// `:root` rule, edit a value, see every dependent element move together)
+// to find the right number *before* touching source and redeploying,
+// instead of guessing blind between deployments.
+:root {
+  // One Newsroom card's width — 335px at the 1440px reference width,
+  // scaling down proportionally below that, never growing past 335px
+  // above it. Everything else here is a multiple of this plus gaps.
+  --compass-card-w: min(23.2639vw, 335px);
+  --compass-gap: 20px;
+  --compass-sidebar-w: 220px;
+  --compass-sidebar-gap: 24px;
+
+  // 2 cards + 1 gap = 690px at the 1440px reference — Welcome
+  // Aboard/Promotions column width, so it starts/ends under the first two
+  // Newsroom cards.
+  --compass-people-w: calc(2 * var(--compass-card-w) + var(--compass-gap));
+  // 3 cards + 2 gaps = 1045px at the 1440px reference — Fleet Map width.
+  --compass-map-w: calc(3 * var(--compass-card-w) + 2 * var(--compass-gap));
+  --compass-map-h: 626px;
+  // sidebar + gap + map width = 1289px at the 1440px reference — the
+  // Newsroom row's actual total content width (not .main's wider, mostly
+  // empty 1440px cap), used by Footer/Public Holidays so their right edge
+  // lines up with the map/3rd card/Work Anniversaries above.
+  --compass-row-w: calc(var(--compass-sidebar-w) + var(--compass-sidebar-gap) + var(--compass-map-w));
+}

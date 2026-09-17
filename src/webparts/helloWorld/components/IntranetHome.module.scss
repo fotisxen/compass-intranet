@@ -1,3 +1,5 @@
+@use '../../../shared/styles/layout-tokens';
+
 .page {
   background: #ffffff;
   font-family: 'Inter', sans-serif;
@@ -40,8 +42,8 @@
   // 335px at the 1440px reference width, scaling down proportionally below
   // that — same vw-based approach as the app's font-size scale — and never
   // growing past 335px above it.
-  grid-template-columns: repeat(3, min(23.2639vw, 335px));
-  gap: 20px;
+  grid-template-columns: repeat(3, var(--compass-card-w));
+  gap: var(--compass-gap);
 }
 
 @media (max-width: 900px) {
@@ -61,18 +63,17 @@
 }
 
 .peopleContent {
-  // 20px — matches newsGrid's gap, so peopleColumn + this gap +
-  // anniversariesColumn totals the same width as the 3 news cards above.
+  // Matches newsGrid's gap, so peopleColumn + this gap + anniversariesColumn
+  // totals the same width as the 3 news cards above.
   display: flex;
-  gap: 20px;
+  gap: var(--compass-gap);
   align-items: stretch;
 }
 
 .peopleColumn {
-  // 2 news cards + their gap (2×335px + 20px = 690px at the 1440px
-  // reference width), so Welcome Aboard/Promotions start and end exactly
-  // under the first two news cards.
-  width: calc(2 * min(23.2639vw, 335px) + 20px);
+  // 2 news cards + their gap, so Welcome Aboard/Promotions start and end
+  // exactly under the first two news cards.
+  width: var(--compass-people-w);
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -81,7 +82,7 @@
 
 .anniversariesColumn {
   // Same width as one news card, so this lines up under the 3rd card.
-  width: min(23.2639vw, 335px);
+  width: var(--compass-card-w);
   flex-shrink: 0;
 }
 

@@ -2,6 +2,8 @@
 // same fix — cancel it on all four sides here, on its own layer, so the
 // negative margin actually widens the box (as it does for .page) instead of
 // being absorbed into .outer's centering below with no horizontal effect.
+@use '../styles/layout-tokens';
+
 .zone {
   margin: -16px;
 }
@@ -32,7 +34,7 @@
   // "align-items: flex-end" below at the same right edge as the
   // map/cards/footer/Work Anniversaries, which are also left-flush inside
   // .main's own 1440px box.
-  max-width: calc(220px + 24px + 3 * min(23.2639vw, 335px) + 40px);
+  max-width: var(--compass-row-w);
   width: 100%;
   box-sizing: border-box;
 }

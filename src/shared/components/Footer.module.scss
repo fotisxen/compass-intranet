@@ -1,3 +1,5 @@
+@use '../styles/layout-tokens';
+
 .footer {
   background: #082244;
   font-family: 'Inter', sans-serif;
@@ -29,7 +31,7 @@
   // lines up Stay Connected on the left and the ticker on the right with
   // the cards/Work Anniversaries above, which are also left-flush inside
   // .main's own 1440px box.
-  max-width: calc(220px + 24px + 3 * min(23.2639vw, 335px) + 40px);
+  max-width: var(--compass-row-w);
   padding: 40px 0;
   display: flex;
   align-items: flex-start;
