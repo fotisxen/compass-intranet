@@ -53,7 +53,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  gap: 40px;
+  gap: 109px;
   flex-wrap: wrap;
   line-height: 1;
 }
@@ -66,7 +66,8 @@
   display: inline-block;
   color: #000000;
   text-decoration: none;
-  font-size: 1em;
+  // 16px at the 1440px reference width.
+  font-size: 0.8em;
   font-weight: 400;
   line-height: 1;
   white-space: nowrap;
@@ -135,7 +136,8 @@ a.dropdownHeading:hover {
 .dropdownLink {
   display: block;
   padding: 4px 0;
-  font-size: 1em;
+  // 16px at the 1440px reference width.
+  font-size: 0.8em;
   letter-spacing: 0.02em;
   color: #082244;
   text-decoration: none;

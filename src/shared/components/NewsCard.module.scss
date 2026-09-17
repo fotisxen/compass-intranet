@@ -4,7 +4,8 @@
   background: #082244;
   display: flex;
   flex-direction: column;
-  min-height: 380px;
+  // 376px at the 1440px reference width, matching the 335px card width.
+  min-height: 376px;
   // Same app-wide scale as IntranetHome's .page — needed here too since
   // this also renders standalone as its own web part, outside that tree.
   font-size: clamp(14px, 1.38889vw, 20px);

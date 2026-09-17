@@ -37,11 +37,11 @@
   // Always 3 equal columns, even with 1-2 cards — so a single card keeps
   // the same width it would have alongside two others, instead of
   // stretching to fill the row (auto-fit + 1fr did that).
-  // 295px at the 1440px reference width (measured on the live page),
-  // scaling down proportionally below that — same vw-based approach as
-  // the app's font-size scale — and never growing past 295px above it.
-  grid-template-columns: repeat(3, min(20.4861vw, 295px));
-  gap: 18px;
+  // 335px at the 1440px reference width, scaling down proportionally below
+  // that — same vw-based approach as the app's font-size scale — and never
+  // growing past 335px above it.
+  grid-template-columns: repeat(3, min(23.2639vw, 335px));
+  gap: 20px;
 }
 
 @media (max-width: 900px) {
@@ -61,23 +61,27 @@
 }
 
 .peopleContent {
-  flex: 1;
-  min-width: 0;
+  // 20px — matches newsGrid's gap, so peopleColumn + this gap +
+  // anniversariesColumn totals the same width as the 3 news cards above.
   display: flex;
-  gap: 24px;
+  gap: 20px;
   align-items: stretch;
 }
 
 .peopleColumn {
-  flex: 1;
-  min-width: 0;
+  // 2 news cards + their gap (2×335px + 20px = 690px at the 1440px
+  // reference width), so Welcome Aboard/Promotions start and end exactly
+  // under the first two news cards.
+  width: calc(2 * min(23.2639vw, 335px) + 20px);
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
 .anniversariesColumn {
-  width: 335px;
+  // Same width as one news card, so this lines up under the 3rd card.
+  width: min(23.2639vw, 335px);
   flex-shrink: 0;
 }
 

@@ -85,7 +85,7 @@ export default class PersonSpotlightCard extends React.Component<IPersonSpotligh
           {person.fields.map(f => (
             <div className={styles.field} key={f.label}>
               <span className={styles.fieldLabel}>{f.label}</span>
-              <span className={styles.fieldValue} style={{ fontSize: fitFontSize(f.value, 13, 9, 12, 0.2) }}>
+              <span className={styles.fieldValue} style={{ fontSize: fitFontSize(f.value, 12, 9, 12, 0.2) }}>
                 {f.value}
               </span>
             </div>

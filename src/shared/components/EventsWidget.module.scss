@@ -63,8 +63,8 @@
 .eventTitle {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
-  // 19px at the 1440px reference width.
-  font-size: 0.95em;
+  // 20px at the 1440px reference width.
+  font-size: 1em;
   color: #000000;
   margin: 0;
 }
@@ -106,7 +106,8 @@
   background: transparent;
   color: #082244;
   font-family: 'Inter', sans-serif;
-  font-size: 0.7813em;
+  // 13px at the 1440px reference width.
+  font-size: 0.65em;
   cursor: pointer;
   white-space: nowrap;
 

@@ -57,7 +57,7 @@ export default class IntranetHome extends React.Component<IIntranetHomeProps, II
             <div className={styles.peopleContent}>
               <div className={styles.peopleColumn}>
                 <PersonSpotlightCard heading="Welcome Aboard" headingFontSize={20} background="#F4F8FB" people={this.props.welcomeAboard} />
-                <PersonSpotlightCard heading="Promotions & Internal Transfers" headingFontSize={18} background="#C7D7E6" people={this.props.promotions} />
+                <PersonSpotlightCard heading="Promotions & Internal Transfers" headingFontSize={20} background="#C7D7E6" people={this.props.promotions} />
               </div>
               <div className={styles.anniversariesColumn}>
                 <WorkAnniversaries people={this.props.anniversaries} />

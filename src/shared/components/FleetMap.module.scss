@@ -2,11 +2,11 @@
   position: relative;
   border-radius: 30px;
   overflow: hidden;
-  // Matches the 3 Newsroom cards + their 2 gaps below (295px×3 + 18px×2 =
-  // 921px at the 1440px reference width), instead of filling whatever
+  // Matches the 3 Newsroom cards + their 2 gaps below (335px×3 + 20px×2 =
+  // 1045px at the 1440px reference width), instead of filling whatever
   // width the section's column happens to be, so the two independently
   // placed sections line up.
-  width: calc(3 * min(20.4861vw, 295px) + 36px);
+  width: calc(3 * min(23.2639vw, 335px) + 40px);
   // Set directly, independent of width — change this value alone to make
   // the map taller/shorter. (Previously this was `aspect-ratio: 1099/626`,
   // which tied height to whatever width the column happened to have, so

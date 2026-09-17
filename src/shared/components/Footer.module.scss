@@ -14,9 +14,10 @@
 .inner {
   max-width: 1440px;
   margin: 0 auto;
-  // Same 64px horizontal inset as IntranetHome's .main — confirmed
-  // against the real site that this lines up with the cards above.
-  padding: 40px 64px;
+  // No horizontal inset — .main has none either (its own padding rule is
+  // disabled), so this needs to match that to keep Stay Connected/the
+  // ticker aligned with the cards above instead of sitting 64px inset.
+  padding: 40px 0;
   display: flex;
   align-items: flex-start;
   gap: 32px;

@@ -7,16 +7,25 @@
   // Same app-wide scale as IntranetHome's .page — needed here too since
   // this also renders standalone as its own web part, outside that tree.
   font-size: clamp(14px, 1.38889vw, 20px);
+  // Caps at the same 1440px reference as .main and centers within
+  // whatever column this sits in, so "align-items: flex-end" below lands
+  // at the same right edge as the map/cards/footer instead of whatever
+  // this web part's own SharePoint column happens to be.
+  max-width: 1440px;
+  width: 100%;
+  box-sizing: border-box;
   // Same SharePoint web part zone padding as IntranetHome's .page, and the
   // same fix — cancel it here too so this stays flush with siblings placed
-  // in other zones instead of sitting inset from them.
-  margin: -16px;
+  // in other zones instead of sitting inset from them (top/bottom kept as
+  // -16px; left/right use auto to also center the 1440px cap above).
+  margin: -16px auto;
 }
 
 .heading {
   font-family: 'Inter', sans-serif;
   font-weight: 600;
-  font-size: 0.75em;
+  // 12px at the 1440px reference width.
+  font-size: 0.6em;
   letter-spacing: 1.1px;
   color: #6b788c;
   border-bottom: 1px solid rgba(8, 34, 68, 0.12);
@@ -44,7 +53,8 @@
   grid-column: 1;
   font-family: 'Inter', sans-serif;
   font-weight: 600;
-  font-size: 0.75em;
+  // 12px at the 1440px reference width.
+  font-size: 0.6em;
   color: #082244;
   white-space: nowrap;
   padding: 6px 0;
@@ -55,11 +65,18 @@
   grid-column: 2;
   font-family: 'Inter', sans-serif;
   font-weight: 400;
-  font-size: 0.75em;
+  // 10px at the 1440px reference width.
+  font-size: 0.5em;
   color: rgba(8, 34, 68, 0.75);
   text-align: right;
   padding: 6px 0;
   border-bottom: 1px solid rgba(8, 34, 68, 0.08);
+  // Always one line, truncated with ellipsis rather than wrapping to a
+  // second line if the holiday name is long.
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 
 .row:last-child .date,
