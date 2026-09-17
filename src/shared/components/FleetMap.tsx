@@ -174,11 +174,28 @@ function normalizeVessel(raw: Record<string, unknown>): IVesselPosition | undefi
 export default class FleetMap extends React.Component<IFleetMapProps, IFleetMapState> {
   constructor(props: IFleetMapProps) {
     super(props);
-    this.state = { showFleet: false, vessels: [], hasLiveData: false, isLoadingVessels: false };
+    // On by default — the map opens already showing the fleet instead of
+    // requiring a click on the "Our Fleet Live" tag first.
+    this.state = { showFleet: true, vessels: [], hasLiveData: false, isLoadingVessels: false };
   }
 
   public componentDidMount(): void {
     ensureLeafletCss();
+    if (this.state.showFleet && !this.state.hasLiveData) {
+      this._startLoadingVessels();
+    }
+  }
+
+  private _startLoadingVessels(): void {
+    this.setState({ isLoadingVessels: true });
+    this._loadVessels()
+      .catch(() => {
+        // Real positions unavailable (proxy not configured for this
+        // environment, or the request failed) — the office pins already
+        // in state stay as a fallback so the map never shows nothing.
+      })
+      .then(() => this.setState({ isLoadingVessels: false }))
+      .catch(() => undefined);
   }
 
   private _toggleFleet = (): void => {
@@ -186,15 +203,7 @@ export default class FleetMap extends React.Component<IFleetMapProps, IFleetMapS
     this.setState(prev => ({ showFleet: !prev.showFleet }));
 
     if (isTurningOn && !this.state.hasLiveData) {
-      this.setState({ isLoadingVessels: true });
-      this._loadVessels()
-        .catch(() => {
-          // Real positions unavailable (proxy not configured for this
-          // environment, or the request failed) — the office pins already
-          // in state stay as a fallback so the map never shows nothing.
-        })
-        .then(() => this.setState({ isLoadingVessels: false }))
-        .catch(() => undefined);
+      this._startLoadingVessels();
     }
   };
 

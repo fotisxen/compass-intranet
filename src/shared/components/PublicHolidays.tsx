@@ -16,7 +16,9 @@ export interface IPublicHolidaysState {
 // SharePoint Events list (Title + EventDate) — this is that list's GUID,
 // found in the page's own web part configuration.
 const PUBLIC_HOLIDAYS_LIST_ID = 'd6e5df27-ce8c-4770-9b39-e58c91c50d4b';
-const PAGE_SIZE = 5;
+// Only the 2 nearest holidays (today or later) — the query below already
+// filters to >= today and sorts ascending, so this just caps the count.
+const PAGE_SIZE = 2;
 
 interface ISpEventItem {
   Title: string;
