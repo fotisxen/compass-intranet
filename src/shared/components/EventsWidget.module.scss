@@ -1,7 +1,8 @@
 .wrap {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  // 17px gap + two 304.5px cards = 626px total, matching Fleet Map's height.
+  gap: 17px;
   width: 220px;
   flex-shrink: 0;
   // Same app-wide scale as IntranetHome's .page — needed here too since
@@ -14,7 +15,10 @@
   border: 1px solid rgba(8, 34, 68, 0.2);
   border-radius: 20px;
   padding: 26px;
-  min-height: 220px;
+  // Fixed rather than min-height, so this stays exactly 304.5px regardless
+  // of whether the section actually stretches this column to the map's
+  // height — see .eventCard below for the matching other half.
+  height: 304.5px;
   flex-shrink: 0;
 }
 
@@ -31,8 +35,9 @@
   border-radius: 20px;
   padding: 26px;
   box-sizing: border-box;
-  flex: 1;
-  min-height: 0;
+  // Fixed rather than flex:1 — see .titleCard above for why (this half
+  // stays exactly 304.5px whether or not the section stretches the column).
+  height: 304.5px;
   display: flex;
   flex-direction: column;
   // flex-start + a fixed gap (not space-between) so the spacing between

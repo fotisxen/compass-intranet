@@ -8,7 +8,7 @@
   // which tied height to whatever width the column happened to have, so
   // widening the column also grew the height and there was no way to
   // adjust one without the other.)
-  height: 608px;
+  height: 626px;
   // Same app-wide scale as IntranetHome's .page — needed here too since
   // this also renders standalone as its own web part, outside that tree.
   font-size: clamp(14px, 1.38889vw, 20px);

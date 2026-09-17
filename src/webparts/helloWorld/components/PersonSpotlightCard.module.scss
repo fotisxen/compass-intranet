@@ -47,6 +47,14 @@
   flex-shrink: 0;
 }
 
+.avatarPhoto {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
 .heading {
   font-family: 'Inter', sans-serif;
   font-weight: 400;

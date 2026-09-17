@@ -4,6 +4,8 @@ export interface IPersonSpotlight {
   /** When set, `title` renders as the previous (pale) role and `newTitle` as the new (bold) one. */
   newTitle?: string;
   initials: string;
+  /** Falls back to the initials circle when omitted or the image fails to load. */
+  photoUrl?: string;
   fields: { label: string; value: string }[];
 }
 

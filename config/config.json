@@ -75,6 +75,7 @@
     "ChatWebPartStrings": "lib/webparts/chat/loc/{locale}.js",
     "FleetMapWebPartStrings": "lib/webparts/fleetMap/loc/{locale}.js",
     "EventsWebPartStrings": "lib/webparts/events/loc/{locale}.js",
-    "HolidaysWebPartStrings": "lib/webparts/holidays/loc/{locale}.js"
+    "HolidaysWebPartStrings": "lib/webparts/holidays/loc/{locale}.js",
+    "PropertyControlStrings": "node_modules/@pnp/spfx-property-controls/lib/loc/{locale}.js"
   }
 }

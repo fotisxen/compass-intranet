@@ -7,11 +7,14 @@ import NewsCard from '../../../shared/components/NewsCard';
 import PeopleSidebar from './PeopleSidebar';
 import PersonSpotlightCard from './PersonSpotlightCard';
 import WorkAnniversaries from './WorkAnniversaries';
-import { welcomeAboard, promotion } from './data/mockData';
+import type { IPersonSpotlight, IAnniversary } from './data/mockData';
 
 export interface IIntranetHomeProps {
   spHttpClient: SPHttpClient;
   siteUrl: string;
+  welcomeAboard: IPersonSpotlight[];
+  promotions: IPersonSpotlight[];
+  anniversaries: IAnniversary[];
 }
 
 export interface IIntranetHomeState {
@@ -53,11 +56,11 @@ export default class IntranetHome extends React.Component<IIntranetHomeProps, II
             <PeopleSidebar />
             <div className={styles.peopleContent}>
               <div className={styles.peopleColumn}>
-                <PersonSpotlightCard heading="Welcome Aboard" background="#F4F8FB" people={welcomeAboard} />
-                <PersonSpotlightCard heading="Promotions & Internal Transfers" background="#C7D7E6" people={promotion} />
+                <PersonSpotlightCard heading="Welcome Aboard" background="#F4F8FB" people={this.props.welcomeAboard} />
+                <PersonSpotlightCard heading="Promotions & Internal Transfers" background="#C7D7E6" people={this.props.promotions} />
               </div>
               <div className={styles.anniversariesColumn}>
-                <WorkAnniversaries />
+                <WorkAnniversaries people={this.props.anniversaries} />
               </div>
             </div>
           </div>

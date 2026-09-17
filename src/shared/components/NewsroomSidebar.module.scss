@@ -21,10 +21,42 @@
   margin: 0;
 }
 
+.sidebarTitleClickable {
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 .tabs {
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.tabRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.arrowButton {
+  width: 19px;
+  height: 19px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 0.7px solid rgba(8, 34, 68, 0.5);
+  color: #082244;
+  font-size: 0.6875em;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background: rgba(8, 34, 68, 0.08);
+  }
 }
 
 .tab {

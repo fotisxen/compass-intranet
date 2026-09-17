@@ -11,6 +11,7 @@ export interface IPersonSpotlightCardProps {
 
 export interface IPersonSpotlightCardState {
   index: number;
+  photoFailed: boolean;
 }
 
 /**
@@ -29,20 +30,29 @@ function fitFontSize(text: string, base: number, min: number, startShrinkingAt: 
 export default class PersonSpotlightCard extends React.Component<IPersonSpotlightCardProps, IPersonSpotlightCardState> {
   constructor(props: IPersonSpotlightCardProps) {
     super(props);
-    this.state = { index: 0 };
+    this.state = { index: 0, photoFailed: false };
   }
 
   private _prev = (): void => {
-    this.setState(prev => ({ index: (prev.index - 1 + this.props.people.length) % this.props.people.length }));
+    this.setState(prev => ({ index: (prev.index - 1 + this.props.people.length) % this.props.people.length, photoFailed: false }));
   };
 
   private _next = (): void => {
-    this.setState(prev => ({ index: (prev.index + 1) % this.props.people.length }));
+    this.setState(prev => ({ index: (prev.index + 1) % this.props.people.length, photoFailed: false }));
   };
 
-  public render(): React.ReactElement<IPersonSpotlightCardProps> {
+  private _onPhotoError = (): void => {
+    this.setState({ photoFailed: true });
+  };
+
+  public render(): React.ReactElement {
     const { heading, background, people } = this.props;
+    const { photoFailed } = this.state;
     const person = people[this.state.index];
+    if (!person) {
+      // Author deleted every entry via the property pane's collection editor.
+      return <></>;
+    }
 
     const nameFontSize = fitFontSize(person.name, 14, 11, 16, 0.3);
     const titleFontSize = fitFontSize(person.title, 11, 9, 20, 0.15);
@@ -56,7 +66,11 @@ export default class PersonSpotlightCard extends React.Component<IPersonSpotligh
 
         <p className={styles.heading}>{heading}</p>
 
-        <span className={styles.avatar}>{person.initials}</span>
+        {person.photoUrl && !photoFailed ? (
+          <img className={styles.avatarPhoto} src={person.photoUrl} alt={person.name} onError={this._onPhotoError} />
+        ) : (
+          <span className={styles.avatar}>{person.initials}</span>
+        )}
         <div className={styles.nameBlock}>
           <p className={styles.name} style={{ fontSize: nameFontSize }}>{person.name}</p>
           <p className={styles.title} style={{ fontSize: titleFontSize }}>{person.title}</p>

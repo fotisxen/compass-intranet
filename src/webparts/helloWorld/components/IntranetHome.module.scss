@@ -34,13 +34,20 @@
 .newsGrid {
   flex: 1;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  // Always 3 equal columns, even with 1-2 cards — so a single card keeps
+  // the same width it would have alongside two others, instead of
+  // stretching to fill the row (auto-fit + 1fr did that).
+  grid-template-columns: repeat(3, 1fr);
   gap: 18px;
 }
 
 @media (max-width: 900px) {
   .newsWrap {
     flex-direction: column;
+  }
+
+  .newsGrid {
+    grid-template-columns: 1fr;
   }
 }
 

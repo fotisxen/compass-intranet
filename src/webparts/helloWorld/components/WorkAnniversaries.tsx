@@ -1,21 +1,25 @@
 import * as React from 'react';
 import styles from './WorkAnniversaries.module.scss';
-import { anniversaries } from './data/mockData';
+import type { IAnniversary } from './data/mockData';
 
 const PAGE_SIZE = 4;
+
+export interface IWorkAnniversariesProps {
+  people: IAnniversary[];
+}
 
 export interface IWorkAnniversariesState {
   page: number;
 }
 
-export default class WorkAnniversaries extends React.Component<Record<string, never>, IWorkAnniversariesState> {
-  constructor(props: Record<string, never>) {
+export default class WorkAnniversaries extends React.Component<IWorkAnniversariesProps, IWorkAnniversariesState> {
+  constructor(props: IWorkAnniversariesProps) {
     super(props);
     this.state = { page: 0 };
   }
 
   private get _pageCount(): number {
-    return Math.max(1, Math.ceil(anniversaries.length / PAGE_SIZE));
+    return Math.max(1, Math.ceil(this.props.people.length / PAGE_SIZE));
   }
 
   private _prev = (): void => {
@@ -28,7 +32,7 @@ export default class WorkAnniversaries extends React.Component<Record<string, ne
 
   public render(): React.ReactElement {
     const { page } = this.state;
-    const visible = anniversaries.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE);
+    const visible = this.props.people.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE);
 
     return (
       <div className={styles.card}>
