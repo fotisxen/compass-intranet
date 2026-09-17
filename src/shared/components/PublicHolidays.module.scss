@@ -90,10 +90,13 @@
   padding: 6px 0;
   border-bottom: 1px solid rgba(8, 34, 68, 0.08);
   // Always one line, truncated with ellipsis rather than wrapping to a
-  // second line if the holiday name is long.
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  // second line if the holiday name is long. !important because
+  // SharePoint's own page CSS was observed overriding plain white-space:
+  // nowrap here (real holiday names wrapped across 3 lines on the live
+  // hosted workbench despite this rule compiling correctly).
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
   min-width: 0;
 }
 
