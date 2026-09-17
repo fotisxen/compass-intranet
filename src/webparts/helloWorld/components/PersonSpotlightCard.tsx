@@ -4,6 +4,8 @@ import type { IPersonSpotlight } from './data/mockData';
 
 export interface IPersonSpotlightCardProps {
   heading: string;
+  /** Welcome Aboard and Promotions show this heading at different sizes — 20px and 18px respectively at the 1440px reference width. */
+  headingFontSize: number;
   background: string;
   /** Hand-authored list (see data/mockData.ts) — the arrows cycle through these one at a time. */
   people: IPersonSpotlight[];
@@ -46,7 +48,7 @@ export default class PersonSpotlightCard extends React.Component<IPersonSpotligh
   };
 
   public render(): React.ReactElement {
-    const { heading, background, people } = this.props;
+    const { heading, headingFontSize, background, people } = this.props;
     const { photoFailed } = this.state;
     const person = people[this.state.index];
     if (!person) {
@@ -54,9 +56,9 @@ export default class PersonSpotlightCard extends React.Component<IPersonSpotligh
       return <></>;
     }
 
-    const nameFontSize = fitFontSize(person.name, 14, 11, 16, 0.3);
-    const titleFontSize = fitFontSize(person.title, 11, 9, 20, 0.15);
-    const newTitleFontSize = person.newTitle ? fitFontSize(person.newTitle, 11, 9, 18, 0.15) : undefined;
+    const nameFontSize = fitFontSize(person.name, 18, 11, 16, 0.3);
+    const titleFontSize = fitFontSize(person.title, 13, 9, 20, 0.15);
+    const newTitleFontSize = person.newTitle ? fitFontSize(person.newTitle, 13, 9, 18, 0.15) : undefined;
 
     return (
       <div className={styles.card} style={{ background }}>
@@ -64,7 +66,7 @@ export default class PersonSpotlightCard extends React.Component<IPersonSpotligh
           <button className={styles.arrowButton} onClick={this._prev} aria-label="Previous">←</button>
         )}
 
-        <p className={styles.heading}>{heading}</p>
+        <p className={styles.heading} style={{ fontSize: headingFontSize }}>{heading}</p>
 
         {person.photoUrl && !photoFailed ? (
           <img className={styles.avatarPhoto} src={person.photoUrl} alt={person.name} onError={this._onPhotoError} />
@@ -83,7 +85,7 @@ export default class PersonSpotlightCard extends React.Component<IPersonSpotligh
           {person.fields.map(f => (
             <div className={styles.field} key={f.label}>
               <span className={styles.fieldLabel}>{f.label}</span>
-              <span className={styles.fieldValue} style={{ fontSize: fitFontSize(f.value, 11, 9, 12, 0.2) }}>
+              <span className={styles.fieldValue} style={{ fontSize: fitFontSize(f.value, 13, 9, 12, 0.2) }}>
                 {f.value}
               </span>
             </div>

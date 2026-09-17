@@ -35,7 +35,8 @@
   margin: 0;
   font-family: 'Inter', sans-serif;
   font-weight: 400;
-  font-size: 0.875em;
+  // 20px at the 1440px reference width.
+  font-size: 1em;
   line-height: 18px;
   color: #ffffff;
   display: -webkit-box;
@@ -53,7 +54,8 @@
 
 .date {
   font-family: 'Inter', sans-serif;
-  font-size: 0.6875em;
+  // 13px at the 1440px reference width.
+  font-size: 0.65em;
   color: #ffffff;
 }
 
@@ -67,7 +69,8 @@
   background: transparent;
   color: #ffffff;
   font-family: 'Inter', sans-serif;
-  font-size: 0.6875em;
+  // 13px at the 1440px reference width.
+  font-size: 0.65em;
   cursor: pointer;
   white-space: nowrap;
 

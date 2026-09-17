@@ -122,7 +122,8 @@
 .fieldLabel {
   font-family: 'Inter', sans-serif;
   font-weight: 600;
-  font-size: 0.5313em;
+  // 10px at the 1440px reference width.
+  font-size: 0.5em;
   letter-spacing: 0.8px;
   color: rgba(8, 34, 68, 0.5);
 }

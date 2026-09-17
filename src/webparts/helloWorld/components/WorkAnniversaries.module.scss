@@ -14,7 +14,8 @@
   margin: 0;
   font-family: 'Inter', sans-serif;
   font-weight: 400;
-  font-size: 1.1775em;
+  // 20px at the 1440px reference width.
+  font-size: 1em;
   color: #082244;
 }
 
@@ -63,14 +64,16 @@
 .nameText {
   font-family: 'Inter', sans-serif;
   font-weight: 600;
-  font-size: 0.7188em;
+  // 13px at the 1440px reference width.
+  font-size: 0.65em;
   color: #082244;
 }
 
 .roleText {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
-  font-size: 0.6563em;
+  // 11px at the 1440px reference width.
+  font-size: 0.55em;
   color: #082244;
 }
 
