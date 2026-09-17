@@ -21,6 +21,10 @@
   // same fix — cancel it here too so this stays flush with siblings placed
   // in other zones instead of sitting inset from them.
   margin: -16px;
+  // Nudges the map left/right without touching its width — see
+  // --compass-map-nudge-x's own comment for why this exists separately
+  // from the -16px zone-cancel above.
+  margin-left: calc(-16px + var(--compass-map-nudge-x));
 }
 
 .map {

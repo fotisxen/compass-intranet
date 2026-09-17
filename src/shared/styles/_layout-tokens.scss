@@ -30,4 +30,14 @@
   // empty 1440px cap), used by Footer/Public Holidays so their right edge
   // lines up with the map/3rd card/Work Anniversaries above.
   --compass-row-w: calc(var(--compass-sidebar-w) + var(--compass-sidebar-gap) + var(--compass-map-w));
+
+  // The Fleet Map lives in its own separate SharePoint section (Events +
+  // Map, 2 columns) from the section above (row-w's sidebar+map formula) —
+  // two independent sections aren't guaranteed to share the same effective
+  // column width/padding, so the map's exact horizontal position can only
+  // be confirmed on the real deployed page. If it's off after a
+  // deployment, change this one value (in DevTools first to find the right
+  // number live, then here) to shift the whole map left/right without
+  // touching its width — positive moves it right, negative moves it left.
+  --compass-map-nudge-x: 0px;
 }
