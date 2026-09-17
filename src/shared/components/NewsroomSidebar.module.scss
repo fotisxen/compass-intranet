@@ -62,8 +62,8 @@
 
 .tab {
   font-family: 'Inter', sans-serif;
-  // 19px at the 1440px reference width.
-  font-size: 0.95em;
+  // 16px at the 1440px reference width.
+  font-size: 0.8em;
   letter-spacing: 0.02em;
   color: rgba(8, 34, 68, 0.82);
   text-decoration: none;
@@ -82,7 +82,7 @@
 .tabHighlighted {
   // Matches .tab's size — this replaces it rather than combining with it,
   // so it needs its own copy instead of inheriting .tab's.
-  font-size: 0.95em;
+  font-size: 0.8em;
   background: linear-gradient(90deg, rgba(8, 34, 68, 0.82) 0%, rgba(170, 20, 23, 0.82) 58.17%);
   -webkit-background-clip: text;
   background-clip: text;
