@@ -22,6 +22,13 @@
   height: 100%;
   width: 100%;
   background: #d9e8f5;
+  // Recolors the OSM basemap into a blue duotone (land medium-blue, ocean
+  // pale-blue). Scoping this to just the tile layer (rather than .map
+  // itself) produces a washed-out gray result instead — a Leaflet/browser
+  // compositing quirk, not a selector mistake — so it's applied here and
+  // markers rely on shape (circle vs. arrow), not just color, to stay
+  // distinguishable once this also lightens their fill.
+  filter: invert(1) grayscale(1) brightness(6) contrast(0.9);
 }
 
 .tag {
