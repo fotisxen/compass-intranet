@@ -10,6 +10,7 @@ export interface IChromeRootProps {
   aadHttpClientFactory?: AadHttpClientFactory;
   chatResourceUri?: string;
   chatQueryUrl?: string;
+  homeUrl?: string;
 }
 
 export interface IChromeRootState {
@@ -39,7 +40,7 @@ export default class ChromeRoot extends React.Component<IChromeRootProps, IChrom
 
     return (
       <>
-        <Header onOpenAssistant={this._openChat} />
+        <Header onOpenAssistant={this._openChat} homeUrl={this.props.homeUrl} />
         {isChatOpen && (
           <>
             <div className={styles.backdrop} onClick={this._closeChat} />

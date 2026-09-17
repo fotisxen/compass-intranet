@@ -4,6 +4,8 @@ import { NAV_ITEMS } from './navData';
 
 export interface IHeaderProps {
   onOpenAssistant: () => void;
+  /** Site's home page URL — the logo/brand links here. Defaults to '/' when omitted (standalone preview). */
+  homeUrl?: string;
 }
 
 export interface IHeaderState {
@@ -48,16 +50,17 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
 
   public render(): React.ReactElement<IHeaderProps> {
     const { openItem } = this.state;
+    const { homeUrl } = this.props;
 
     return (
       <header className={styles.header}>
         <div className={styles.bar}>
-          <div className={styles.brand}>
+          <a className={styles.brand} href={homeUrl || '/'} aria-label="Compass home">
             <svg className={styles.brandMark} width="24" height="23" viewBox="0 0 24 23" fill="none" aria-hidden="true">
               <path d="M4 23H0V0H24L19.1111 9.11321H16.8889L12.8889 1.30189L9.33333 9.11321H1.33333L7.55556 15.6226L4 23Z" fill="#be002b" />
             </svg>
             <span className={styles.brandName}>Compass</span>
-          </div>
+          </a>
 
           <ul className={styles.nav}>
             {NAV_ITEMS.map(item => (

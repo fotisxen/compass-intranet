@@ -36,7 +36,8 @@ export default class CompassChromeApplicationCustomizer
             chatApiUrl: this.properties.chatApiUrl || '',
             aadHttpClientFactory: this.context.aadHttpClientFactory,
             chatResourceUri: this.properties.chatResourceUri,
-            chatQueryUrl: this.properties.chatQueryUrl
+            chatQueryUrl: this.properties.chatQueryUrl,
+            homeUrl: this.context.pageContext.web.absoluteUrl
           }),
           this._topPlaceholder.domElement
         );
