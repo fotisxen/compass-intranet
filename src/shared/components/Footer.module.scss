@@ -4,6 +4,11 @@
   // Same app-wide scale as IntranetHome's .page — this renders into its
   // own placeholder outside that DOM tree, so it needs its own base.
   font-size: clamp(14px, 1.38889vw, 20px);
+  // Same SharePoint web part zone padding as IntranetHome's .page, and the
+  // same fix — cancel it here too now that Footer is a regular web part
+  // (dropped into a page's canvas) rather than the Application Customizer's
+  // Bottom placeholder.
+  margin: -16px;
 }
 
 .inner {
