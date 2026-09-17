@@ -37,7 +37,10 @@
   // Always 3 equal columns, even with 1-2 cards — so a single card keeps
   // the same width it would have alongside two others, instead of
   // stretching to fill the row (auto-fit + 1fr did that).
-  grid-template-columns: repeat(3, 1fr);
+  // 295px at the 1440px reference width (measured on the live page),
+  // scaling down proportionally below that — same vw-based approach as
+  // the app's font-size scale — and never growing past 295px above it.
+  grid-template-columns: repeat(3, min(20.4861vw, 295px));
   gap: 18px;
 }
 

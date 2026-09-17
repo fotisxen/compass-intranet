@@ -25,7 +25,8 @@
 .title {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
-  font-size: 1.5625em;
+  // 25px at the 1440px reference width.
+  font-size: 1.25em;
   color: #082244;
   margin: 0;
 }
@@ -58,7 +59,8 @@
 .eventTitle {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
-  font-size: 1.125em;
+  // 19px at the 1440px reference width.
+  font-size: 0.95em;
   color: #000000;
   margin: 0;
 }
