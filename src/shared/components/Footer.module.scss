@@ -11,10 +11,6 @@
   // (dropped into a page's canvas) rather than the Application Customizer's
   // Bottom placeholder.
   margin: -16px;
-  // Nudges the whole footer left/right without touching its width — see
-  // --compass-footer-nudge-x's own comment for why this exists separately
-  // from the -16px zone-cancel above.
-  margin-left: calc(-16px + var(--compass-footer-nudge-x));
 }
 
 // Mirrors IntranetHome's .main exactly (max-width:1440px; margin:0 auto)
@@ -37,6 +33,10 @@
   // .main's own 1440px box.
   max-width: var(--compass-row-w);
   padding: 40px 0;
+  // Shifts Stay Connected/Quick Access/the ticker to the right, without
+  // touching .footer's own blue background box above (that stays full
+  // width, untouched) — see --compass-footer-nudge-x's own comment.
+  margin-left: var(--compass-footer-nudge-x);
   display: flex;
   align-items: flex-start;
   gap: 32px;
