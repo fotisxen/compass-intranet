@@ -3,7 +3,7 @@
   "solution": {
     "name": "compass-intranet-client-side-solution",
     "id": "23b1e9a3-50ed-4585-bfdf-401f1b47f980",
-    "version": "1.0.5.0",
+    "version": "1.0.6.0",
     "includeClientSideAssets": true,
     "skipFeatureDeployment": true,
     "isDomainIsolated": false,
