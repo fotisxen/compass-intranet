@@ -24,7 +24,7 @@ export const NAV_ITEMS: INavItem[] = [
       [
         {
           items: [
-            { label: 'Starbulk Overview', href: '/sites/Intranet/SitePages/Corporate-Profile.aspx' },
+            { label: 'Overview', href: '/sites/Intranet/SitePages/Corporate-Profile.aspx' },
             { label: 'Policies', href: '/sites/Intranet/SitePages/Regulations-and-Policies.aspx' },
             { label: 'Environmental, Social & Governance', href: '/sites/Intranet/SitePages/Environmental,-Social-&-Governance.aspx' },
             { label: 'Buildings & Facilities', href: '/sites/Intranet/SitePages/Buildings-&-Facilities.aspx' }
