@@ -11,6 +11,7 @@ import Footer from '../../shared/components/Footer';
 export interface IFooterWebPartProps {
   companyName: string;
   stockApiUrl?: string;
+  euronextApiUrl?: string;
   contentOffsetX?: number;
 }
 
@@ -28,6 +29,7 @@ export default class FooterWebPart extends BaseClientSideWebPart<IFooterWebPartP
     const element: React.ReactElement = React.createElement(Footer, {
       companyName: this.properties.companyName || 'Compass',
       stockApiUrl: this.properties.stockApiUrl,
+      euronextApiUrl: this.properties.euronextApiUrl,
       contentOffsetX: this.properties.contentOffsetX
     });
     ReactDom.render(element, this.domElement);
@@ -71,6 +73,9 @@ export default class FooterWebPart extends BaseClientSideWebPart<IFooterWebPartP
                 }),
                 PropertyPaneTextField('stockApiUrl', {
                   label: strings.StockApiUrlFieldLabel
+                }),
+                PropertyPaneTextField('euronextApiUrl', {
+                  label: strings.EuronextApiUrlFieldLabel
                 })
               ]
             },

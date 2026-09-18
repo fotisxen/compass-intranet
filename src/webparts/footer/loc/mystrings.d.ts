@@ -3,6 +3,7 @@ declare interface IFooterWebPartStrings {
   BasicGroupName: string;
   CompanyNameFieldLabel: string;
   StockApiUrlFieldLabel: string;
+  EuronextApiUrlFieldLabel: string;
   AlignmentGroupName: string;
   ContentOffsetXFieldLabel: string;
 }

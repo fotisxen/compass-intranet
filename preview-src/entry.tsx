@@ -31,6 +31,12 @@ const stockApiUrl =
   new URLSearchParams(window.location.search).get('stockApiUrl') ||
   'https://bpcstarbulkwebapi.azurewebsites.net/api/GetStockPrice';
 
+// Proxies starbulk.com's own Euronext Athens feed (api/src/functions/euronextStock.ts)
+// — not deployed anywhere yet, so unlike stockApiUrl above there's no known
+// production URL to default to. Run `npm start` in api/ and open this
+// preview as http://localhost:5600/?euronextApiUrl=http://localhost:7071/api/euronextStock
+const euronextApiUrl = new URLSearchParams(window.location.search).get('euronextApiUrl') || undefined;
+
 ReactDom.render(React.createElement(ChromeRoot, { chatApiUrl: '' }), document.getElementById('chrome-top'));
 
 // Compass Holidays is its own standalone web part now, placed right under
@@ -85,4 +91,4 @@ ReactDom.render(
   }),
   document.getElementById('root')
 );
-ReactDom.render(React.createElement(Footer, { companyName: 'Compass', stockApiUrl, contentOffsetX: 100 }), document.getElementById('chrome-bottom'));
+ReactDom.render(React.createElement(Footer, { companyName: 'Compass', stockApiUrl, euronextApiUrl, contentOffsetX: 100 }), document.getElementById('chrome-bottom'));

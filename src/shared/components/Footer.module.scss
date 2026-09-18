@@ -118,6 +118,9 @@
   font-size: 0.8125em;
   color: rgba(255, 255, 255, 0.6);
   font-variant-numeric: tabular-nums;
+  // "NASDAQ:SBLK"/"EURONEXT:SBLK" are long enough to wrap if squeezed —
+  // always one line, same as the price/change columns beside it.
+  white-space: nowrap;
 }
 
 .tickerChange {

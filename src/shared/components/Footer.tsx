@@ -10,6 +10,8 @@ export interface IFooterProps {
   companyName: string;
   /** Real quote endpoint (GetStockPrice) on the same Azure Function App as the fleet API. Tickers stay hidden when absent or unreachable — no placeholder numbers are shown. */
   stockApiUrl?: string;
+  /** Server-side proxy (api/src/functions/euronextStock.ts) for starbulk.com's own Euronext Athens feed — that endpoint has no CORS header, so it can't be called directly from this site. Same "stays hidden if unreachable" behavior as stockApiUrl. */
+  euronextApiUrl?: string;
   /** Shifts Stay Connected/Quick Access/the ticker right (or left, negative) without moving the blue background — editable from the web part's property pane since the real page's exact alignment can't be verified until it's live. */
   contentOffsetX?: number;
 }
@@ -46,19 +48,27 @@ interface IStockTicker {
   price: string;
 }
 
-interface IStockApiEntry {
+interface INasdaqApiEntry {
   symbol: string;
   lastTrade: number;
   changePercent: number;
   isDefault: string;
 }
 
-interface IStockApiResponse {
-  data?: IStockApiEntry[];
+interface INasdaqApiResponse {
+  data?: INasdaqApiEntry[];
 }
 
-function formatPrice(lastTrade: number): string {
-  return `$${lastTrade.toFixed(2)}`;
+// starbulk.com's own feed — same shape confirmed by calling
+// ?module=investorrelations&action=get-euronext-stock-feed directly, but
+// unlike the NASDAQ feed above, its numeric fields come through as strings.
+interface IEuronextApiResponse {
+  lastTrade?: string;
+  changePercent?: string;
+}
+
+function formatPrice(lastTrade: number, currencySymbol: string): string {
+  return `${currencySymbol}${lastTrade.toFixed(2)}`;
 }
 
 function formatChangePct(pct: number): string {
@@ -81,37 +91,59 @@ export default class Footer extends React.Component<IFooterProps, IFooterState> 
   }
 
   private async _loadTickers(): Promise<void> {
+    // Independent try/catch per exchange (not a shared one around
+    // Promise.all) — one feed being unreachable shouldn't also hide the
+    // other, working one.
+    const [nasdaq, euronext] = await Promise.all([
+      this._loadNasdaqTicker().catch(() => undefined),
+      this._loadEuronextTicker().catch(() => undefined)
+    ]);
+
+    const tickers = [nasdaq, euronext].filter((t): t is IStockTicker => !!t);
+    if (tickers.length > 0) {
+      this.setState({ tickers });
+    }
+  }
+
+  private async _loadNasdaqTicker(): Promise<IStockTicker | undefined> {
     const { stockApiUrl } = this.props;
     if (!stockApiUrl) {
-      return;
+      return undefined;
     }
 
     const response = await fetch(stockApiUrl);
     if (!response.ok) {
-      return;
+      return undefined;
     }
 
-    const data: IStockApiResponse = await response.json();
-    if (!data.data || data.data.length === 0) {
-      return;
+    const data: INasdaqApiResponse = await response.json();
+    const sblk = data.data?.find(e => e.isDefault === 'true');
+    if (!sblk) {
+      return undefined;
     }
 
-    const sblk = data.data.filter(e => e.isDefault === 'true')[0];
-    const index = data.data.filter(e => e.symbol === '.SPX')[0];
-    const tickers: IStockTicker[] = [sblk, index]
-      .filter((e): e is IStockApiEntry => !!e)
-      .map(e => ({
-        // The real API prefixes index tickers with "." (e.g. ".SPX") —
-        // that's just their internal convention, not something worth
-        // showing the user.
-        symbol: e.symbol.replace(/^\./, ''),
-        changePct: formatChangePct(e.changePercent),
-        price: formatPrice(e.lastTrade)
-      }));
+    return { symbol: 'NASDAQ:SBLK', changePct: formatChangePct(sblk.changePercent), price: formatPrice(sblk.lastTrade, '$') };
+  }
 
-    if (tickers.length > 0) {
-      this.setState({ tickers });
+  private async _loadEuronextTicker(): Promise<IStockTicker | undefined> {
+    const { euronextApiUrl } = this.props;
+    if (!euronextApiUrl) {
+      return undefined;
     }
+
+    const response = await fetch(euronextApiUrl);
+    if (!response.ok) {
+      return undefined;
+    }
+
+    const data: IEuronextApiResponse = await response.json();
+    const lastTrade = parseFloat(data.lastTrade || '');
+    const changePercent = parseFloat(data.changePercent || '');
+    if (isNaN(lastTrade) || isNaN(changePercent)) {
+      return undefined;
+    }
+
+    return { symbol: 'EURONEXT:SBLK', changePct: formatChangePct(changePercent), price: formatPrice(lastTrade, '€') };
   }
 
   public render(): React.ReactElement<IFooterProps> {
