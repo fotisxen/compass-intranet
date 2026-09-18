@@ -10,6 +10,8 @@ export interface IFooterProps {
   companyName: string;
   /** Real quote endpoint (GetStockPrice) on the same Azure Function App as the fleet API. Tickers stay hidden when absent or unreachable — no placeholder numbers are shown. */
   stockApiUrl?: string;
+  /** Shifts Stay Connected/Quick Access/the ticker right (or left, negative) without moving the blue background — editable from the web part's property pane since the real page's exact alignment can't be verified until it's live. */
+  contentOffsetX?: number;
 }
 
 export interface IFooterState {
@@ -114,11 +116,12 @@ export default class Footer extends React.Component<IFooterProps, IFooterState> 
 
   public render(): React.ReactElement<IFooterProps> {
     const { tickers } = this.state;
+    const { contentOffsetX } = this.props;
 
     return (
       <footer className={styles.footer}>
         <div className={styles.outer}>
-        <div className={styles.inner}>
+        <div className={styles.inner} style={contentOffsetX ? { marginLeft: contentOffsetX } : undefined}>
           <div className={styles.linksGroup}>
             <div className={styles.column}>
               <span className={styles.columnLabel}>STAY CONNECTED</span>

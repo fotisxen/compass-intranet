@@ -42,7 +42,7 @@ ReactDom.render(
   React.createElement(
     'div',
     { style: { paddingTop: 24, background: '#ffffff' } },
-    React.createElement(PublicHolidays, { spHttpClient: fakeSpHttpClient as never, siteUrl: 'https://example.sharepoint.com/sites/demo' })
+    React.createElement(PublicHolidays, { spHttpClient: fakeSpHttpClient as never, siteUrl: 'https://example.sharepoint.com/sites/demo', offsetX: 50 })
   ),
   document.getElementById('holidays-root')
 );
@@ -85,4 +85,4 @@ ReactDom.render(
   }),
   document.getElementById('root')
 );
-ReactDom.render(React.createElement(Footer, { companyName: 'Compass', stockApiUrl }), document.getElementById('chrome-bottom'));
+ReactDom.render(React.createElement(Footer, { companyName: 'Compass', stockApiUrl, contentOffsetX: 100 }), document.getElementById('chrome-bottom'));

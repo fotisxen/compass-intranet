@@ -6,6 +6,8 @@ import { type IHoliday } from './data/holidaysMockData';
 export interface IPublicHolidaysProps {
   spHttpClient: SPHttpClient;
   siteUrl: string;
+  /** Shifts the whole widget right (or left, negative) — editable from the web part's property pane since the real page's exact alignment can't be verified until it's live. */
+  offsetX?: number;
 }
 
 export interface IPublicHolidaysState {
@@ -72,8 +74,10 @@ export default class PublicHolidays extends React.Component<IPublicHolidaysProps
   }
 
   public render(): React.ReactElement {
+    const { offsetX } = this.props;
+
     return (
-      <div className={styles.zone}>
+      <div className={styles.zone} style={{ marginLeft: `calc(-16px + ${offsetX ?? 0}px)` }}>
         <div className={styles.outer}>
         <div className={styles.widget}>
           <div className={styles.heading}>PUBLIC HOLIDAYS</div>

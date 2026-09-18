@@ -41,15 +41,10 @@
   // touching its width — positive moves it right, negative moves it left.
   --compass-map-nudge-x: 0px;
 
-  // Same idea as --compass-map-nudge-x above, but for Footer and Public
-  // Holidays — both are also their own standalone web parts, each in their
-  // own SharePoint zone, so their real horizontal position (not just their
-  // width, already handled by --compass-row-w) can only be confirmed on
-  // the real page too. Shifts the whole component left/right without
-  // touching its width. Non-zero defaults below are the values confirmed
-  // (Footer) or estimated (Public Holidays, not yet confirmed live) on the
-  // real hosted workbench — still freely tweakable live in DevTools from
-  // here without needing another deployment.
-  --compass-footer-nudge-x: 100px;
-  --compass-holidays-nudge-x: 50px;
+  // Footer and Public Holidays had the same kind of nudge here too, but
+  // moved to a property pane "Alignment" offset field on each web part
+  // instead (FooterWebPart's contentOffsetX, HolidaysWebPart's offsetX) —
+  // editable by a site owner directly in SharePoint, no DevTools/code
+  // access needed, unlike the Fleet Map above which isn't independently
+  // placed by an editor the same way.
 }

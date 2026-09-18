@@ -3,6 +3,8 @@ declare interface IFooterWebPartStrings {
   BasicGroupName: string;
   CompanyNameFieldLabel: string;
   StockApiUrlFieldLabel: string;
+  AlignmentGroupName: string;
+  ContentOffsetXFieldLabel: string;
 }
 
 declare module 'FooterWebPartStrings' {

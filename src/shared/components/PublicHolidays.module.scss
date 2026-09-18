@@ -5,11 +5,18 @@
 @use '../styles/layout-tokens';
 
 .zone {
+  // margin-left is overridden inline from PublicHolidays.tsx using the
+  // property pane's "Alignment" offset field — this -16px is the base for
+  // top/bottom (and the fallback for left with a zero offset).
   margin: -16px;
-  // Nudges the whole widget left/right without touching its width — see
-  // --compass-holidays-nudge-x's own comment for why this exists separately
-  // from the -16px zone-cancel above.
-  margin-left: calc(-16px + var(--compass-holidays-nudge-x));
+  // Explicit width (matching the +32px this -16px/-16px margin would
+  // otherwise produce via auto-width absorption) so the inline offset can
+  // shift this box via margin-left without the browser "solving" a
+  // flexible auto-width by shrinking it instead — with an auto width,
+  // increasing margin-left alone keeps this box's right edge fixed
+  // (borrowing the shift back out of the width), which is why the widget
+  // didn't visibly move at all.
+  width: calc(100% + 32px);
 }
 
 // Mirrors IntranetHome's .main (max-width:1440px; margin:0 auto) so this
