@@ -32,14 +32,15 @@
   // the cards/Work Anniversaries above, which are also left-flush inside
   // .main's own 1440px box.
   max-width: var(--compass-row-w);
-  // Explicit (not just max-width, which alone leaves this at width:auto)
-  // so the property-pane offset below can shift this box via margin-left
+  // A percentage (not the keyword auto, and not a fixed formula either) so
+  // the property-pane offset below can shift this box via margin-left
   // without the browser "solving" a flexible auto-width by shrinking it
-  // from the right instead — that silently canceled the ticker's rightward
-  // shift while Stay Connected still visibly moved, since with an auto
-  // width, increasing margin-left keeps this box's right edge fixed (it
-  // borrows the shift back out of the width instead of moving the box).
-  width: var(--compass-row-w);
+  // from the right instead (that silently canceled the ticker's rightward
+  // shift while Stay Connected still visibly moved) — while still shrinking
+  // to fit the real zone when it's narrower than --compass-row-w's formula
+  // assumes, instead of always forcing that exact width and pushing the
+  // ticker out into empty space past where the real row actually ends.
+  width: 100%;
   padding: 40px 0;
   // A horizontal offset (property pane field, "Alignment" group) is
   // applied inline here from Footer.tsx — shifts Stay Connected/Quick
