@@ -46,7 +46,10 @@
   // own SharePoint zone, so their real horizontal position (not just their
   // width, already handled by --compass-row-w) can only be confirmed on
   // the real page too. Shifts the whole component left/right without
-  // touching its width.
-  --compass-footer-nudge-x: 0px;
-  --compass-holidays-nudge-x: 0px;
+  // touching its width. Non-zero defaults below are the values confirmed
+  // (Footer) or estimated (Public Holidays, not yet confirmed live) on the
+  // real hosted workbench — still freely tweakable live in DevTools from
+  // here without needing another deployment.
+  --compass-footer-nudge-x: 100px;
+  --compass-holidays-nudge-x: 50px;
 }
