@@ -40,4 +40,13 @@
   // number live, then here) to shift the whole map left/right without
   // touching its width — positive moves it right, negative moves it left.
   --compass-map-nudge-x: 0px;
+
+  // Same idea as --compass-map-nudge-x above, but for Footer and Public
+  // Holidays — both are also their own standalone web parts, each in their
+  // own SharePoint zone, so their real horizontal position (not just their
+  // width, already handled by --compass-row-w) can only be confirmed on
+  // the real page too. Shifts the whole component left/right without
+  // touching its width.
+  --compass-footer-nudge-x: 0px;
+  --compass-holidays-nudge-x: 0px;
 }
