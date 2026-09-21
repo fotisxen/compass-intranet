@@ -1,8 +1,6 @@
 .wrap {
   display: flex;
   flex-direction: column;
-  // 17px gap + two 304.5px cards = 626px total, matching Fleet Map's height.
-  gap: 17px;
   width: 220px;
   flex-shrink: 0;
   // Same app-wide scale as IntranetHome's .page — needed here too since
@@ -14,34 +12,15 @@
   margin: -16px;
 }
 
-.titleCard {
-  box-sizing: border-box;
-  border: 1px solid rgba(8, 34, 68, 0.2);
-  border-radius: 20px;
-  padding: 26px;
-  // Fixed rather than min-height, so this stays exactly 304.5px regardless
-  // of whether the section actually stretches this column to the map's
-  // height — see .eventCard below for the matching other half.
-  height: 304.5px;
-  flex-shrink: 0;
-}
-
-.title {
-  font-family: 'Inter', sans-serif;
-  font-weight: 400;
-  // 25px at the 1440px reference width.
-  font-size: 1.25em;
-  color: #082244;
-  margin: 0;
-}
-
 .eventCard {
   background: #c7d7e6;
   border-radius: 20px;
   padding: 26px;
   box-sizing: border-box;
-  // Fixed rather than flex:1 — see .titleCard above for why (this half
-  // stays exactly 304.5px whether or not the section stretches the column).
+  // 304.5px — the "Upcoming Events" title card that used to sit above this
+  // (also 304.5px) is gone, and the Fleet Map's height (--compass-map-h)
+  // matches this value, so this is now the single source of truth for
+  // both instead of the two of them needing to add up to it together.
   height: 304.5px;
   display: flex;
   flex-direction: column;

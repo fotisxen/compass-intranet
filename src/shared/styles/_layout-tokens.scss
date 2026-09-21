@@ -24,7 +24,11 @@
   --compass-people-w: calc(2 * var(--compass-card-w) + var(--compass-gap));
   // 3 cards + 2 gaps = 1045px at the 1440px reference — Fleet Map width.
   --compass-map-w: calc(3 * var(--compass-card-w) + 2 * var(--compass-gap));
-  --compass-map-h: 626px;
+  // Matches EventsWidget's .eventCard height exactly — the "Upcoming
+  // Events" title card that used to sit above it (also 304.5px, for a
+  // combined 626px) is gone, so the map now matches the single remaining
+  // event card instead of the two of them together.
+  --compass-map-h: 304.5px;
   // sidebar + gap + map width = 1289px at the 1440px reference — the
   // Newsroom row's actual total content width (not .main's wider, mostly
   // empty 1440px cap), used by Footer/Public Holidays so their right edge

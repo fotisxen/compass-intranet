@@ -148,10 +148,6 @@ export default class EventsWidget extends React.Component<IEventsWidgetProps, IE
 
     return (
       <div className={styles.wrap}>
-        <div className={styles.titleCard}>
-          <h3 className={styles.title}>Upcoming Events</h3>
-        </div>
-
         {event ? (
           <div className={styles.eventCard}>
             <div className={styles.textGroup}>

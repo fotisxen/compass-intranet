@@ -19,6 +19,12 @@
       "runtimeExecutable": "node",
       "runtimeArgs": ["preview-src/serve.js"],
       "port": 5600
+    },
+    {
+      "name": "api-functions",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "api", "start"],
+      "port": 7071
     }
   ]
 }

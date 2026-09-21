@@ -27,47 +27,42 @@
   margin-bottom: 40px;
 }
 
-.newsWrap {
-  display: flex;
-  gap: 24px;
-  align-items: stretch;
-}
-
 .newsGrid {
-  flex: 1;
   display: grid;
-  // Always 3 equal columns, even with 1-2 cards — so a single card keeps
-  // the same width it would have alongside two others, instead of
-  // stretching to fill the row (auto-fit + 1fr did that).
-  // 335px at the 1440px reference width, scaling down proportionally below
-  // that — same vw-based approach as the app's font-size scale — and never
-  // growing past 335px above it.
-  grid-template-columns: repeat(3, var(--compass-card-w));
+  // The Newsroom filter sidebar (220px + 24px gap) that used to sit to the
+  // left of these 3 cards is gone — its footprint is absorbed into the
+  // first column instead of shrinking the row, so the row's total width
+  // (and right edge) stays exactly what it was with the sidebar in place.
+  // The other two columns are unchanged (335px at the 1440px reference).
+  grid-template-columns: calc(var(--compass-card-w) + var(--compass-sidebar-w) + var(--compass-sidebar-gap)) var(--compass-card-w) var(--compass-card-w);
   gap: var(--compass-gap);
 }
 
 @media (max-width: 900px) {
-  .newsWrap {
-    flex-direction: column;
-  }
-
   .newsGrid {
     grid-template-columns: 1fr;
   }
-}
-
-.peopleRow {
-  display: flex;
-  gap: 24px;
-  align-items: stretch;
 }
 
 .peopleContent {
   // Matches newsGrid's gap, so peopleColumn + this gap + anniversariesColumn
   // totals the same width as the 3 news cards above.
   display: flex;
+  // The "Our People" sidebar (220px + 24px gap) that used to sit to the
+  // left of peopleColumn is gone — peopleColumn now starts flush at the
+  // row's left edge, and the Open Positions card fills the width that
+  // freed up (see openPositionsColumn), so anniversariesColumn stays
+  // exactly where it was (aligned with the 3rd news card).
   gap: var(--compass-gap);
   align-items: stretch;
+}
+
+.openPositionsColumn {
+  // Fills exactly what's left between peopleColumn and anniversariesColumn
+  // (690 + 20 + this + 20 + 335 = 1289): the old sidebar's footprint
+  // (220 + 24) minus one gap = 224px at the 1440px reference width.
+  width: calc(var(--compass-sidebar-w) + var(--compass-sidebar-gap) - var(--compass-gap));
+  flex-shrink: 0;
 }
 
 .peopleColumn {
@@ -91,12 +86,12 @@
     padding: 24px 24px 32px;
   }
 
-  .peopleRow,
   .peopleContent {
     flex-direction: column;
   }
 
-  .anniversariesColumn {
+  .anniversariesColumn,
+  .openPositionsColumn {
     width: 100%;
   }
 }

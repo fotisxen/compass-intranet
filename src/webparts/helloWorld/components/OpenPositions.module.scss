@@ -1,0 +1,88 @@
+.card {
+  position: relative;
+  background: rgba(199, 215, 230, 0.5);
+  border-radius: 30px;
+  padding: 24px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-sizing: border-box;
+  height: 100%;
+}
+
+.title {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  // 19px at the 1440px reference width — same as Work Anniversaries.
+  font-size: 0.95em;
+  color: #082244;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  min-height: 38px;
+  padding: 6px 0;
+  flex-shrink: 0;
+  border-bottom: 1px solid rgba(8, 34, 68, 0.08);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.titleText {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  // 12px at the 1440px reference width.
+  font-size: 0.6em;
+  color: #082244;
+}
+
+.departmentText {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  // 10px at the 1440px reference width.
+  font-size: 0.5em;
+  color: #082244;
+}
+
+.arrowButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  border: 0.7px solid rgba(8, 34, 68, 0.5);
+  background: transparent;
+  color: #082244;
+  font-size: 0.6875em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1;
+
+  &:hover {
+    background: rgba(8, 34, 68, 0.1);
+  }
+}
+
+.arrowLeft {
+  left: 6px;
+}
+
+.arrowRight {
+  right: 6px;
+}

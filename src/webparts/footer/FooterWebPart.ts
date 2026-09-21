@@ -30,6 +30,8 @@ export default class FooterWebPart extends BaseClientSideWebPart<IFooterWebPartP
       companyName: this.properties.companyName || 'Compass',
       stockApiUrl: this.properties.stockApiUrl,
       euronextApiUrl: this.properties.euronextApiUrl,
+      spHttpClient: this.context.spHttpClient,
+      siteUrl: this.context.pageContext.web.absoluteUrl,
       contentOffsetX: this.properties.contentOffsetX
     });
     ReactDom.render(element, this.domElement);

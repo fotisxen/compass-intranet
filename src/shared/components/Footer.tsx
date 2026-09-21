@@ -1,4 +1,7 @@
 import * as React from 'react';
+import type { SPHttpClient } from '@microsoft/sp-http';
+import { type IHoliday } from './data/holidaysMockData';
+import { loadUpcomingHolidays } from './holidaysApi';
 import styles from './Footer.module.scss';
 import starbulkIcon from './assets/footerLinks/starbulk.png';
 import linkedinIcon from './assets/footerLinks/linkedin.webp';
@@ -14,10 +17,14 @@ export interface IFooterProps {
   euronextApiUrl?: string;
   /** Shifts Stay Connected/Quick Access/the ticker right (or left, negative) without moving the blue background — editable from the web part's property pane since the real page's exact alignment can't be verified until it's live. */
   contentOffsetX?: number;
+  /** Both needed for the Public Holidays column (same SharePoint list as the standalone Public Holidays web part); the column stays hidden without them or when no holidays are upcoming. */
+  spHttpClient?: SPHttpClient;
+  siteUrl?: string;
 }
 
 export interface IFooterState {
   tickers: IStockTicker[];
+  holidays: IHoliday[];
 }
 
 interface IFooterLink {
@@ -80,14 +87,28 @@ function formatChangePct(pct: number): string {
 export default class Footer extends React.Component<IFooterProps, IFooterState> {
   constructor(props: IFooterProps) {
     super(props);
-    this.state = { tickers: [] };
+    this.state = { tickers: [], holidays: [] };
   }
 
   public componentDidMount(): void {
+    this._loadHolidays().catch(() => {
+      // No list access — the holidays column just stays hidden.
+    });
     this._loadTickers().catch(() => {
       // Real quotes unavailable — leave tickers empty rather than show
       // placeholder numbers that would look like a working live feed.
     });
+  }
+
+  private async _loadHolidays(): Promise<void> {
+    const { spHttpClient, siteUrl } = this.props;
+    if (!spHttpClient || !siteUrl) {
+      return;
+    }
+    const holidays = await loadUpcomingHolidays(spHttpClient, siteUrl);
+    if (holidays.length > 0) {
+      this.setState({ holidays });
+    }
   }
 
   private async _loadTickers(): Promise<void> {
@@ -147,7 +168,7 @@ export default class Footer extends React.Component<IFooterProps, IFooterState> 
   }
 
   public render(): React.ReactElement<IFooterProps> {
-    const { tickers } = this.state;
+    const { tickers, holidays } = this.state;
     const { contentOffsetX } = this.props;
 
     return (
@@ -190,6 +211,20 @@ export default class Footer extends React.Component<IFooterProps, IFooterState> 
                 ))}
               </div>
             </div>
+
+            {holidays.length > 0 && (
+              <div className={styles.column}>
+                <span className={`${styles.columnLabel} ${styles.holidaysTitle}`}>PUBLIC HOLIDAYS</span>
+                <div className={styles.holidayList}>
+                  {holidays.map(h => (
+                    <div className={styles.holidayRow} key={h.date + h.label}>
+                      <span className={styles.holidayDate}>{h.date}</span>
+                      <span className={styles.holidayLabel}>{h.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           {tickers.length > 0 && (

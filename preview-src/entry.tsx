@@ -16,6 +16,14 @@ const fakeSpHttpClient = {
   get: async () => ({ ok: false })
 };
 
+// Footer's Public Holidays column gets two sample rows (the client above fails on purpose).
+const fakeHolidaysClient = {
+  get: async () => ({
+    ok: true,
+    json: async () => ({ value: [{ Title: 'GR offices closed', EventDate: '2026-10-28T00:00:00Z' }, { Title: 'Cyprus Independence Day - CY', EventDate: '2026-11-02T00:00:00Z' }] })
+  })
+};
+
 // The fleet-positions Azure Function is a normal CORS-enabled REST endpoint
 // with no SharePoint session dependency, so — unlike the calls above — it
 // genuinely can be hit from here. Run `npm start` in api/ (after filling in
@@ -35,7 +43,30 @@ const stockApiUrl =
 // — not deployed anywhere yet, so unlike stockApiUrl above there's no known
 // production URL to default to. Run `npm start` in api/ and open this
 // preview as http://localhost:5600/?euronextApiUrl=http://localhost:7071/api/euronextStock
-const euronextApiUrl = new URLSearchParams(window.location.search).get('euronextApiUrl') || undefined;
+const euronextApiUrl = new URLSearchParams(window.location.search).get('euronextApiUrl') || 'https://mock-euronext.local/api/euronextStock';
+
+// bpcstarbulkwebapi doesn't allow cross-origin calls from localhost, so
+// Open Positions gets a small sample of the real GetJobListings shape here.
+const realFetch = window.fetch.bind(window);
+window.fetch = (input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
+  if (String(input).indexOf('GetStockPrice') !== -1) {
+    return Promise.resolve(new Response(JSON.stringify({ data: [{ symbol: 'SBLK', lastTrade: 32.11, changePercent: 1.1, isDefault: 'true' }] }), { status: 200 }));
+  }
+  if (String(input).indexOf('mock-euronext') !== -1) {
+    return Promise.resolve(new Response(JSON.stringify({ lastTrade: '28.13', changePercent: '2.2166' }), { status: 200 }));
+  }
+  if (String(input).indexOf('GetJobListings') !== -1) {
+    const sample = [
+      { title: 'Technical Coordinator', department: 'Technical' },
+      { title: 'Fleet Manager', department: 'Technical' },
+      { title: 'Junior Financial Reporting Officer', department: 'Financial Reporting Department' },
+      { title: 'Summer internship', department: '' },
+      { title: 'IT Officer', department: 'IT' }
+    ];
+    return Promise.resolve(new Response(JSON.stringify(sample), { status: 200 }));
+  }
+  return realFetch(input, init);
+};
 
 ReactDom.render(React.createElement(ChromeRoot, { chatApiUrl: '' }), document.getElementById('chrome-top'));
 
@@ -91,4 +122,4 @@ ReactDom.render(
   }),
   document.getElementById('root')
 );
-ReactDom.render(React.createElement(Footer, { companyName: 'Compass', stockApiUrl, euronextApiUrl, contentOffsetX: 100 }), document.getElementById('chrome-bottom'));
+ReactDom.render(React.createElement(Footer, { companyName: 'Compass', stockApiUrl, euronextApiUrl, contentOffsetX: 100, spHttpClient: fakeHolidaysClient as never, siteUrl: 'https://example.sharepoint.com/sites/demo' }), document.getElementById('chrome-bottom'));
