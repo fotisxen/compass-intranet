@@ -11,6 +11,7 @@ export interface IHelloWorldProps {
   welcomeAboard?: IPersonSpotlight[];
   promotions?: IPersonSpotlight[];
   anniversaries?: IAnniversary[];
+  pinnedNews?: string[];
 }
 
 export default class HelloWorld extends React.Component<IHelloWorldProps> {
@@ -22,6 +23,7 @@ export default class HelloWorld extends React.Component<IHelloWorldProps> {
         welcomeAboard={this.props.welcomeAboard || defaultWelcomeAboard}
         promotions={this.props.promotions || defaultPromotions}
         anniversaries={this.props.anniversaries || defaultAnniversaries}
+        pinnedNews={this.props.pinnedNews || []}
       />
     );
   }

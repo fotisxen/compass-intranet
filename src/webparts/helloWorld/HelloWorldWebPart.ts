@@ -22,6 +22,7 @@ export interface IHelloWorldWebPartProps {
   welcomeAboard: IPersonSpotlightItem[];
   promotions: IPersonSpotlightItem[];
   anniversaries: IAnniversaryItem[];
+  pinnedNews?: { pageUrl: string }[];
 }
 
 export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorldWebPartProps> {
@@ -41,7 +42,8 @@ export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorld
       siteUrl: this.context.pageContext.web.absoluteUrl,
       welcomeAboard: mapPersonItems(this.properties.welcomeAboard),
       promotions: mapPersonItems(this.properties.promotions),
-      anniversaries: mapAnniversaryItems(this.properties.anniversaries)
+      anniversaries: mapAnniversaryItems(this.properties.anniversaries),
+      pinnedNews: (this.properties.pinnedNews || []).map(p => p.pageUrl).filter(u => !!u && !!u.trim())
     });
     ReactDom.render(element, this.domElement);
   }
@@ -91,6 +93,22 @@ export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorld
             description: strings.PropertyPaneDescription
           },
           groups: [
+            {
+              groupName: 'News',
+              groupFields: [
+                PropertyFieldCollectionData('pinnedNews', {
+                  key: 'pinnedNews',
+                  label: 'Pinned news (shown first for everyone, in this order)',
+                  panelHeader: 'News — pinned pages',
+                  manageBtnLabel: 'Manage pinned news',
+                  saveAndAddBtnLabel: 'Save and add another',
+                  fields: [
+                    { id: 'pageUrl', title: 'Page URL or file name', type: CustomCollectionFieldType.string, required: true, placeholder: '/sites/Intranet/SitePages/My-News.aspx' }
+                  ],
+                  value: this.properties.pinnedNews || []
+                })
+              ]
+            },
             {
               groupName: 'Welcome Aboard',
               groupFields: [

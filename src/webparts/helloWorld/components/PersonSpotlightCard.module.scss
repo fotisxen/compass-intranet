@@ -1,10 +1,12 @@
+@use '../../../shared/styles/layout-tokens';
+
 .card {
   position: relative;
   border-radius: 20px;
   padding: 24px 40px;
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 20px;
   box-sizing: border-box;
   // .nameBlock and .details together refuse to shrink below their natural
   // (nowrap) text width — when the card is narrower than that combined
@@ -13,7 +15,14 @@
   overflow: hidden;
 }
 
+// Positioned in the card's side padding instead of taking a slot in the row,
+// so they never sit on top of the details column — and they land at the
+// same spot on every card.
 .arrowButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
   width: 19px;
   height: 19px;
   border-radius: 50%;
@@ -31,6 +40,14 @@
   &:hover {
     background: rgba(8, 34, 68, 0.08);
   }
+}
+
+.arrowLeft {
+  left: 10px;
+}
+
+.arrowRight {
+  right: 10px;
 }
 
 .avatar {
@@ -70,10 +87,13 @@
 }
 
 .nameBlock {
-  // Never shrink below the name/title's own natural width — with nowrap
-  // text, allowing that (min-width: 0) would let long names overflow
-  // visually into the details column instead of the row wrapping.
-  flex-shrink: 0;
+  // Fixed width (170px at the 1440px reference, scaling with the cards) so
+  // the details column starts at the same x on every card whatever the
+  // person's name length — long names shrink their font instead (see
+  // fitFontSize in PersonSpotlightCard.tsx).
+  flex: 0 0 calc(var(--compass-card-w) * 0.5075);
+  min-width: 0;
+  overflow: hidden;
 }
 
 .name {
@@ -110,7 +130,9 @@
   // Unlike heading/avatar/nameBlock, this can give up space when the card
   // is squeezed — its values ellipsize (below) instead of overflowing.
   min-width: 0;
-  flex: 1 1 auto;
+  // Basis 0 (not auto) so it takes exactly what is left after the fixed
+  // columns — its own content width cannot move where it starts.
+  flex: 1 1 0;
 }
 
 .field {

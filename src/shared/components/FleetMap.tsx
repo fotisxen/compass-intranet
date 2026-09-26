@@ -3,6 +3,7 @@ import * as L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import styles from './FleetMap.module.scss';
 import { offices } from './data/fleetMockData';
+import MapLibreBasemap from './MapLibreBasemap';
 
 const LEAFLET_CSS_URL = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
 const LEAFLET_CSS_ID = 'leaflet-cdn-css';
@@ -108,6 +109,8 @@ function formatUtc(iso?: string): string | undefined {
 export interface IFleetMapProps {
   /** URL of the fleet-positions Azure Function proxy (see api/src/functions/fleet.ts). Omit to keep showing office pins. */
   fleetApiUrl?: string;
+  /** Draws the basemap as vector tiles with every label in English, instead of the default OpenStreetMap raster tiles (which show each country's local script). */
+  englishLabels?: boolean;
 }
 
 interface IVesselPosition {
@@ -304,9 +307,11 @@ export default class FleetMap extends React.Component<IFleetMapProps, IFleetMapS
       <div className={styles.mapWrap}>
         <MapContainer
           className={styles.map}
-          center={[25, 15]}
-          zoom={3}
-          zoomControl={false}
+          center={[38, 24]}
+          zoom={5}
+          zoomControl={true}
+          minZoom={2}
+          maxZoom={18}
           scrollWheelZoom={false}
         >
           {/* Carto's free basemaps now require an API key for anonymous use
@@ -314,10 +319,14 @@ export default class FleetMap extends React.Component<IFleetMapProps, IFleetMapS
               OpenStreetMap tiles instead — genuinely free, no key needed.
               Their usage policy requires the attribution below to stay visible
               (it's just styled smaller/quieter via :global in the scss). */}
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
+          {this.props.englishLabels ? (
+            <MapLibreBasemap />
+          ) : (
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+          )}
           {showFleet && hasLiveData &&
             vessels.map(vessel => (
               <Marker

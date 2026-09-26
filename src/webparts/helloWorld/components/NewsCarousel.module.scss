@@ -1,0 +1,63 @@
+@use '../../../shared/styles/layout-tokens';
+
+.wrap {
+  position: relative;
+  // Exactly the 3 cards' span, so the right arrow sits inside the last card
+  // instead of at the edge of the (wider) page area.
+  width: var(--compass-row-w);
+  max-width: 100%;
+}
+
+.grid {
+  display: grid;
+  // The Newsroom filter sidebar (220px + 24px gap) that used to sit to the
+  // left of these cards is gone — its footprint is absorbed into the first
+  // column instead of shrinking the row, so the row's total width (and
+  // right edge) stays exactly what it was with the sidebar in place. The
+  // other two columns are unchanged (335px at the 1440px reference).
+  grid-template-columns: calc(var(--compass-card-w) + var(--compass-sidebar-w) + var(--compass-sidebar-gap)) var(--compass-card-w) var(--compass-card-w);
+  gap: var(--compass-gap);
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.92);
+  color: #082244;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+  box-shadow: 0 1px 6px rgba(8, 34, 68, 0.35);
+
+  &:hover:not(:disabled) {
+    background: #ffffff;
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+}
+
+.arrowLeft {
+  left: 12px;
+}
+
+.arrowRight {
+  right: 12px;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

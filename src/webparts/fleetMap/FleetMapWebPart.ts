@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
-import { type IPropertyPaneConfiguration, PropertyPaneTextField } from '@microsoft/sp-property-pane';
+import { type IPropertyPaneConfiguration, PropertyPaneTextField, PropertyPaneToggle } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
 
@@ -13,13 +13,22 @@ export interface IFleetMapWebPartProps {
   // Public/non-secret — the real provider's API key lives server-side in the
   // Function App's settings, never here. Leave blank to keep office pins.
   fleetApiUrl?: string;
+  // On by default (also for instances placed before this existed): vector map, all labels in English. Off: the original OpenStreetMap tiles.
+  englishLabels?: boolean;
 }
 
 export default class FleetMapWebPart extends BaseClientSideWebPart<IFleetMapWebPartProps> {
 
+  protected onInit(): Promise<void> {
+    // ?? (not ||) so a deliberately switched-off toggle stays off.
+    this.properties.englishLabels = this.properties.englishLabels ?? true;
+    return super.onInit();
+  }
+
   public render(): void {
     const element: React.ReactElement = React.createElement(FleetMap, {
-      fleetApiUrl: this.properties.fleetApiUrl
+      fleetApiUrl: this.properties.fleetApiUrl,
+      englishLabels: this.properties.englishLabels
     });
     ReactDom.render(element, this.domElement);
   }
@@ -59,6 +68,11 @@ export default class FleetMapWebPart extends BaseClientSideWebPart<IFleetMapWebP
               groupFields: [
                 PropertyPaneTextField('fleetApiUrl', {
                   label: strings.FleetApiUrlFieldLabel
+                }),
+                PropertyPaneToggle('englishLabels', {
+                  label: strings.EnglishLabelsFieldLabel,
+                  onText: 'English labels (vector map)',
+                  offText: 'Standard map (local-language labels)'
                 })
               ]
             }

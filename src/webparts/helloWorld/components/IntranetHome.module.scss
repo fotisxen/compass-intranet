@@ -27,23 +27,6 @@
   margin-bottom: 40px;
 }
 
-.newsGrid {
-  display: grid;
-  // The Newsroom filter sidebar (220px + 24px gap) that used to sit to the
-  // left of these 3 cards is gone — its footprint is absorbed into the
-  // first column instead of shrinking the row, so the row's total width
-  // (and right edge) stays exactly what it was with the sidebar in place.
-  // The other two columns are unchanged (335px at the 1440px reference).
-  grid-template-columns: calc(var(--compass-card-w) + var(--compass-sidebar-w) + var(--compass-sidebar-gap)) var(--compass-card-w) var(--compass-card-w);
-  gap: var(--compass-gap);
-}
-
-@media (max-width: 900px) {
-  .newsGrid {
-    grid-template-columns: 1fr;
-  }
-}
-
 .peopleContent {
   // Matches newsGrid's gap, so peopleColumn + this gap + anniversariesColumn
   // totals the same width as the 3 news cards above.

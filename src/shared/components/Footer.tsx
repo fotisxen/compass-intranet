@@ -213,7 +213,7 @@ export default class Footer extends React.Component<IFooterProps, IFooterState> 
             </div>
 
             {holidays.length > 0 && (
-              <div className={styles.column}>
+              <div className={`${styles.column} ${styles.holidaysColumn}`}>
                 <span className={`${styles.columnLabel} ${styles.holidaysTitle}`}>PUBLIC HOLIDAYS</span>
                 <div className={styles.holidayList}>
                   {holidays.map(h => (

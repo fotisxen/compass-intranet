@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { SPHttpClient, type SPHttpClientResponse } from '@microsoft/sp-http';
 import styles from './NewsCard.module.scss';
+import { type INewsItem, parseBannerImageUrl } from './newsApi';
 
 // Real internal field name for the promoted news pages' category column,
 // confirmed from the "Internal Company Announcements" page's own News web
@@ -17,53 +18,15 @@ export interface INewsCardProps {
   categoryFilter?: string;
 }
 
-interface ISpNewsItem {
-  title: string;
-  date: string;
-  url: string;
-  imageUrl?: string;
-}
-
 export interface INewsCardState {
-  item?: ISpNewsItem;
-}
-
-interface IBannerImageField {
-  Description?: string;
-  Url?: string;
-  serverRelativeUrl?: string;
+  item?: INewsItem;
 }
 
 interface ISpListItem {
   Title: string;
   FileRef: string;
   Created: string;
-  // Site Pages' Banner Image is an "Image"-type column. Classic REST has been
-  // observed returning this both as an already-parsed { Description, Url }
-  // object and as a JSON-encoded string — handle both shapes.
-  BannerImageUrl?: string | IBannerImageField;
-}
-
-function parseBannerImageUrl(raw?: string | IBannerImageField): string | undefined {
-  if (!raw) {
-    return undefined;
-  }
-  if (typeof raw === 'object') {
-    return raw.Url || raw.serverRelativeUrl || raw.Description || undefined;
-  }
-  const trimmed = raw.trim();
-  if (!trimmed) {
-    return undefined;
-  }
-  if (trimmed.charAt(0) === '{') {
-    try {
-      const parsed: IBannerImageField = JSON.parse(trimmed);
-      return parsed.Url || parsed.serverRelativeUrl || parsed.Description || undefined;
-    } catch {
-      return undefined;
-    }
-  }
-  return trimmed;
+  BannerImageUrl?: Parameters<typeof parseBannerImageUrl>[0];
 }
 
 interface ISpListItemsResponse {
@@ -142,21 +105,38 @@ export default class NewsCard extends React.Component<INewsCardProps, INewsCardS
       return <></>;
     }
 
-    // Quoted url(...) — SharePoint asset paths often contain literal
-    // parentheses (e.g. "Page(3)/..."), which break an unquoted CSS url().
-    const thumbStyle = item.imageUrl ? { backgroundImage: `url("${item.imageUrl}")` } : undefined;
+    return <NewsCardView item={item} />;
+  }
+}
 
-    return (
-      <div className={styles.card}>
-        <div className={styles.thumb} style={thumbStyle} />
-        <div className={styles.body}>
-          <h4 className={styles.title}>{item.title}</h4>
-          <div className={styles.footerRow}>
-            <span className={styles.date}>{item.date}</span>
-            <a className={styles.pill} href={item.url}>Read more →</a>
-          </div>
+/** The card itself, so the Home carousel can render it without NewsCard's own per-position fetching. */
+export function NewsCardView(props: { item: INewsItem; pinned?: boolean }): React.ReactElement {
+  const { item, pinned } = props;
+
+  // Quoted url(...) — SharePoint asset paths often contain literal
+  // parentheses (e.g. "Page(3)/..."), which break an unquoted CSS url().
+  const thumbStyle = item.imageUrl ? { backgroundImage: `url("${item.imageUrl}")` } : undefined;
+
+  return (
+    <div className={styles.card}>
+      <div className={styles.thumb} style={thumbStyle}>
+        {pinned && (
+          // Display only — pinning is managed from the web part's property pane.
+          <span className={styles.pinBadge} role="img" aria-label="Pinned" title="Pinned">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M12 17v5" />
+              <path d="M9 3h6l-1 6 3 3v2H7v-2l3-3-1-6z" />
+            </svg>
+          </span>
+        )}
+      </div>
+      <div className={styles.body}>
+        <h4 className={styles.title}>{item.title}</h4>
+        <div className={styles.footerRow}>
+          <span className={styles.date}>{item.date}</span>
+          <a className={styles.pill} href={item.url}>Read more →</a>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }

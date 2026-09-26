@@ -2,7 +2,7 @@ import * as React from 'react';
 import type { SPHttpClient } from '@microsoft/sp-http';
 import styles from './IntranetHome.module.scss';
 import { ensureInterFont } from '../../../shared/components/ensureFonts';
-import NewsCard from '../../../shared/components/NewsCard';
+import NewsCarousel from './NewsCarousel';
 import PersonSpotlightCard from './PersonSpotlightCard';
 import WorkAnniversaries from './WorkAnniversaries';
 import OpenPositions from './OpenPositions';
@@ -14,6 +14,8 @@ export interface IIntranetHomeProps {
   welcomeAboard: IPersonSpotlight[];
   promotions: IPersonSpotlight[];
   anniversaries: IAnniversary[];
+  /** Site Pages URLs (or file names) pinned for everyone, shown first in the news carousel. */
+  pinnedNews: string[];
 }
 
 export default class IntranetHome extends React.Component<IIntranetHomeProps> {
@@ -26,11 +28,7 @@ export default class IntranetHome extends React.Component<IIntranetHomeProps> {
       <div className={styles.page}>
         <div className={styles.main}>
           <div className={styles.section}>
-            <div className={styles.newsGrid}>
-              <NewsCard spHttpClient={this.props.spHttpClient} siteUrl={this.props.siteUrl} position={1} />
-              <NewsCard spHttpClient={this.props.spHttpClient} siteUrl={this.props.siteUrl} position={2} />
-              <NewsCard spHttpClient={this.props.spHttpClient} siteUrl={this.props.siteUrl} position={3} />
-            </div>
+            <NewsCarousel spHttpClient={this.props.spHttpClient} siteUrl={this.props.siteUrl} pinned={this.props.pinnedNews} />
           </div>
 
           <div className={styles.peopleContent}>

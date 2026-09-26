@@ -6,6 +6,7 @@ import EventsWidget from '../src/shared/components/EventsWidget';
 import FleetMap from '../src/shared/components/FleetMap';
 import ChromeRoot from '../src/extensions/compassChrome/components/ChromeRoot';
 import Footer from '../src/shared/components/Footer';
+import { welcomeAboard as sampleWelcome, promotion as samplePromotions } from '../src/webparts/helloWorld/components/data/mockData';
 
 // No real SharePoint session here, so News/Holidays/Events' fetches are made
 // to fail fast and fall back to their built-in mock data — same outcome a
@@ -14,6 +15,22 @@ import Footer from '../src/shared/components/Footer';
 // no CORS allowance from the tenant) — see hosted workbench for real data.
 const fakeSpHttpClient = {
   get: async () => ({ ok: false })
+};
+
+// Home's news carousel: 6 sample promoted pages, plus one pinned page that
+// isn't promoted (fetched by path), so paging and pinning both show up.
+const sampleNews = ['Fleet renewal programme reaches a new milestone', 'Summer safety campaign results', 'New offices open in Limassol', 'Quarterly results announced', 'Crew welfare initiative expands', 'Sustainability report published']
+  .map((Title, i) => ({ Title, FileRef: '/sites/demo/SitePages/News-' + (i + 1) + '.aspx', Created: '2026-09-' + (20 - i) + 'T09:00:00Z', BannerImageUrl: null }));
+const fakeHomeClient = {
+  get: async (url: string) => {
+    if (url.indexOf('GetFileByServerRelativePath') !== -1) {
+      return { ok: true, json: async () => ({ Title: 'PINNED: Welcome to the new intranet', FileRef: '/sites/demo/SitePages/My-Pinned.aspx', Created: '2026-08-01T09:00:00Z', BannerImageUrl: null }) };
+    }
+    if (url.indexOf("GetByTitle('Site Pages')") !== -1) {
+      return { ok: true, json: async () => ({ value: sampleNews }) };
+    }
+    return { ok: false };
+  }
 };
 
 // Footer's Public Holidays column gets two sample rows (the client above fails on purpose).
@@ -49,6 +66,9 @@ const euronextApiUrl = new URLSearchParams(window.location.search).get('euronext
 // Open Positions gets a small sample of the real GetJobListings shape here.
 const realFetch = window.fetch.bind(window);
 window.fetch = (input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
+  if (String(input).indexOf('mock-fleet') !== -1) {
+    return Promise.resolve(new Response(JSON.stringify([{ name: 'Star Test I', lat: 37.9, lng: 23.7, status: 'At port' }, { name: 'Star Test II', lat: 36.2, lng: 26.5, status: 'Underway using engine', heading: 90 }, { name: 'Star Test III', lat: 40.1, lng: 25.0, status: 'Underway using engine', heading: 200 }]), { status: 200 }));
+  }
   if (String(input).indexOf('GetStockPrice') !== -1) {
     return Promise.resolve(new Response(JSON.stringify({ data: [{ symbol: 'SBLK', lastTrade: 32.11, changePercent: 1.1, isDefault: 'true' }] }), { status: 200 }));
   }
@@ -109,7 +129,7 @@ ReactDom.render(
     React.createElement(
       'div',
       { style: { flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' } },
-      React.createElement(FleetMap, { fleetApiUrl })
+      React.createElement(FleetMap, { fleetApiUrl, englishLabels: new URLSearchParams(window.location.search).get('englishMap') === '1' })
     )
   ),
   document.getElementById('fleet-map-root')
@@ -117,8 +137,12 @@ ReactDom.render(
 
 ReactDom.render(
   React.createElement(HelloWorld, {
-    spHttpClient: fakeSpHttpClient as never,
-    siteUrl: 'https://example.sharepoint.com/sites/demo'
+    spHttpClient: fakeHomeClient as never,
+    siteUrl: 'https://example.sharepoint.com/sites/demo',
+    pinnedNews: ['My-Pinned.aspx'],
+    // Two entries each so the cards show their prev/next arrows.
+    welcomeAboard: [...sampleWelcome, ...sampleWelcome],
+    promotions: [...samplePromotions, ...samplePromotions]
   }),
   document.getElementById('root')
 );

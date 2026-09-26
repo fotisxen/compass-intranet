@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@fluentui/react": "^8.106.4",
+    "@maplibre/maplibre-gl-leaflet": "^0.1.4",
     "@microsoft/decorators": "^1.23.2",
     "@microsoft/sp-application-base": "^1.23.2",
     "@microsoft/sp-component-base": "1.23.2",
@@ -26,6 +27,7 @@
     "@microsoft/sp-webpart-base": "1.23.2",
     "@pnp/spfx-property-controls": "^3.24.0",
     "leaflet": "^1.9.4",
+    "maplibre-gl": "^5.24.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-leaflet": "^3.2.5",
