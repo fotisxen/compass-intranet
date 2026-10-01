@@ -1,0 +1,14 @@
+.wrap {
+  display: flex;
+  // Same 335px reference width as the standard News Card, but 781px tall
+  // (at the 1440px reference width, scaling down proportionally below that).
+  width: min(23.26vw, 335px);
+  height: min(54.24vw, 781px);
+
+  // NewsCard's own root (.card) is this div's only child — stretch it to
+  // fill the fixed height above instead of its usual content-driven height.
+  > * {
+    flex: 1;
+    min-height: 0;
+  }
+}

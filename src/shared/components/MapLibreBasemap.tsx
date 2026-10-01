@@ -40,21 +40,36 @@ interface IStyleJson {
 // Latin-script one and then whatever the map has.
 const ENGLISH_ONLY = ['coalesce', ['get', 'name_en'], ['get', 'name:latin'], ['get', 'name']];
 
-// The standard OpenStreetMap map's palette, so this looks like the map it
-// replaces: flat cream land, pale blue water, soft greens. (The stock style
-// uses saturated blue water and a shaded-relief photo layer at low zoom.)
-const OSM_PAINT: Record<string, Record<string, string>> = {
-  background: { 'background-color': '#f2efe9' },
+// Flat cream for every land layer (same shade as the background, so the
+// wood/grass/sand/residential patches that used to tint parts of the land
+// green/tan/grey all disappear into one uniform color) plus the original
+// OSM-like water and road colors — everything else about the style (roads,
+// water, labels) is unchanged.
+const LAND_COLOR = '#f2efe9';
+const OSM_PAINT: Record<string, Record<string, string | number>> = {
+  background: { 'background-color': LAND_COLOR },
   water: { 'fill-color': '#aad3df' },
   waterway_river: { 'line-color': '#aad3df' },
   waterway_other: { 'line-color': '#aad3df' },
   waterway_tunnel: { 'line-color': '#aad3df' },
-  park: { 'fill-color': '#c8facc' },
-  landcover_wood: { 'fill-color': '#add19e' },
-  landcover_grass: { 'fill-color': '#cdebb0' },
-  landcover_sand: { 'fill-color': '#f5e9c6' },
-  landcover_ice: { 'fill-color': '#ffffff' },
-  landuse_residential: { 'fill-color': '#e0dfdf' },
+  // park also has its own separate green outline color (fill-outline-color)
+  // besides the fill itself — both need covering, plus the park_outline line
+  // layer drawn on top of it.
+  park: { 'fill-color': LAND_COLOR, 'fill-outline-color': LAND_COLOR },
+  park_outline: { 'line-color': LAND_COLOR },
+  landcover_wood: { 'fill-color': LAND_COLOR },
+  landcover_grass: { 'fill-color': LAND_COLOR },
+  landcover_sand: { 'fill-color': LAND_COLOR },
+  landcover_ice: { 'fill-color': LAND_COLOR },
+  // Pattern-filled (not a plain color), so it's hidden outright instead.
+  landcover_wetland: { 'fill-opacity': 0 },
+  landuse_residential: { 'fill-color': LAND_COLOR },
+  landuse_cemetery: { 'fill-color': LAND_COLOR },
+  landuse_school: { 'fill-color': LAND_COLOR },
+  landuse_hospital: { 'fill-color': LAND_COLOR },
+  landuse_pitch: { 'fill-color': LAND_COLOR },
+  landuse_track: { 'fill-color': LAND_COLOR },
+  aeroway_fill: { 'fill-color': LAND_COLOR },
   road_motorway: { 'line-color': '#e892a2' },
   road_trunk_primary: { 'line-color': '#f9b29c' },
   road_secondary_tertiary: { 'line-color': '#fdd7a1' }

@@ -88,6 +88,78 @@ window.fetch = (input: RequestInfo | URL, init?: RequestInit): Promise<Response>
   return realFetch(input, init);
 };
 
+import WideNewsCard from '../src/webparts/wideNewsCard/components/WideNewsCard';
+import HighlightBanner from '../src/webparts/highlightBanner/components/HighlightBanner';
+import FeatureSplit from '../src/webparts/featureSplit/components/FeatureSplit';
+import ProfileLinkCard from '../src/webparts/profileLinkCard/components/ProfileLinkCard';
+import TestimonialCarousel from '../src/webparts/testimonialCarousel/components/TestimonialCarousel';
+import CircleIconList from '../src/webparts/circleIconList/components/CircleIconList';
+import LogoGridFeature from '../src/webparts/logoGridFeature/components/LogoGridFeature';
+import DualColumnFeature from '../src/webparts/dualColumnFeature/components/DualColumnFeature';
+import StatFeature from '../src/webparts/statFeature/components/StatFeature';
+
+function newRoot(): HTMLElement {
+  const el = document.createElement('div');
+  el.style.marginBottom = '32px';
+  document.body.appendChild(el);
+  return el;
+}
+
+ReactDom.render(React.createElement('div', { style: { padding: 24, border: '2px dashed #999' } }, React.createElement(WideNewsCard, {
+  title: 'Fleet renewal programme reaches a new milestone',
+  dateText: 'September 20, 2026',
+  linkUrl: '#'
+})), newRoot());
+
+ReactDom.render(React.createElement(HighlightBanner, {
+  title: '1. Eligibility', titleColor: '#ffffff',
+  items: [
+    'Coverage starts after your first 6 months of employment.',
+    'Dependents can be added after 1 year of employment. Scroll down to the "Useful Resources" section to find the "Health Insurance Program Enrollment Form", complete it, and send it to HR through e-mail.'
+  ],
+  bodyColor: '#000000', bgColor: '#d9d9d9'
+}), newRoot());
+
+ReactDom.render(React.createElement(FeatureSplit, {
+  title: 'Title', titleColor: '#082244',
+  bodyText: 'Introduction of each Section, repeated a few times to show wrapping across the available width of this box.',
+  bodyColor: '#082244', imageUrl: undefined
+}), newRoot());
+
+ReactDom.render(React.createElement(ProfileLinkCard, { topText: 'View My Profile', topLinkUrl: 'https://example.com/profile' }), newRoot());
+
+ReactDom.render(React.createElement(TestimonialCarousel, {
+  title: 'Title', titleColor: '#082244', bgColor: '#e6e6e6',
+  testimonials: [1, 2, 3, 4, 5].map(i => ({ quote: 'When I donate blood I feel like I am giving life to someone in need — without expecting anything in return.', author: 'Dimitris Spyrou ' + i }))
+}), newRoot());
+
+ReactDom.render(React.createElement(CircleIconList, {
+  circleText: '1', title: 'Text 1',
+  items: ['List text 1', 'List text 2', 'List text 3']
+}), newRoot());
+
+ReactDom.render(React.createElement(LogoGridFeature, {
+  imageUrl: undefined,
+  logos: [1, 2, 3, 4, 5].map(i => ({ logoUrl: 'https://via.placeholder.com/60?text=' + i, linkUrl: 'https://example.com/' + i })),
+  title: 'Title', bodyText: 'Call the Generali Call Center for 24/7 medical advice and phone guidance.'
+}), newRoot());
+
+ReactDom.render(React.createElement(DualColumnFeature, {
+  bgColor: '#7ac0fb',
+  leftTitle: 'Pre-hospitalization approval',
+  leftItems: ['Option 1: Through MyGenerali app / portal.', 'Option 2: Through HR Department. Navigate to the "Useful Resources" section, download the forms, and send them to HR.'],
+  rightTitle: 'Exclusions (high-level)',
+  rightItems: ['Option 1: Through MyGenerali app / portal.', 'Option 2: Through HR Department. Navigate to the "Useful Resources" section, download the forms, and send them to HR.']
+}), newRoot());
+
+ReactDom.render(React.createElement(StatFeature, {
+  bgColor: '#3ecf8e', eyebrowText: 'SECTION, CATEGORY, TOP OF EVERY PAGE', eyebrowColor: '#ffffff',
+  titleText: 'Big Title', titleColor: '#ffffff',
+  bodyText: 'Introduction of each Section, repeated a few times to show wrapping.', bodyColor: '#ffffff',
+  imageUrl: undefined, columnsColor: '#ffffff',
+  columns: [{ title: 'Title 1', text: 'Introduction of each section.' }, { title: 'Title 2', text: 'Introduction of each section.' }, { title: 'Title 3', text: 'Introduction of each section.' }]
+}), newRoot());
+
 ReactDom.render(React.createElement(ChromeRoot, { chatApiUrl: '' }), document.getElementById('chrome-top'));
 
 // Compass Holidays is its own standalone web part now, placed right under

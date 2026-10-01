@@ -56,7 +56,6 @@ export default class PersonSpotlightCard extends React.Component<IPersonSpotligh
       return <></>;
     }
 
-    const nameFontSize = fitFontSize(person.name, 18, 11, 16, 0.3);
     const titleFontSize = fitFontSize(person.title, 13, 9, 20, 0.15);
     const newTitleFontSize = person.newTitle ? fitFontSize(person.newTitle, 13, 9, 18, 0.15) : undefined;
 
@@ -74,7 +73,7 @@ export default class PersonSpotlightCard extends React.Component<IPersonSpotligh
           <span className={styles.avatar}>{person.initials}</span>
         )}
         <div className={styles.nameBlock}>
-          <p className={styles.name} style={{ fontSize: nameFontSize }}>{person.name}</p>
+          <p className={styles.name}>{person.name}</p>
           <p className={styles.title} style={{ fontSize: titleFontSize }}>{person.title}</p>
           {person.newTitle && (
             <p className={styles.newTitle} style={{ fontSize: newTitleFontSize }}>→ {person.newTitle}</p>

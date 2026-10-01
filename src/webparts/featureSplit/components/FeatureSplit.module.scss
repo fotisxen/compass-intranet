@@ -1,0 +1,49 @@
+.wrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 40px;
+  width: 100%;
+  // 964px at the 1440px reference width (66.9%).
+  max-width: min(66.9vw, 964px);
+  font-size: clamp(14px, 1.38889vw, 20px);
+}
+
+.text {
+  flex: 1 1 320px;
+  min-width: 0;
+}
+
+.divider {
+  border: none;
+  border-top: 2px solid #082244;
+  margin: 0 0 16px;
+  // Spans the same width as the text column next to it (which is capped to
+  // the description's own max width), not a short decorative line.
+  width: 100%;
+}
+
+.title {
+  margin: 0 0 12px;
+  // 22px at the 1440px reference width.
+  font-size: 1.1em;
+  font-weight: 700;
+}
+
+.body {
+  margin: 0;
+  // 16px at the 1440px reference width.
+  font-size: 0.8em;
+  line-height: 1.5;
+}
+
+.photo {
+  flex: 0 0 auto;
+  // 300x180 at the 1440px reference width, matching the ~964x259 frame.
+  width: min(20.8vw, 300px);
+  height: min(12.5vw, 180px);
+  border-radius: 8px;
+  background-color: #d9d9d9;
+  background-size: cover;
+  background-position: center;
+}

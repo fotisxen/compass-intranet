@@ -2,9 +2,12 @@
 
 .wrap {
   position: relative;
-  // Exactly the 3 cards' span, so the right arrow sits inside the last card
-  // instead of at the edge of the (wider) page area.
-  width: var(--compass-row-w);
+  // Hugs .grid's own actual rendered width exactly (instead of a separately
+  // calculated token that can drift from it by a few pixels) — so the arrows
+  // below, positioned against .wrap's edges, always land exactly on .grid's
+  // real left/right edges, equally inset on both sides, rather than sitting
+  // slightly off on one side or the other.
+  width: fit-content;
   max-width: 100%;
 }
 
@@ -34,6 +37,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  // Tightens the text box around the arrow glyph's actual ink so flex
+  // centering lands on its visual center instead of sitting low.
+  line-height: 0;
   padding: 0;
   cursor: pointer;
   box-shadow: 0 1px 6px rgba(8, 34, 68, 0.35);
@@ -49,11 +55,11 @@
 }
 
 .arrowLeft {
-  left: 12px;
+  left: 2px;
 }
 
 .arrowRight {
-  right: 12px;
+  right: 2px;
 }
 
 @media (max-width: 900px) {

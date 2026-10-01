@@ -1,0 +1,33 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+  "id": "756cc731-4c88-45af-8a96-4a7ecba973b7",
+  "alias": "TestimonialCarouselWebPart",
+  "componentType": "WebPart",
+
+  "version": "*",
+  "manifestVersion": 2,
+
+  "requiresCustomScript": false,
+  "supportedHosts": ["SharePointWebPart", "TeamsPersonalApp", "TeamsTab", "SharePointFullPage"],
+  "supportsThemeVariants": true,
+  "supportsFullBleed": true,
+
+  "preconfiguredEntries": [{
+    "groupId": "5c03119e-3074-46fd-976b-c60198311f70", // Advanced
+    "group": { "default": "Advanced" },
+    "title": { "default": "Compass Testimonial Carousel" },
+    "description": { "default": "A full-width strip with a title and a horizontally scrollable row of quote cards — title, background color and every quote are editable." },
+    "officeFabricIconFontName": "Family",
+    "properties": {
+          "title": "Title",
+          "titleColor": "#082244",
+          "bgColor": "#e6e6e6",
+          "testimonials": [
+                {
+                      "quote": "When I donate blood I feel like I am giving life to someone in need.",
+                      "author": "Author Name"
+                }
+          ]
+    }
+  }]
+}

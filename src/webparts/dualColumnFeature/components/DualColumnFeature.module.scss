@@ -1,0 +1,36 @@
+.wrap {
+  box-sizing: border-box;
+  padding: 40px 24px;
+  width: calc(100% + 32px);
+  margin: -16px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+  font-family: 'Inter', sans-serif;
+}
+
+.card {
+  flex: 1 1 320px;
+  max-width: 480px;
+  box-sizing: border-box;
+  padding: 24px;
+  // Flat top, rounded bottom — matches the reference mockup.
+  border-radius: 0 0 16px 16px;
+  background: #ffffff;
+}
+
+.title {
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #082244;
+}
+
+.body {
+  margin: 0;
+  padding-left: 1.2em;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #082244;
+}

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+  "id": "8aac6b80-aa4a-4442-9bc9-7a85ba0804fc",
+  "alias": "CircleIconListWebPart",
+  "componentType": "WebPart",
+
+  "version": "*",
+  "manifestVersion": 2,
+
+  "requiresCustomScript": false,
+  "supportedHosts": ["SharePointWebPart", "TeamsPersonalApp", "TeamsTab", "SharePointFullPage"],
+  "supportsThemeVariants": true,
+
+  "preconfiguredEntries": [{
+    "groupId": "5c03119e-3074-46fd-976b-c60198311f70", // Advanced
+    "group": { "default": "Advanced" },
+    "title": { "default": "Compass Circle Icon List" },
+    "description": { "default": "A circle (text or photo) with a title and up to 5 divider-separated list items — all editable, and rows you don\u2019t add just don\u2019t show." },
+    "officeFabricIconFontName": "BulletedList",
+    "properties": {
+          "circleText": "1",
+          "title": "Text 1",
+          "items": [
+                {
+                      "text": "List text 1"
+                },
+                {
+                      "text": "List text 2"
+                },
+                {
+                      "text": "List text 3"
+                },
+                {
+                      "text": "List text 4"
+                },
+                {
+                      "text": "List text 5"
+                }
+          ]
+    }
+  }]
+}

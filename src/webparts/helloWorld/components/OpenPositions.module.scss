@@ -56,10 +56,13 @@
   color: #082244;
 }
 
+.arrowsRow {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
 .arrowButton {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
   width: 19px;
   height: 19px;
   border-radius: 50%;
@@ -70,19 +73,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  // Tightens the text box around the arrow glyph's actual ink so flex
+  // centering lands on its visual center instead of sitting low.
+  line-height: 0;
   cursor: pointer;
   padding: 0;
-  z-index: 1;
 
   &:hover {
     background: rgba(8, 34, 68, 0.1);
   }
-}
-
-.arrowLeft {
-  left: 6px;
-}
-
-.arrowRight {
-  right: 6px;
 }

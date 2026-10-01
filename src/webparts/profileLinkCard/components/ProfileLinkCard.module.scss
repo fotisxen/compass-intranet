@@ -1,0 +1,41 @@
+.card {
+  box-sizing: border-box;
+  width: 272px;
+  height: 218px;
+  max-width: 100%;
+  border-radius: 16px;
+  border: 1px solid #7fc4fb;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 16px;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+}
+
+.topLink,
+.topText {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #4aa3f0;
+  // A literal line break typed into the (multiline) property pane field
+  // renders as one, instead of being collapsed like normal HTML text.
+  white-space: pre-line;
+}
+
+.topLink {
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.bottomText {
+  margin: 0;
+  font-size: 14px;
+  color: #082244;
+}

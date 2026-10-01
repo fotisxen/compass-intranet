@@ -38,13 +38,6 @@ export default class WorkAnniversaries extends React.Component<IWorkAnniversarie
       <div className={styles.card}>
         <h3 className={styles.title}>Work Anniversaries</h3>
 
-        {this._pageCount > 1 && (
-          <>
-            <button className={`${styles.arrowButton} ${styles.arrowLeft}`} onClick={this._prev} aria-label="Previous">←</button>
-            <button className={`${styles.arrowButton} ${styles.arrowRight}`} onClick={this._next} aria-label="Next">→</button>
-          </>
-        )}
-
         <div className={styles.list}>
           {visible.map(a => (
             <div className={styles.row} key={a.name}>
@@ -57,6 +50,13 @@ export default class WorkAnniversaries extends React.Component<IWorkAnniversarie
             </div>
           ))}
         </div>
+
+        {this._pageCount > 1 && (
+          <div className={styles.arrowsRow}>
+            <button className={styles.arrowButton} onClick={this._prev} aria-label="Previous">←</button>
+            <button className={styles.arrowButton} onClick={this._next} aria-label="Next">→</button>
+          </div>
+        )}
       </div>
     );
   }

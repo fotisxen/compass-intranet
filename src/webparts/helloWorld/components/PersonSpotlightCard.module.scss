@@ -33,6 +33,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  // Tightens the text box around the arrow glyph's actual ink so flex
+  // centering lands on its visual center instead of sitting low.
+  line-height: 0;
   cursor: pointer;
   padding: 0;
   flex-shrink: 0;
@@ -102,7 +105,9 @@
   font-size: 0.875em;
   color: #082244;
   margin: 0;
-  white-space: nowrap;
+  // Wraps onto a second line instead of shrinking the font for a long name.
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
 .title {
@@ -155,8 +160,9 @@
   font-weight: 600;
   font-size: 0.6875em;
   color: #082244;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  // No ellipsis — wraps to as many lines as it needs instead of truncating
+  // (same reasoning as .heading above).
+  white-space: normal;
+  overflow-wrap: break-word;
   max-width: 100%;
 }

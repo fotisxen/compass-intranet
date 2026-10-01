@@ -1,0 +1,97 @@
+.wrap {
+  box-sizing: border-box;
+  padding: 40px 24px;
+  width: calc(100% + 32px);
+  margin: -16px;
+  font-family: 'Inter', sans-serif;
+}
+
+.title {
+  margin: 0 0 24px;
+  text-align: center;
+  // 28px at the 1440px reference width.
+  font-size: 1.4em;
+  font-weight: 700;
+  font-size: clamp(14px, 1.94444vw, 28px);
+}
+
+// Native horizontal scroll with each card snapping into place — trackpad,
+// touch swipe and the wheel handler in the component all move it — plus the
+// arrow buttons below for a visible, discoverable way to see the rest.
+.track {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+  // Scrolling still works (mouse wheel, trackpad, touch, drag) — the
+  // scrollbar itself is just not drawn.
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.cardItem {
+  flex: 0 0 254px;
+  scroll-snap-align: start;
+  box-sizing: border-box;
+  border: 1px solid #cfe3fb;
+  border-radius: 8px;
+  padding: 16px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.quoteText {
+  margin: 0;
+  font-style: italic;
+  font-size: 14px;
+  color: #082244;
+}
+
+.author {
+  margin: 0;
+  font-weight: 700;
+  font-size: 14px;
+  color: #082244;
+}
+
+.arrowsRow {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.arrow {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: #ffffff;
+  color: #082244;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // Tightens the text box around the arrow glyph's actual ink so flex
+  // centering lands on its visual center instead of sitting low.
+  line-height: 0;
+  padding: 0;
+  cursor: pointer;
+  box-shadow: 0 1px 6px rgba(8, 34, 68, 0.35);
+
+  &:hover:not(:disabled) {
+    background: #f2f6fb;
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+}

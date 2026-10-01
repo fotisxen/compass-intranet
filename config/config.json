@@ -73,6 +73,78 @@
           "manifest": "./src/extensions/compassChrome/CompassChromeApplicationCustomizer.manifest.json"
         }
       ]
+    },
+    "wide-news-card-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/wideNewsCard/WideNewsCardWebPart.js",
+          "manifest": "./src/webparts/wideNewsCard/WideNewsCardWebPart.manifest.json"
+        }
+      ]
+    },
+    "highlight-banner-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/highlightBanner/HighlightBannerWebPart.js",
+          "manifest": "./src/webparts/highlightBanner/HighlightBannerWebPart.manifest.json"
+        }
+      ]
+    },
+    "feature-split-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/featureSplit/FeatureSplitWebPart.js",
+          "manifest": "./src/webparts/featureSplit/FeatureSplitWebPart.manifest.json"
+        }
+      ]
+    },
+    "profile-link-card-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/profileLinkCard/ProfileLinkCardWebPart.js",
+          "manifest": "./src/webparts/profileLinkCard/ProfileLinkCardWebPart.manifest.json"
+        }
+      ]
+    },
+    "testimonial-carousel-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/testimonialCarousel/TestimonialCarouselWebPart.js",
+          "manifest": "./src/webparts/testimonialCarousel/TestimonialCarouselWebPart.manifest.json"
+        }
+      ]
+    },
+    "circle-icon-list-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/circleIconList/CircleIconListWebPart.js",
+          "manifest": "./src/webparts/circleIconList/CircleIconListWebPart.manifest.json"
+        }
+      ]
+    },
+    "logo-grid-feature-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/logoGridFeature/LogoGridFeatureWebPart.js",
+          "manifest": "./src/webparts/logoGridFeature/LogoGridFeatureWebPart.manifest.json"
+        }
+      ]
+    },
+    "dual-column-feature-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/dualColumnFeature/DualColumnFeatureWebPart.js",
+          "manifest": "./src/webparts/dualColumnFeature/DualColumnFeatureWebPart.manifest.json"
+        }
+      ]
+    },
+    "stat-feature-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/statFeature/StatFeatureWebPart.js",
+          "manifest": "./src/webparts/statFeature/StatFeatureWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
@@ -85,6 +157,15 @@
     "EventsWebPartStrings": "lib/webparts/events/loc/{locale}.js",
     "HolidaysWebPartStrings": "lib/webparts/holidays/loc/{locale}.js",
     "FooterWebPartStrings": "lib/webparts/footer/loc/{locale}.js",
-    "PropertyControlStrings": "node_modules/@pnp/spfx-property-controls/lib/loc/{locale}.js"
+    "PropertyControlStrings": "node_modules/@pnp/spfx-property-controls/lib/loc/{locale}.js",
+    "WideNewsCardWebPartStrings": "lib/webparts/wideNewsCard/loc/{locale}.js",
+    "HighlightBannerWebPartStrings": "lib/webparts/highlightBanner/loc/{locale}.js",
+    "FeatureSplitWebPartStrings": "lib/webparts/featureSplit/loc/{locale}.js",
+    "ProfileLinkCardWebPartStrings": "lib/webparts/profileLinkCard/loc/{locale}.js",
+    "TestimonialCarouselWebPartStrings": "lib/webparts/testimonialCarousel/loc/{locale}.js",
+    "CircleIconListWebPartStrings": "lib/webparts/circleIconList/loc/{locale}.js",
+    "LogoGridFeatureWebPartStrings": "lib/webparts/logoGridFeature/loc/{locale}.js",
+    "DualColumnFeatureWebPartStrings": "lib/webparts/dualColumnFeature/loc/{locale}.js",
+    "StatFeatureWebPartStrings": "lib/webparts/statFeature/loc/{locale}.js"
   }
 }

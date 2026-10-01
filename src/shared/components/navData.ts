@@ -30,7 +30,7 @@ export const NAV_ITEMS: INavItem[] = [
             { label: 'Blood Donation', href: '/sites/Intranet/SitePages/Blood-donation.aspx' },
             { label: 'Beach Clean-ups', href: '/sites/Intranet/SitePages/Beach-Clean-up.aspx' },
             { label: 'Together We Run', href: '/sites/Intranet/SitePages/Together-we-Run.aspx' },
-            { label: 'Events', href: '/sites/Intranet/_layouts/15/Events.aspx?ListGuid=dd3316a0-3bc0-4d4c-acff-71851299dad7' }
+            { label: 'Events', href: 'https://starbulk.sharepoint.com/sites/Intranet/SitePages/Highlights.aspx' }
           ]
         }
       ]
@@ -82,19 +82,7 @@ export const NAV_ITEMS: INavItem[] = [
   },
   {
     label: 'Newsroom',
-    columns: [
-      [
-        {
-          items: [
-            { label: 'Corporate', href: '/sites/Intranet/SitePages/Internal-Company-Announcements.aspx#corporate-news' },
-            { label: 'Fleet', href: '/sites/Intranet/SitePages/Internal-Company-Announcements.aspx#fleet-updates' },
-            { label: 'People & Purpose', href: '/sites/Intranet/SitePages/Internal-Company-Announcements.aspx#people-culture-news' },
-            { label: 'Organizational Development', href: '/sites/Intranet/SitePages/Organizational-Developments.aspx' },
-            { label: 'Open Positions', href: '/sites/Intranet/SitePages/Career-Opportunities.aspx#open' }
-          ]
-        }
-      ]
-    ]
+    href: '/sites/Intranet/SitePages/Internal-Company-Announcements.aspx'
   },
   {
     label: 'Fleet',

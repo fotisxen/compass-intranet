@@ -1,0 +1,26 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+  "id": "b1a9a9b0-949c-473e-901e-ad00d5c61783",
+  "alias": "LogoGridFeatureWebPart",
+  "componentType": "WebPart",
+
+  "version": "*",
+  "manifestVersion": 2,
+
+  "requiresCustomScript": false,
+  "supportedHosts": ["SharePointWebPart", "TeamsPersonalApp", "TeamsTab", "SharePointFullPage"],
+  "supportsThemeVariants": true,
+
+  "preconfiguredEntries": [{
+    "groupId": "5c03119e-3074-46fd-976b-c60198311f70", // Advanced
+    "group": { "default": "Advanced" },
+    "title": { "default": "Compass Logo Grid Feature" },
+    "description": { "default": "A photo with up to 8 clickable partner logos below it, plus a title and text beside it — every part is editable." },
+    "officeFabricIconFontName": "GridViewMedium",
+    "properties": {
+          "title": "Title",
+          "bodyText": "Text",
+          "logos": []
+    }
+  }]
+}

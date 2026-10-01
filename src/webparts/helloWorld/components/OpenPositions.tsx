@@ -70,13 +70,6 @@ export default class OpenPositions extends React.Component<Record<string, never>
       <div className={styles.card}>
         <h3 className={styles.title}>Open Positions</h3>
 
-        {this._pageCount > 1 && (
-          <>
-            <button className={`${styles.arrowButton} ${styles.arrowLeft}`} onClick={this._prev} aria-label="Previous">←</button>
-            <button className={`${styles.arrowButton} ${styles.arrowRight}`} onClick={this._next} aria-label="Next">→</button>
-          </>
-        )}
-
         <div className={styles.list}>
           {visible.map((j, i) => (
             <div className={styles.row} key={`${j.title}-${page}-${i}`}>
@@ -85,6 +78,13 @@ export default class OpenPositions extends React.Component<Record<string, never>
             </div>
           ))}
         </div>
+
+        {this._pageCount > 1 && (
+          <div className={styles.arrowsRow}>
+            <button className={styles.arrowButton} onClick={this._prev} aria-label="Previous">←</button>
+            <button className={styles.arrowButton} onClick={this._next} aria-label="Next">→</button>
+          </div>
+        )}
       </div>
     );
   }

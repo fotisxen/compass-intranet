@@ -1,0 +1,29 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+  "id": "3e4df5e8-11b4-4906-afae-f6f58b218012",
+  "alias": "DualColumnFeatureWebPart",
+  "componentType": "WebPart",
+
+  "version": "*",
+  "manifestVersion": 2,
+
+  "requiresCustomScript": false,
+  "supportedHosts": ["SharePointWebPart", "TeamsPersonalApp", "TeamsTab", "SharePointFullPage"],
+  "supportsThemeVariants": true,
+  "supportsFullBleed": true,
+
+  "preconfiguredEntries": [{
+    "groupId": "5c03119e-3074-46fd-976b-c60198311f70", // Advanced
+    "group": { "default": "Advanced" },
+    "title": { "default": "Compass Dual Column Feature" },
+    "description": { "default": "A full-width colored strip with two white cards, each with its own title and bulleted list." },
+    "officeFabricIconFontName": "DoubleColumn",
+    "properties": {
+          "bgColor": "#082244",
+          "leftTitle": "Title 1",
+          "leftItems": [{ "text": "Introduction of each section." }],
+          "rightTitle": "Title 2",
+          "rightItems": [{ "text": "Introduction of each section." }]
+    }
+  }]
+}

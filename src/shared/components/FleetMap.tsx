@@ -130,8 +130,10 @@ interface IVesselPosition {
   posDt?: string;
 }
 
+// Target of the "Our Fleet Live" tag — matches the Fleet nav item's own link.
+const FLEET_PAGE_URL = '/sites/Intranet/SitePages/Fleet.aspx';
+
 export interface IFleetMapState {
-  showFleet: boolean;
   vessels: IVesselPosition[];
   hasLiveData: boolean;
   isLoadingVessels: boolean;
@@ -177,16 +179,12 @@ function normalizeVessel(raw: Record<string, unknown>): IVesselPosition | undefi
 export default class FleetMap extends React.Component<IFleetMapProps, IFleetMapState> {
   constructor(props: IFleetMapProps) {
     super(props);
-    // On by default — the map opens already showing the fleet instead of
-    // requiring a click on the "Our Fleet Live" tag first.
-    this.state = { showFleet: true, vessels: [], hasLiveData: false, isLoadingVessels: false };
+    this.state = { vessels: [], hasLiveData: false, isLoadingVessels: false };
   }
 
   public componentDidMount(): void {
     ensureLeafletCss();
-    if (this.state.showFleet && !this.state.hasLiveData) {
-      this._startLoadingVessels();
-    }
+    this._startLoadingVessels();
   }
 
   private _startLoadingVessels(): void {
@@ -200,15 +198,6 @@ export default class FleetMap extends React.Component<IFleetMapProps, IFleetMapS
       .then(() => this.setState({ isLoadingVessels: false }))
       .catch(() => undefined);
   }
-
-  private _toggleFleet = (): void => {
-    const isTurningOn = !this.state.showFleet;
-    this.setState(prev => ({ showFleet: !prev.showFleet }));
-
-    if (isTurningOn && !this.state.hasLiveData) {
-      this._startLoadingVessels();
-    }
-  };
 
   private async _loadVessels(): Promise<void> {
     const { fleetApiUrl } = this.props;
@@ -301,18 +290,19 @@ export default class FleetMap extends React.Component<IFleetMapProps, IFleetMapS
   }
 
   public render(): React.ReactElement {
-    const { showFleet, vessels, hasLiveData, isLoadingVessels } = this.state;
+    const { vessels, hasLiveData, isLoadingVessels } = this.state;
 
     return (
       <div className={styles.mapWrap}>
         <MapContainer
           className={styles.map}
-          center={[38, 24]}
-          zoom={5}
+          center={[50, 15]}
+          zoom={3.5}
           zoomControl={true}
           minZoom={2}
           maxZoom={18}
-          scrollWheelZoom={false}
+          scrollWheelZoom={true}
+          whenCreated={map => map.attributionControl.setPrefix(false)}
         >
           {/* Carto's free basemaps now require an API key for anonymous use
               (they watermark unauthenticated requests), so this uses standard
@@ -327,7 +317,7 @@ export default class FleetMap extends React.Component<IFleetMapProps, IFleetMapS
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
           )}
-          {showFleet && hasLiveData &&
+          {hasLiveData &&
             vessels.map(vessel => (
               <Marker
                 key={`${vessel.imo ?? vessel.name}`}
@@ -339,7 +329,7 @@ export default class FleetMap extends React.Component<IFleetMapProps, IFleetMapS
                 </Popup>
               </Marker>
             ))}
-          {showFleet && !hasLiveData && !isLoadingVessels &&
+          {!hasLiveData && !isLoadingVessels &&
             offices.map(office => (
               <Marker key={office.city} position={[office.lat, office.lng]} icon={officeIcon}>
                 <Popup>
@@ -351,15 +341,15 @@ export default class FleetMap extends React.Component<IFleetMapProps, IFleetMapS
               </Marker>
             ))}
         </MapContainer>
-        {showFleet && isLoadingVessels && (
+        {isLoadingVessels && (
           <div className={styles.loadingOverlay}>
             <span className={styles.spinner} aria-hidden="true" />
             <span>Loading fleet positions…</span>
           </div>
         )}
-        <button type="button" className={styles.tag} onClick={this._toggleFleet} disabled={isLoadingVessels}>
+        <a href={FLEET_PAGE_URL} className={styles.tag}>
           {isLoadingVessels ? 'Loading fleet…' : 'Our Fleet Live'}
-        </button>
+        </a>
       </div>
     );
   }

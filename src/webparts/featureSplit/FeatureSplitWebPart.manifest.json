@@ -1,0 +1,27 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+  "id": "ce113ca2-8b33-4b2b-a4fc-97b7915dcc14",
+  "alias": "FeatureSplitWebPart",
+  "componentType": "WebPart",
+
+  "version": "*",
+  "manifestVersion": 2,
+
+  "requiresCustomScript": false,
+  "supportedHosts": ["SharePointWebPart", "TeamsPersonalApp", "TeamsTab", "SharePointFullPage"],
+  "supportsThemeVariants": true,
+
+  "preconfiguredEntries": [{
+    "groupId": "5c03119e-3074-46fd-976b-c60198311f70", // Advanced
+    "group": { "default": "Advanced" },
+    "title": { "default": "Compass Feature Split" },
+    "description": { "default": "A divider line, title and text on the left, a photo on the right — title, text and photo are all editable." },
+    "officeFabricIconFontName": "Page",
+    "properties": {
+          "title": "Title",
+          "titleColor": "#082244",
+          "bodyText": "Introduction of each section.",
+          "bodyColor": "#082244"
+    }
+  }]
+}

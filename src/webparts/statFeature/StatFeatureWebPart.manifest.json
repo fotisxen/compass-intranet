@@ -1,0 +1,36 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+  "id": "7a63a321-e9f3-4b50-9f83-f8ab90e2775a",
+  "alias": "StatFeatureWebPart",
+  "componentType": "WebPart",
+
+  "version": "*",
+  "manifestVersion": 2,
+
+  "requiresCustomScript": false,
+  "supportedHosts": ["SharePointWebPart", "TeamsPersonalApp", "TeamsTab", "SharePointFullPage"],
+  "supportsThemeVariants": true,
+  "supportsFullBleed": true,
+
+  "preconfiguredEntries": [{
+    "groupId": "5c03119e-3074-46fd-976b-c60198311f70", // Advanced
+    "group": { "default": "Advanced" },
+    "title": { "default": "Compass Stat Feature" },
+    "description": { "default": "A full-width colored strip: a small label, a big title, an intro text, an optional photo, and 0-3 title+text columns below a divider — everything, including every color, is editable." },
+    "officeFabricIconFontName": "ThumbnailView",
+    "properties": {
+          "bgColor": "#082244",
+          "titleText": "Big Title",
+          "titleColor": "#ffffff",
+          "bodyText": "Introduction of each section.",
+          "bodyColor": "#ffffff",
+          "columnsColor": "#ffffff",
+          "columns": [
+                {
+                      "title": "Title 1",
+                      "text": "Introduction of each section."
+                }
+          ]
+    }
+  }]
+}

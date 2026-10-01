@@ -1,0 +1,32 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+  "id": "8b65db45-66b9-455a-a69a-99041cab91b9",
+  "alias": "HighlightBannerWebPart",
+  "componentType": "WebPart",
+
+  "version": "*",
+  "manifestVersion": 2,
+
+  "requiresCustomScript": false,
+  "supportedHosts": ["SharePointWebPart", "TeamsPersonalApp", "TeamsTab", "SharePointFullPage"],
+  "supportsThemeVariants": true,
+  "supportsFullBleed": true,
+
+  "preconfiguredEntries": [{
+    "groupId": "5c03119e-3074-46fd-976b-c60198311f70", // Advanced
+    "group": { "default": "Advanced" },
+    "title": { "default": "Compass Highlight Banner" },
+    "description": { "default": "A full-width colored strip with a title on the left and a bulleted list on the right — title, list, text color and background color are all editable." },
+    "officeFabricIconFontName": "Page",
+    "properties": {
+          "title": "Eligibility",
+          "titleColor": "#ffffff",
+          "items": [
+            { "text": "Coverage starts after your first 6 months of employment." },
+            { "text": "Dependents can be added after 1 year of employment." }
+          ],
+          "bodyColor": "#000000",
+          "bgColor": "#d9d9d9"
+    }
+  }]
+}
