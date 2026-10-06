@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styles from './TestimonialCarousel.module.scss';
+import ArrowIcon from '../../../shared/components/ArrowIcon';
 
 export interface ITestimonial {
   quote: string;
@@ -71,7 +72,7 @@ export default function TestimonialCarousel(props: ITestimonialCarouselProps): R
             disabled={atStart}
             aria-label="Previous"
           >
-            ←
+            <ArrowIcon direction="left" />
           </button>
           <button
             className={styles.arrow}
@@ -79,7 +80,7 @@ export default function TestimonialCarousel(props: ITestimonialCarouselProps): R
             disabled={atEnd}
             aria-label="Next"
           >
-            →
+            <ArrowIcon direction="right" />
           </button>
         </div>
       )}

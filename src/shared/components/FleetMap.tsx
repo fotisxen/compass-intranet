@@ -296,8 +296,8 @@ export default class FleetMap extends React.Component<IFleetMapProps, IFleetMapS
       <div className={styles.mapWrap}>
         <MapContainer
           className={styles.map}
-          center={[50, 15]}
-          zoom={3.5}
+          center={[38, 24]}
+          zoom={2}
           zoomControl={true}
           minZoom={2}
           maxZoom={18}

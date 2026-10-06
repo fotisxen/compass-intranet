@@ -111,10 +111,48 @@
 // OpenStreetMap's usage policy, but it doesn't need to be loud — this
 // targets Leaflet's own global class name (not a scss-module class) to
 // make it small and quiet instead of hiding it.
+//
+// It's collapsed to a small "i" badge and expands on hover/tap, so the
+// credit stays one gesture away (as the OSM attribution guidelines allow for
+// interactive maps) without a line of text across the map's bottom edge.
 :global(.leaflet-control-attribution) {
+  box-sizing: border-box;
+  width: 18px;
+  height: 18px;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 0 !important;
+  border-radius: 9px;
   font-size: 9px !important;
-  padding: 0 4px !important;
-  background: rgba(255, 255, 255, 0.6) !important;
+  line-height: 18px !important;
+  // Faint at rest (barely-there badge) and only a little firmer when opened,
+  // so neither the badge nor the credit text competes with the map.
+  background: rgba(255, 255, 255, 0.15) !important;
+  opacity: 0.18;
+  transition: opacity 0.15s ease;
+
+  &::before {
+    content: 'i';
+    display: inline-block;
+    width: 18px;
+    margin-right: 2px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    font-style: italic;
+    font-family: Georgia, serif;
+    color: #082244;
+  }
+
+  &:hover {
+    width: auto;
+    height: auto;
+    overflow: visible;
+    padding-right: 4px !important;
+    border-radius: 9px 0 0 0;
+    background: rgba(255, 255, 255, 0.35) !important;
+    opacity: 0.4;
+  }
 }
 
 .popup {

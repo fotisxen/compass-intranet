@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styles from './OpenPositions.module.scss';
+import ArrowIcon from '../../../shared/components/ArrowIcon';
 
 const PAGE_SIZE = 4;
 const JOB_LISTINGS_API_URL = 'https://bpcstarbulkwebapi.azurewebsites.net/api/GetJobListings';
@@ -88,8 +89,8 @@ export default class OpenPositions extends React.Component<Record<string, never>
 
         {this._pageCount > 1 && (
           <div className={styles.arrowsRow}>
-            <button className={styles.arrowButton} onClick={this._prev} aria-label="Previous">←</button>
-            <button className={styles.arrowButton} onClick={this._next} aria-label="Next">→</button>
+            <button className={styles.arrowButton} onClick={this._prev} aria-label="Previous"><ArrowIcon direction="left" /></button>
+            <button className={styles.arrowButton} onClick={this._next} aria-label="Next"><ArrowIcon direction="right" /></button>
           </div>
         )}
       </div>

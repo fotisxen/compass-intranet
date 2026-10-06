@@ -24,9 +24,16 @@ function ensureMaplibreCss(): void {
   document.head.appendChild(link);
 }
 
+// The only text kept on the map is the country names (label_country_1/2/3 in
+// the stock style) — no cities, capitals, seas, roads or points of interest —
+// and those only appear from this zoom level in, so the fully zoomed-out
+// opening view is clean.
+const COUNTRY_LABEL_MIN_ZOOM = 4;
+
 interface IStyleLayer {
   id: string;
   type: string;
+  minzoom?: number;
   layout?: Record<string, unknown>;
   paint?: Record<string, unknown>;
 }
@@ -78,9 +85,16 @@ const OSM_PAINT: Record<string, Record<string, string | number>> = {
 function englishOnly(style: IStyleJson): IStyleJson {
   // The shaded-relief photo drawn under everything at low zoom is what makes
   // the stock style look so much more colourful; land is flat like OSM instead.
-  // Country/region border lines are dropped too (place names stay).
-  style.layers = style.layers.filter(layer => layer.id !== 'natural_earth' && layer.id.indexOf('boundary') !== 0);
+  // Country/region border lines are dropped too, and so is every label and
+  // icon except the country names.
+  style.layers = style.layers.filter(layer =>
+    layer.id !== 'natural_earth'
+    && layer.id.indexOf('boundary') !== 0
+    && (layer.type !== 'symbol' || layer.id.indexOf('label_country') === 0));
   style.layers.forEach(layer => {
+    if (layer.type === 'symbol') {
+      layer.minzoom = Math.max(layer.minzoom || 0, COUNTRY_LABEL_MIN_ZOOM);
+    }
     const paint = OSM_PAINT[layer.id];
     if (paint) {
       layer.paint = { ...(layer.paint || {}), ...paint };

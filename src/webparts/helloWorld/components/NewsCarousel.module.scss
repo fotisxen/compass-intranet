@@ -29,13 +29,16 @@
   top: 50%;
   transform: translateY(-50%);
   z-index: 2;
-  width: 34px;
-  height: 34px;
+  // Same 19px circle and glyph size as every other pagination arrow in the
+  // app (Welcome Aboard, Open Positions, Work Anniversaries, Events), instead
+  // of the bigger 34px one this used to be.
+  width: 19px;
+  height: 19px;
   border-radius: 50%;
   border: none;
   background: rgba(255, 255, 255, 0.92);
   color: #082244;
-  font-size: 16px;
+  font-size: 0.6875em;
   display: flex;
   align-items: center;
   justify-content: center;

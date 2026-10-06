@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styles from './PersonSpotlightCard.module.scss';
+import ArrowIcon from '../../../shared/components/ArrowIcon';
 import type { IPersonSpotlight } from './data/mockData';
 
 export interface IPersonSpotlightCardProps {
@@ -62,7 +63,7 @@ export default class PersonSpotlightCard extends React.Component<IPersonSpotligh
     return (
       <div className={styles.card} style={{ background }}>
         {people.length > 1 && (
-          <button className={`${styles.arrowButton} ${styles.arrowLeft}`} onClick={this._prev} aria-label="Previous">←</button>
+          <button className={`${styles.arrowButton} ${styles.arrowLeft}`} onClick={this._prev} aria-label="Previous"><ArrowIcon direction="left" /></button>
         )}
 
         <p className={styles.heading} style={{ fontSize: headingFontSize }}>{heading}</p>
@@ -92,7 +93,7 @@ export default class PersonSpotlightCard extends React.Component<IPersonSpotligh
         </div>
 
         {people.length > 1 && (
-          <button className={`${styles.arrowButton} ${styles.arrowRight}`} onClick={this._next} aria-label="Next">→</button>
+          <button className={`${styles.arrowButton} ${styles.arrowRight}`} onClick={this._next} aria-label="Next"><ArrowIcon direction="right" /></button>
         )}
       </div>
     );

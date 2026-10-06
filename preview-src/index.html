@@ -16,6 +16,10 @@
     background: #ffffff;
     font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
   }
+  /* Preview harness only: the map and the news cards are separate SharePoint
+     sections on the real page, but here they stack tight and the cards'
+     negative margin covers the map's bottom edge. Not part of the package. */
+  #root { padding-top: 40px; }
 </style>
 <link rel="stylesheet" href="dist/bundle.css" />
 </head>

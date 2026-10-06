@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styles from './WorkAnniversaries.module.scss';
+import ArrowIcon from '../../../shared/components/ArrowIcon';
 import type { IAnniversary } from './data/mockData';
 
 const PAGE_SIZE = 4;
@@ -63,8 +64,8 @@ export default class WorkAnniversaries extends React.Component<IWorkAnniversarie
 
         {this._pageCount > 1 && (
           <div className={styles.arrowsRow}>
-            <button className={styles.arrowButton} onClick={this._prev} aria-label="Previous">←</button>
-            <button className={styles.arrowButton} onClick={this._next} aria-label="Next">→</button>
+            <button className={styles.arrowButton} onClick={this._prev} aria-label="Previous"><ArrowIcon direction="left" /></button>
+            <button className={styles.arrowButton} onClick={this._next} aria-label="Next"><ArrowIcon direction="right" /></button>
           </div>
         )}
       </div>

@@ -69,13 +69,14 @@
 }
 
 .arrow {
-  width: 34px;
-  height: 34px;
+  // Same 19px circle and glyph size as every other pagination arrow.
+  width: 19px;
+  height: 19px;
   border-radius: 50%;
   border: none;
   background: #ffffff;
   color: #082244;
-  font-size: 16px;
+  font-size: 13.75px;
   display: flex;
   align-items: center;
   justify-content: center;

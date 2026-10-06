@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { SPHttpClient, type SPHttpClientResponse } from '@microsoft/sp-http';
 import styles from './EventsWidget.module.scss';
+import ArrowIcon from './ArrowIcon';
 import { type IEvent } from './data/eventsMockData';
 
 export interface IEventsWidgetProps {
@@ -156,13 +157,13 @@ export default class EventsWidget extends React.Component<IEventsWidgetProps, IE
             </div>
             <div className={styles.mediaRow} style={hasMultiple ? undefined : { justifyContent: 'center' }}>
               {hasMultiple && (
-                <button className={styles.arrowButton} onClick={this._prev} aria-label="Previous event">←</button>
+                <button className={styles.arrowButton} onClick={this._prev} aria-label="Previous event"><ArrowIcon direction="left" /></button>
               )}
               <div className={styles.eventImage} style={event.imageUrl ? { backgroundImage: `url("${event.imageUrl}")` } : undefined}>
                 {!event.imageUrl && event.initials}
               </div>
               {hasMultiple && (
-                <button className={styles.arrowButton} onClick={this._next} aria-label="Next event">→</button>
+                <button className={styles.arrowButton} onClick={this._next} aria-label="Next event"><ArrowIcon direction="right" /></button>
               )}
             </div>
             <div className={styles.eventFooter}>

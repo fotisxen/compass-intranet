@@ -1,6 +1,7 @@
 import * as React from 'react';
 import type { SPHttpClient } from '@microsoft/sp-http';
 import styles from './NewsCarousel.module.scss';
+import ArrowIcon from '../../../shared/components/ArrowIcon';
 import { NewsCardView } from '../../../shared/components/NewsCard';
 import { type INewsItem, loadPromotedNews, loadPageByPath, normalizePageUrl } from '../../../shared/components/newsApi';
 
@@ -99,7 +100,7 @@ export default class NewsCarousel extends React.Component<INewsCarouselProps, IN
               disabled={start === 0}
               aria-label="Previous news"
             >
-              ←
+              <ArrowIcon direction="left" />
             </button>
             <button
               className={`${styles.arrow} ${styles.arrowRight}`}
@@ -107,7 +108,7 @@ export default class NewsCarousel extends React.Component<INewsCarouselProps, IN
               disabled={start >= items.length - VISIBLE}
               aria-label="Next news"
             >
-              →
+              <ArrowIcon direction="right" />
             </button>
           </>
         )}

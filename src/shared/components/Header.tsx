@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styles from './Header.module.scss';
+import ArrowIcon from './ArrowIcon';
 import { NAV_ITEMS } from './navData';
 
 export interface IHeaderProps {
@@ -125,7 +126,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
 
           <button type="button" className={styles.assistant} onClick={this.props.onOpenAssistant}>
             <span className={styles.assistantLabel}>Ask Your AI Assistant</span>
-            <span className={styles.assistantSubmit} aria-hidden="true">→</span>
+            <span className={styles.assistantSubmit} aria-hidden="true"><ArrowIcon direction="right" /></span>
           </button>
         </div>
       </header>
