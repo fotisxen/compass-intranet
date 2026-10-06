@@ -6,9 +6,11 @@
   // calculated token that can drift from it by a few pixels) — so the arrows
   // below, positioned against .wrap's edges, always land exactly on .grid's
   // real left/right edges, equally inset on both sides, rather than sitting
-  // slightly off on one side or the other.
+  // slightly off on one side or the other. No max-width: when the section
+  // is narrower than the grid (which has fixed-size columns and overflows
+  // it), a 100% cap would shrink this box to the section and leave the right
+  // arrow floating inside the last card instead of on its edge.
   width: fit-content;
-  max-width: 100%;
 }
 
 .grid {
@@ -59,10 +61,14 @@
 }
 
 .arrowRight {
-  right: -4px;
+  right: 6px;
 }
 
 @media (max-width: 900px) {
+  .wrap {
+    width: 100%;
+  }
+
   .grid {
     grid-template-columns: 1fr;
   }
