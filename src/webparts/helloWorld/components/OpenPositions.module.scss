@@ -33,11 +33,16 @@
   min-height: 38px;
   padding: 6px 0;
   flex-shrink: 0;
-  border-bottom: 1px solid rgba(8, 34, 68, 0.08);
 
-  &:last-child {
-    border-bottom: none;
+  // Divider above every row but the first (not below every row but the last),
+  // so invisible filler rows after the last real row don't add a stray line.
+  & + & {
+    border-top: 1px solid rgba(8, 34, 68, 0.08);
   }
+}
+
+.rowPlaceholder {
+  visibility: hidden;
 }
 
 .titleText {

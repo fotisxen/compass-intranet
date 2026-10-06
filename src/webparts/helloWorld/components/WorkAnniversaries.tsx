@@ -49,6 +49,16 @@ export default class WorkAnniversaries extends React.Component<IWorkAnniversarie
               <span className={styles.years}>{a.years}Y</span>
             </div>
           ))}
+          {/* Invisible filler rows keep the list as tall as a full page, so the arrows below stay put on the last (shorter) page. */}
+          {this._pageCount > 1 && Array.from({ length: PAGE_SIZE - visible.length }, (_, i) => (
+            <div className={`${styles.row} ${styles.rowPlaceholder}`} key={`filler-${i}`} aria-hidden="true">
+              <span className={styles.avatar} />
+              <div className={styles.name}>
+                <div className={styles.nameText}>&nbsp;</div>
+                <div className={styles.roleText}>&nbsp;</div>
+              </div>
+            </div>
+          ))}
         </div>
 
         {this._pageCount > 1 && (

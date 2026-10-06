@@ -2,6 +2,11 @@
 
 .mapWrap {
   position: relative;
+  // Own stacking context: Leaflet/MapLibre use z-index up to 1000+ inside
+  // the map, and without this they compete with the page header's dropdown
+  // menu and can paint on top of it.
+  isolation: isolate;
+  z-index: 0;
   border-radius: 30px;
   overflow: hidden;
   // Matches the 3 Newsroom cards + their 2 gaps below, instead of filling
