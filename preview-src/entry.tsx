@@ -97,6 +97,7 @@ import CircleIconList from '../src/webparts/circleIconList/components/CircleIcon
 import LogoGridFeature from '../src/webparts/logoGridFeature/components/LogoGridFeature';
 import DualColumnFeature from '../src/webparts/dualColumnFeature/components/DualColumnFeature';
 import StatFeature from '../src/webparts/statFeature/components/StatFeature';
+import FleetTable from '../src/webparts/fleetTable/components/FleetTable';
 
 function newRoot(): HTMLElement {
   const el = document.createElement('div');
@@ -160,7 +161,41 @@ ReactDom.render(React.createElement(StatFeature, {
   columns: [{ title: 'Title 1', text: 'Introduction of each section.' }, { title: 'Title 2', text: 'Introduction of each section.' }, { title: 'Title 3', text: 'Introduction of each section.' }]
 }), newRoot());
 
-ReactDom.render(React.createElement(ChromeRoot, { chatApiUrl: '' }), document.getElementById('chrome-top'));
+// Fake SharePoint client for the list-driven pieces. With ?navList=1 the
+// header reads a (made-up) Compass Navigation list that reorders, renames and
+// adds entries, to see the dynamic menu react; without it, no client is passed
+// and the header shows the built-in menu, as before.
+const fleetSample = [
+  ['Goliath', 'Newcastlemax', 209537, '2015', 'NACKS China'], ['Gargantua', 'Newcastlemax', 209529, '2015', 'NACKS China'],
+  ['Star Gina 2GR', 'Newcastlemax', 209475, '2016', 'NACKS China'], ['Maharaj', 'Newcastlemax', 209472, '2015', 'NACKS China'],
+  ['Star Leo', 'Newcastlemax', 207939, '2018', 'SWS China'], ['Star Laetitia', 'Newcastlemax', 207896, '2017', 'SWS, China'],
+  ['Star Ariadne', 'Newcastlemax', 207812, '2017', 'SWS China'], ['Star Virgo', 'Newcastlemax', 207810, '2017', 'SWS China'],
+  ['Star Libra', 'Newcastlemax', 207765, '2016', 'SWS China']
+].map((v, i) => ({ Id: i + 1, Title: v[0], VesselType: v[1], Dwt: v[2], BuiltYear: v[3], Shipyard: v[4] }));
+const navRows = [
+  { Id: 1, Title: 'Fleet', NavUrl: '/fleet', SortOrder: 10, DropdownColumn: 1, ShowInMenu: true },
+  { Id: 2, Title: 'Safety', NavUrl: '', SortOrder: 20, DropdownColumn: 1, ShowInMenu: true },
+  { Id: 3, Title: 'Drills', NavUrl: '/drills', ParentItemId: 2, SortOrder: 10, DropdownColumn: 1, ShowInMenu: true },
+  { Id: 4, Title: 'Emergency contacts', NavUrl: '/contacts', ParentItemId: 2, SortOrder: 10, DropdownColumn: 2, ShowInMenu: true },
+  { Id: 5, Title: 'People Hub', NavUrl: '/people', SortOrder: 30, DropdownColumn: 1, ShowInMenu: true }
+];
+const fakeListClient = {
+  get: async (url: string) => {
+    if (url.indexOf('Compass%20Fleet') !== -1 || url.indexOf('Compass Fleet') !== -1) {
+      return { ok: true, status: 200, json: async () => ({ value: fleetSample }) };
+    }
+    if (url.indexOf('Compass%20Navigation') !== -1 || url.indexOf('Compass Navigation') !== -1) {
+      return { ok: true, status: 200, json: async () => ({ value: navRows }) };
+    }
+    return { ok: false, status: 404, json: async () => ({}) };
+  }
+};
+const useFakeNav = new URLSearchParams(window.location.search).get('navList') === '1';
+ReactDom.render(React.createElement(FleetTable, { spHttpClient: fakeListClient as never, siteUrl: 'https://example.sharepoint.com/sites/demo', sortBy: 'dwt', sortDescending: true, maxRows: 0, canManageLists: true }), newRoot());
+
+ReactDom.render(React.createElement(ChromeRoot, useFakeNav
+  ? { chatApiUrl: '', spHttpClient: fakeListClient as never, siteUrl: 'https://example.sharepoint.com/sites/demo' }
+  : { chatApiUrl: '' }), document.getElementById('chrome-top'));
 
 // Compass Holidays is its own standalone web part now, placed right under
 // the nav — same original position, own container/row. No sizing/alignment

@@ -72,6 +72,9 @@ interface INasdaqApiResponse {
 interface IEuronextApiResponse {
   lastTrade?: string;
   changePercent?: string;
+  // The raw InBroker FeedCache reply, for when euronextApiUrl points at the
+  // feed itself rather than at the euronextStock proxy.
+  'inbroker-transactions'?: { row?: { price?: number; pricePrevClosePricePDelta?: number; currCode?: string } };
 }
 
 function formatPrice(lastTrade: number, currencySymbol: string): string {
@@ -117,7 +120,13 @@ export default class Footer extends React.Component<IFooterProps, IFooterState> 
     // other, working one.
     const [nasdaq, euronext] = await Promise.all([
       this._loadNasdaqTicker().catch(() => undefined),
-      this._loadEuronextTicker().catch(() => undefined)
+      this._loadEuronextTicker().catch((err: unknown) => {
+        // Hidden on failure like the NASDAQ one, but leave a trace in the
+        // console: a browser blocking a direct call to the feed (CORS) is
+        // otherwise indistinguishable from "nothing configured".
+        console.warn('[Compass Footer] Euronext quote unavailable:', err);
+        return undefined;
+      })
     ]);
 
     const tickers = [nasdaq, euronext].filter((t): t is IStockTicker => !!t);
@@ -158,8 +167,9 @@ export default class Footer extends React.Component<IFooterProps, IFooterState> 
     }
 
     const data: IEuronextApiResponse = await response.json();
-    const lastTrade = parseFloat(data.lastTrade || '');
-    const changePercent = parseFloat(data.changePercent || '');
+    const row = data['inbroker-transactions']?.row;
+    const lastTrade = row ? Number(row.price) : parseFloat(data.lastTrade || '');
+    const changePercent = row ? Number(row.pricePrevClosePricePDelta) : parseFloat(data.changePercent || '');
     if (isNaN(lastTrade) || isNaN(changePercent)) {
       return undefined;
     }

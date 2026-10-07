@@ -1,12 +1,14 @@
 import * as React from 'react';
 import styles from './Header.module.scss';
 import ArrowIcon from './ArrowIcon';
-import { NAV_ITEMS } from './navData';
+import { NAV_ITEMS, type INavItem } from './navData';
 
 export interface IHeaderProps {
   onOpenAssistant: () => void;
   /** Site's home page URL — the logo/brand links here. Defaults to '/' when omitted (standalone preview). */
   homeUrl?: string;
+  /** The menu to show. Defaults to the built-in one (see navData.ts) when omitted. */
+  navItems?: INavItem[];
 }
 
 export interface IHeaderState {
@@ -52,6 +54,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
   public render(): React.ReactElement<IHeaderProps> {
     const { openItem } = this.state;
     const { homeUrl } = this.props;
+    const navItems = this.props.navItems || NAV_ITEMS;
 
     return (
       <header className={styles.header}>
@@ -64,7 +67,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
           </a>
 
           <ul className={styles.nav}>
-            {NAV_ITEMS.map(item => (
+            {navItems.map(item => (
               <li
                 key={item.label}
                 className={styles.navItem}

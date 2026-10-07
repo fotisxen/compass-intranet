@@ -145,6 +145,14 @@
           "manifest": "./src/webparts/statFeature/StatFeatureWebPart.manifest.json"
         }
       ]
+    },
+    "fleet-table-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/fleetTable/FleetTableWebPart.js",
+          "manifest": "./src/webparts/fleetTable/FleetTableWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
@@ -166,6 +174,7 @@
     "CircleIconListWebPartStrings": "lib/webparts/circleIconList/loc/{locale}.js",
     "LogoGridFeatureWebPartStrings": "lib/webparts/logoGridFeature/loc/{locale}.js",
     "DualColumnFeatureWebPartStrings": "lib/webparts/dualColumnFeature/loc/{locale}.js",
-    "StatFeatureWebPartStrings": "lib/webparts/statFeature/loc/{locale}.js"
+    "StatFeatureWebPartStrings": "lib/webparts/statFeature/loc/{locale}.js",
+    "FleetTableWebPartStrings": "lib/webparts/fleetTable/loc/{locale}.js"
   }
 }
