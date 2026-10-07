@@ -2,6 +2,7 @@ import * as React from 'react';
 import type { SPHttpClient } from '@microsoft/sp-http';
 import { type IHoliday } from './data/holidaysMockData';
 import { loadUpcomingHolidays } from './holidaysApi';
+import { pickEuronextEntry, pickNasdaqEntry, type IQuoteEntry } from './stockQuotes';
 import styles from './Footer.module.scss';
 import starbulkIcon from './assets/footerLinks/starbulk.png';
 import linkedinIcon from './assets/footerLinks/linkedin.webp';
@@ -13,7 +14,7 @@ export interface IFooterProps {
   companyName: string;
   /** Real quote endpoint (GetStockPrice) on the same Azure Function App as the fleet API. Tickers stay hidden when absent or unreachable — no placeholder numbers are shown. */
   stockApiUrl?: string;
-  /** Server-side proxy (api/src/functions/euronextStock.ts) for starbulk.com's own Euronext Athens feed — that endpoint has no CORS header, so it can't be called directly from this site. Same "stays hidden if unreachable" behavior as stockApiUrl. */
+  /** Optional override. By default the Euronext quote is read from the same stock API as NASDAQ (stockApiUrl) as soon as that API lists it; set this only to point Euronext at a different endpoint instead (e.g. the euronextStock proxy). Hidden when no quote is available. */
   euronextApiUrl?: string;
   /** Shifts Stay Connected/Quick Access/the ticker right (or left, negative) without moving the blue background — editable from the web part's property pane since the real page's exact alignment can't be verified until it's live. */
   contentOffsetX?: number;
@@ -55,25 +56,15 @@ interface IStockTicker {
   price: string;
 }
 
-interface INasdaqApiEntry {
-  symbol: string;
-  lastTrade: number;
-  changePercent: number;
-  isDefault: string;
+interface IStockApiResponse {
+  data?: IQuoteEntry[];
 }
 
-interface INasdaqApiResponse {
-  data?: INasdaqApiEntry[];
-}
-
-// starbulk.com's own feed — same shape confirmed by calling
-// ?module=investorrelations&action=get-euronext-stock-feed directly, but
-// unlike the NASDAQ feed above, its numeric fields come through as strings.
+// Reply shapes of the optional euronextApiUrl override: the euronextStock
+// proxy (numbers as strings) or the raw InBroker feed.
 interface IEuronextApiResponse {
   lastTrade?: string;
   changePercent?: string;
-  // The raw InBroker FeedCache reply, for when euronextApiUrl points at the
-  // feed itself rather than at the euronextStock proxy.
   'inbroker-transactions'?: { row?: { price?: number; pricePrevClosePricePDelta?: number; currCode?: string } };
 }
 
@@ -115,19 +106,36 @@ export default class Footer extends React.Component<IFooterProps, IFooterState> 
   }
 
   private async _loadTickers(): Promise<void> {
-    // Independent try/catch per exchange (not a shared one around
-    // Promise.all) — one feed being unreachable shouldn't also hide the
-    // other, working one.
-    const [nasdaq, euronext] = await Promise.all([
-      this._loadNasdaqTicker().catch(() => undefined),
-      this._loadEuronextTicker().catch((err: unknown) => {
-        // Hidden on failure like the NASDAQ one, but leave a trace in the
-        // console: a browser blocking a direct call to the feed (CORS) is
+    // NASDAQ and (once the API lists it) Euronext come from the same quotes
+    // response, so it's fetched once. A failure there hides both rather than
+    // showing stale or placeholder numbers; the optional Euronext override
+    // below is independent of it.
+    const entries = await this._loadQuoteEntries().catch(() => undefined);
+
+    const nasdaqEntry = pickNasdaqEntry(entries);
+    const nasdaq: IStockTicker | undefined = nasdaqEntry && {
+      symbol: 'NASDAQ:SBLK',
+      changePct: formatChangePct(nasdaqEntry.changePercent as number),
+      price: formatPrice(nasdaqEntry.lastTrade as number, '$')
+    };
+
+    let euronext: IStockTicker | undefined;
+    if (this.props.euronextApiUrl) {
+      euronext = await this._loadEuronextOverride().catch((err: unknown) => {
+        // Hidden on failure like every other ticker, but leave a trace in the
+        // console: a browser blocking a direct call to a feed (CORS) is
         // otherwise indistinguishable from "nothing configured".
         console.warn('[Compass Footer] Euronext quote unavailable:', err);
         return undefined;
-      })
-    ]);
+      });
+    } else {
+      const entry = pickEuronextEntry(entries);
+      euronext = entry && {
+        symbol: 'EURONEXT:SBLK',
+        changePct: formatChangePct(entry.changePercent as number),
+        price: formatPrice(entry.lastTrade as number, '€')
+      };
+    }
 
     const tickers = [nasdaq, euronext].filter((t): t is IStockTicker => !!t);
     if (tickers.length > 0) {
@@ -135,7 +143,7 @@ export default class Footer extends React.Component<IFooterProps, IFooterState> 
     }
   }
 
-  private async _loadNasdaqTicker(): Promise<IStockTicker | undefined> {
+  private async _loadQuoteEntries(): Promise<IQuoteEntry[] | undefined> {
     const { stockApiUrl } = this.props;
     if (!stockApiUrl) {
       return undefined;
@@ -146,16 +154,11 @@ export default class Footer extends React.Component<IFooterProps, IFooterState> 
       return undefined;
     }
 
-    const data: INasdaqApiResponse = await response.json();
-    const sblk = data.data?.find(e => e.isDefault === 'true');
-    if (!sblk) {
-      return undefined;
-    }
-
-    return { symbol: 'NASDAQ:SBLK', changePct: formatChangePct(sblk.changePercent), price: formatPrice(sblk.lastTrade, '$') };
+    const data: IStockApiResponse = await response.json();
+    return Array.isArray(data.data) ? data.data : undefined;
   }
 
-  private async _loadEuronextTicker(): Promise<IStockTicker | undefined> {
+  private async _loadEuronextOverride(): Promise<IStockTicker | undefined> {
     const { euronextApiUrl } = this.props;
     if (!euronextApiUrl) {
       return undefined;
