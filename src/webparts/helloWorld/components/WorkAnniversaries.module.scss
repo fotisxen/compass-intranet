@@ -58,6 +58,16 @@
   flex-shrink: 0;
 }
 
+// Same 30px circle as .avatar, with the photo cropped to fill it.
+.avatarPhoto {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: #082244;
+}
+
 .name {
   flex: 1;
   min-width: 0;

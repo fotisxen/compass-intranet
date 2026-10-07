@@ -14,6 +14,8 @@ export interface IAnniversary {
   role: string;
   years: number;
   initials: string;
+  /** Shown as a small round photo in place of the initials; falls back to the initials when omitted or the image fails to load. */
+  photoUrl?: string;
 }
 
 // Hand-authored, not fetched from a list — add/remove entries here to

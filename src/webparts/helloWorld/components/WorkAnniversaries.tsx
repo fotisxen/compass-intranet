@@ -5,6 +5,20 @@ import type { IAnniversary } from './data/mockData';
 
 const PAGE_SIZE = 4;
 
+// A photo when one is set and loads, otherwise the initials circle.
+function AnniversaryAvatar(props: { person: IAnniversary }): React.ReactElement {
+  const { person } = props;
+  const [failed, setFailed] = React.useState(false);
+
+  // A different photo URL (e.g. after the list was edited) gets a fresh try.
+  React.useEffect(() => setFailed(false), [person.photoUrl]);
+
+  if (person.photoUrl && !failed) {
+    return <img className={styles.avatarPhoto} src={person.photoUrl} alt={person.name} onError={() => setFailed(true)} />;
+  }
+  return <span className={styles.avatar}>{person.initials}</span>;
+}
+
 export interface IWorkAnniversariesProps {
   people: IAnniversary[];
 }
@@ -42,7 +56,7 @@ export default class WorkAnniversaries extends React.Component<IWorkAnniversarie
         <div className={styles.list}>
           {visible.map(a => (
             <div className={styles.row} key={a.name}>
-              <span className={styles.avatar}>{a.initials}</span>
+              <AnniversaryAvatar person={a} />
               <div className={styles.name}>
                 <div className={styles.nameText}>{a.name}</div>
                 <div className={styles.roleText}>{a.role}</div>

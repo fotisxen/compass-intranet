@@ -23,6 +23,8 @@ export interface IAnniversaryItem {
   name: string;
   role: string;
   years: number;
+  /** Pasted image link (e.g. from Site Assets), shown as a small round photo. Initials are used when blank or broken. */
+  photoUrl?: string;
 }
 
 function initialsFor(name: string): string {
@@ -60,7 +62,8 @@ export function mapAnniversaryItems(items: IAnniversaryItem[] | undefined): IAnn
     name: item.name,
     role: item.role,
     years: item.years,
-    initials: initialsFor(item.name)
+    initials: initialsFor(item.name),
+    photoUrl: item.photoUrl || undefined
   }));
 }
 

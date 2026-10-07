@@ -19,6 +19,8 @@ export interface IEventsWidgetState {
 // found in the page's own web part configuration.
 const UPCOMING_EVENTS_LIST_ID = 'dd3316a0-3bc0-4d4c-acff-71851299dad7';
 const PAGE_SIZE = 10;
+// How long each event stays before the card moves to the next one by itself.
+const AUTO_ROTATE_MS = 5000;
 
 interface IThumbnailField {
   Description?: string;
@@ -82,6 +84,9 @@ function initialsFor(title: string): string {
 }
 
 export default class EventsWidget extends React.Component<IEventsWidgetProps, IEventsWidgetState> {
+  private _rotateTimer?: number;
+  private _wrapRef = React.createRef<HTMLDivElement>();
+
   constructor(props: IEventsWidgetProps) {
     super(props);
     this.state = { index: 0, events: [] };
@@ -92,6 +97,10 @@ export default class EventsWidget extends React.Component<IEventsWidgetProps, IE
       // Real list couldn't be loaded — leave events empty rather than
       // show fabricated ones.
     });
+  }
+
+  public componentWillUnmount(): void {
+    this._stopAutoRotate();
   }
 
   private async _loadEvents(): Promise<void> {
@@ -122,7 +131,37 @@ export default class EventsWidget extends React.Component<IEventsWidgetProps, IE
       url: `${siteUrl}/_layouts/15/Event.aspx?ListGuid=${UPCOMING_EVENTS_LIST_ID}&ItemId=${item.Id}`
     }));
 
-    this.setState({ events, index: 0 });
+    this.setState({ events, index: 0 }, this._startAutoRotate);
+  }
+
+  private _stopAutoRotate(): void {
+    if (this._rotateTimer !== undefined) {
+      window.clearInterval(this._rotateTimer);
+      this._rotateTimer = undefined;
+    }
+  }
+
+  // (Re)starts the 5-second countdown. Called after the events load and after
+  // every manual click, so a click is never followed by an instant jump.
+  private _startAutoRotate = (): void => {
+    this._stopAutoRotate();
+    const reduceMotion = typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (this.state.events.length < 2 || reduceMotion) {
+      return;
+    }
+    this._rotateTimer = window.setInterval(() => {
+      if (!document.hidden && !this._isBeingUsed()) {
+        this.setState(prev => ({ index: (prev.index + 1) % prev.events.length }));
+      }
+    }, AUTO_ROTATE_MS);
+  };
+
+  // Asked fresh at every tick (rather than tracked from mouse/focus events, which
+  // can go missing): the event someone is pointing at, or has focused, never
+  // changes under them.
+  private _isBeingUsed(): boolean {
+    const el = this._wrapRef.current;
+    return !!el && (el.matches(':hover') || el.contains(document.activeElement));
   }
 
   private _prev = (): void => {
@@ -130,6 +169,7 @@ export default class EventsWidget extends React.Component<IEventsWidgetProps, IE
       return;
     }
     this.setState(prev => ({ index: (prev.index - 1 + prev.events.length) % prev.events.length }));
+    this._startAutoRotate();
   };
 
   private _next = (): void => {
@@ -137,6 +177,7 @@ export default class EventsWidget extends React.Component<IEventsWidgetProps, IE
       return;
     }
     this.setState(prev => ({ index: (prev.index + 1) % prev.events.length }));
+    this._startAutoRotate();
   };
 
   public render(): React.ReactElement {
@@ -148,7 +189,7 @@ export default class EventsWidget extends React.Component<IEventsWidgetProps, IE
     const hasMultiple = events.length > 1;
 
     return (
-      <div className={styles.wrap}>
+      <div className={styles.wrap} ref={this._wrapRef}>
         {event ? (
           <div className={styles.eventCard}>
             <div className={styles.textGroup}>

@@ -100,10 +100,11 @@ export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorld
               groupFields: [
                 PropertyFieldCollectionData('pinnedNews', {
                   key: 'pinnedNews',
-                  label: 'Pinned news (shown first for everyone, in this order)',
+                  label: 'Pinned news (shown first for everyone, in this order — the number at the start of each row in the panel sets its position)',
                   panelHeader: 'News — pinned pages',
                   manageBtnLabel: 'Manage pinned news',
                   saveAndAddBtnLabel: 'Save and add another',
+                  enableSorting: true,
                   fields: [
                     { id: 'pageUrl', title: 'Page URL or file name', type: CustomCollectionFieldType.string, required: true, placeholder: '/sites/Intranet/SitePages/My-News.aspx' }
                   ],
@@ -116,10 +117,11 @@ export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorld
               groupFields: [
                 PropertyFieldCollectionData('welcomeAboard', {
                   key: 'welcomeAboard',
-                  label: 'People to welcome',
+                  label: 'People to welcome (in this order — the number at the start of each row in the panel sets its position)',
                   panelHeader: 'Welcome Aboard — people',
                   manageBtnLabel: 'Manage people',
                   saveAndAddBtnLabel: 'Save and add another',
+                  enableSorting: true,
                   fields: personFields({ field1: 'COMPANY', field2: 'DEPARTMENT', field3: 'REPORTS TO' }),
                   value: this.properties.welcomeAboard
                 })
@@ -130,10 +132,11 @@ export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorld
               groupFields: [
                 PropertyFieldCollectionData('promotions', {
                   key: 'promotions',
-                  label: 'People with a move',
+                  label: 'People with a move (in this order — the number at the start of each row in the panel sets its position)',
                   panelHeader: 'Promotions & Internal Transfers — people',
                   manageBtnLabel: 'Manage people',
                   saveAndAddBtnLabel: 'Save and add another',
+                  enableSorting: true,
                   fields: personFields({ field1: 'MOVE TYPE', field2: 'DEPARTMENT', field3: 'REPORTS TO' }),
                   value: this.properties.promotions
                 })
@@ -144,13 +147,15 @@ export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorld
               groupFields: [
                 PropertyFieldCollectionData('anniversaries', {
                   key: 'anniversaries',
-                  label: 'Anniversaries (shown 4 per page)',
+                  label: 'Anniversaries (4 per page, in this order — the number at the start of each row in the panel sets its position)',
                   panelHeader: 'Work Anniversaries — people',
                   manageBtnLabel: 'Manage people',
                   saveAndAddBtnLabel: 'Save and add another',
+                  enableSorting: true,
                   fields: [
                     { id: 'name', title: 'Name', type: CustomCollectionFieldType.string, required: true },
                     { id: 'role', title: 'Role', type: CustomCollectionFieldType.string, required: true },
+                    { id: 'photoUrl', title: 'Photo URL (shown as a small circle)', type: CustomCollectionFieldType.url, placeholder: 'https://.../SiteAssets/photo.jpg' },
                     { id: 'years', title: 'Years', type: CustomCollectionFieldType.number, required: true }
                   ],
                   value: this.properties.anniversaries

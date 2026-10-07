@@ -6,7 +6,7 @@ import EventsWidget from '../src/shared/components/EventsWidget';
 import FleetMap from '../src/shared/components/FleetMap';
 import ChromeRoot from '../src/extensions/compassChrome/components/ChromeRoot';
 import Footer from '../src/shared/components/Footer';
-import { welcomeAboard as sampleWelcome, promotion as samplePromotions } from '../src/webparts/helloWorld/components/data/mockData';
+import { welcomeAboard as sampleWelcome, promotion as samplePromotions, anniversaries as sampleAnniversaries } from '../src/webparts/helloWorld/components/data/mockData';
 
 // No real SharePoint session here, so News/Holidays/Events' fetches are made
 // to fail fast and fall back to their built-in mock data — same outcome a
@@ -21,6 +21,7 @@ const fakeSpHttpClient = {
 // isn't promoted (fetched by path), so paging and pinning both show up.
 const sampleNews = ['Fleet renewal programme reaches a new milestone', 'Summer safety campaign results', 'New offices open in Limassol', 'Quarterly results announced', 'Crew welfare initiative expands', 'Sustainability report published']
   .map((Title, i) => ({ Title, FileRef: '/sites/demo/SitePages/News-' + (i + 1) + '.aspx', Created: '2026-09-' + (20 - i) + 'T09:00:00Z', BannerImageUrl: null }));
+const samplePhoto = (i: number): string => 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="90" height="90"><rect width="90" height="90" fill="' + (i ? '#c2410c' : '#0f766e') + '"/><circle cx="45" cy="36" r="17" fill="#fde68a"/><rect x="16" y="58" width="58" height="40" rx="20" fill="#fde68a"/></svg>');
 const fakeHomeClient = {
   get: async (url: string) => {
     if (url.indexOf('GetFileByServerRelativePath') !== -1) {
@@ -190,6 +191,18 @@ const fakeListClient = {
     return { ok: false, status: 404, json: async () => ({}) };
   }
 };
+const fakeEventsClient = {
+  get: async () => ({
+    ok: true,
+    status: 200,
+    json: async () => ({
+      value: ['Safety drill at the Piraeus office', 'Annual company beach clean-up', 'Crew family day'].map((Title, i) => ({
+        Id: i + 1, Title, EventDate: '2027-0' + (i + 1) + '-15T09:00:00Z', BannerUrl: null
+      }))
+    })
+  })
+};
+const useFakeEvents = new URLSearchParams(window.location.search).get('events') === '1';
 const useFakeNav = new URLSearchParams(window.location.search).get('navList') === '1';
 ReactDom.render(React.createElement(FleetTable, { spHttpClient: fakeListClient as never, siteUrl: 'https://example.sharepoint.com/sites/demo', sortBy: 'dwt', sortDescending: true, maxRows: 0, canManageLists: true }), newRoot());
 
@@ -232,7 +245,7 @@ ReactDom.render(
         background: '#ffffff'
       }
     },
-    React.createElement(EventsWidget, { spHttpClient: fakeSpHttpClient as never, siteUrl: 'https://example.sharepoint.com/sites/demo' }),
+    React.createElement(EventsWidget, { spHttpClient: (useFakeEvents ? fakeEventsClient : fakeSpHttpClient) as never, siteUrl: 'https://example.sharepoint.com/sites/demo' }),
     React.createElement(
       'div',
       { style: { flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' } },
@@ -249,7 +262,8 @@ ReactDom.render(
     pinnedNews: ['My-Pinned.aspx'],
     // Two entries each so the cards show their prev/next arrows.
     welcomeAboard: [...sampleWelcome, ...sampleWelcome],
-    promotions: [...samplePromotions, ...samplePromotions]
+    promotions: [...samplePromotions, ...samplePromotions],
+    anniversaries: sampleAnniversaries.map((a, i) => (i < 2 ? { ...a, photoUrl: samplePhoto(i) } : a))
   }),
   document.getElementById('root')
 );
