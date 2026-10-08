@@ -19,6 +19,17 @@
   color: #082244;
 }
 
+// Only the title is a link, it looks like the plain title until hovered.
+.titleLink {
+  color: inherit;
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    text-decoration: underline;
+  }
+}
+
 .list {
   display: flex;
   flex-direction: column;

@@ -3,6 +3,8 @@ import styles from './OpenPositions.module.scss';
 import ArrowIcon from '../../../shared/components/ArrowIcon';
 
 const PAGE_SIZE = 4;
+// Where a click on the "Open Positions" title goes.
+const CAREER_OPPORTUNITIES_URL = 'https://starbulk.sharepoint.com/sites/Intranet/SitePages/Career-Opportunities.aspx';
 const JOB_LISTINGS_API_URL = 'https://bpcstarbulkwebapi.azurewebsites.net/api/GetJobListings';
 
 interface IJobListing {
@@ -69,7 +71,9 @@ export default class OpenPositions extends React.Component<Record<string, never>
 
     return (
       <div className={styles.card}>
-        <h3 className={styles.title}>Open Positions</h3>
+        <h3 className={styles.title}>
+          <a className={styles.titleLink} href={CAREER_OPPORTUNITIES_URL}>Open Positions</a>
+        </h3>
 
         <div className={styles.list}>
           {visible.map((j, i) => (

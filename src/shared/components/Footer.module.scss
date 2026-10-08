@@ -99,10 +99,6 @@
 
 // Extra space on top of .linksGroup's own 32px gap, so Public Holidays sits
 // clearly apart from Quick Access.
-.holidaysColumn {
-  margin-left: 64px;
-}
-
 // Grid so the date column lines up across both rows, like the standalone
 // Public Holidays widget. No width cap or truncation — names show in full.
 .holidayList {
@@ -113,14 +109,6 @@
 
 .holidayRow {
   display: contents;
-}
-
-// 11px at the 1440px reference width. line-height keeps this label's row
-// the same height as the 13.75px STAY CONNECTED / QUICK ACCESS labels, so
-// the three columns' content starts on the same line.
-.holidaysTitle {
-  font-size: 0.55em;
-  line-height: 1.5;
 }
 
 // 12px at the 1440px reference width. Two 16px rows = 32px, the same height
