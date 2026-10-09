@@ -134,7 +134,7 @@ export function NewsCardView(props: { item: INewsItem; pinned?: boolean }): Reac
         <h4 className={styles.title}>{item.title}</h4>
         <div className={styles.footerRow}>
           <span className={styles.date}>{item.date}</span>
-          <a className={styles.pill} href={item.url}>Read more →</a>
+          <a className={styles.pill} href={item.url}>Read more</a>
         </div>
       </div>
     </div>

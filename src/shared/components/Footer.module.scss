@@ -90,6 +90,11 @@
   justify-content: center;
   flex-shrink: 0;
 
+  // White tile for icons drawn in the footer itself (no logo image).
+  &.iconLinkWhite {
+    background: #ffffff;
+  }
+
   img {
     width: 100%;
     height: 100%;

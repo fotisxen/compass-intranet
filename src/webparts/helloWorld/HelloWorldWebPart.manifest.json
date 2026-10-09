@@ -18,9 +18,9 @@
   "preconfiguredEntries": [{
     "groupId": "5c03119e-3074-46fd-976b-c60198311f70", // Advanced
     "group": { "default": "Advanced" },
-    "title": { "default": "Compass Home" },
-    "description": { "default": "Compass intranet home page: newsroom, people spotlights and work anniversaries. Pair with \"Compass Holidays\", \"Compass Events\" and \"Compass Fleet Map\" for the rest of the original layout." },
-    "officeFabricIconFontName": "Page",
+    "title": { "default": "Compass Home News Entity" },
+    "description": { "default": "Home page news row: pinned pages stay in place while the other promoted news cards rotate automatically." },
+    "officeFabricIconFontName": "News",
     "properties": {}
   }]
 }

@@ -6,6 +6,7 @@ import { pickEuronextEntry, pickNasdaqEntry, type IQuoteEntry } from './stockQuo
 import styles from './Footer.module.scss';
 import starbulkIcon from './assets/footerLinks/starbulk.png';
 import linkedinIcon from './assets/footerLinks/linkedin.webp';
+import youtubeIcon from './assets/footerLinks/youtube.png';
 import sapIcon from './assets/footerLinks/sap.webp';
 import generaliIcon from './assets/footerLinks/generali.png';
 import whistleblowingIcon from './assets/footerLinks/whistleblowing.png';
@@ -36,8 +37,12 @@ interface IFooterLink {
 
 const STAY_CONNECTED: IFooterLink[] = [
   { label: 'Star Bulk Website', href: 'https://www.starbulk.com/', icon: starbulkIcon },
-  { label: 'Star Bulk LinkedIn', href: 'https://www.linkedin.com/company/star-bulk/posts/?feedView=all', icon: linkedinIcon }
+  { label: 'Star Bulk LinkedIn', href: 'https://www.linkedin.com/company/star-bulk/posts/?feedView=all', icon: linkedinIcon },
+  { label: 'Star Bulk YouTube', href: 'https://www.youtube.com/channel/UCoCJVt108j-WcdKfbxhtTiA', icon: youtubeIcon }
 ];
+
+// The Marketplace page itself (employees' items for sale), same site as the footer.
+const MARKETPLACE_URL = '/sites/Intranet/SitePages/Marketplace.aspx';
 
 const QUICK_ACCESS: IFooterLink[] = [
   {
@@ -222,6 +227,20 @@ export default class Footer extends React.Component<IFooterProps, IFooterState> 
                     <img src={item.icon} alt={item.label} />
                   </a>
                 ))}
+              </div>
+            </div>
+
+            <div className={styles.column}>
+              <span className={styles.columnLabel}>MARKETPLACE</span>
+              <div className={styles.iconRow}>
+                <a className={`${styles.iconLink} ${styles.iconLinkWhite}`} href={MARKETPLACE_URL} title="Marketplace">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#082244" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" role="img" aria-label="Marketplace">
+                    <path d="M3 9l1.5-5h15L21 9" />
+                    <path d="M3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0" />
+                    <path d="M5 12v8h14v-8" />
+                    <path d="M10 20v-5h4v5" />
+                  </svg>
+                </a>
               </div>
             </div>
 

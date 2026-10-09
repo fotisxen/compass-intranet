@@ -1,12 +1,13 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
-import HelloWorld from '../src/webparts/helloWorld/components/HelloWorld';
+import HomeNews from '../src/webparts/helloWorld/components/HomeNews';
+import HomePeople from '../src/webparts/homePeople/components/HomePeople';
 import PublicHolidays from '../src/shared/components/PublicHolidays';
 import EventsWidget from '../src/shared/components/EventsWidget';
 import FleetMap from '../src/shared/components/FleetMap';
 import ChromeRoot from '../src/extensions/compassChrome/components/ChromeRoot';
 import Footer from '../src/shared/components/Footer';
-import { welcomeAboard as sampleWelcome, promotion as samplePromotions, anniversaries as sampleAnniversaries } from '../src/webparts/helloWorld/components/data/mockData';
+import { welcomeAboard as sampleWelcome, promotion as samplePromotions, anniversaries as sampleAnniversaries } from '../src/webparts/homePeople/components/data/mockData';
 
 // No real SharePoint session here, so News/Holidays/Events' fetches are made
 // to fail fast and fall back to their built-in mock data — same outcome a
@@ -25,7 +26,9 @@ const samplePhoto = (i: number): string => 'data:image/svg+xml;utf8,' + encodeUR
 const fakeHomeClient = {
   get: async (url: string) => {
     if (url.indexOf('GetFileByServerRelativePath') !== -1) {
-      return { ok: true, json: async () => ({ Title: 'PINNED: Welcome to the new intranet', FileRef: '/sites/demo/SitePages/My-Pinned.aspx', Created: '2026-08-01T09:00:00Z', BannerImageUrl: null }) };
+      const m = /(Pinned-[0-9])/i.exec(decodeURIComponent(url));
+      const name = m ? m[1] : 'My-Pinned';
+      return { ok: true, json: async () => ({ Title: 'PINNED: ' + name, FileRef: '/sites/demo/SitePages/' + name + '.aspx', Created: '2026-08-01T09:00:00Z', BannerImageUrl: null }) };
     }
     if (url.indexOf("GetByTitle('Site Pages')") !== -1) {
       return { ok: true, json: async () => ({ value: sampleNews }) };
@@ -256,15 +259,22 @@ ReactDom.render(
 );
 
 ReactDom.render(
-  React.createElement(HelloWorld, {
+  React.createElement(HomeNews, {
     spHttpClient: fakeHomeClient as never,
     siteUrl: 'https://example.sharepoint.com/sites/demo',
-    pinnedNews: ['My-Pinned.aspx'],
+    // ?pinned=N (0-4) pins that many sample pages; default 1.
+    pinnedNews: Array.from({ length: Number(new URLSearchParams(window.location.search).get('pinned') ?? 1) }, (_, i) => 'Pinned-' + (i + 1) + '.aspx')
+  }),
+  document.getElementById('root')
+);
+ReactDom.render(
+  React.createElement(HomePeople, {
     // Two entries each so the cards show their prev/next arrows.
-    welcomeAboard: [...sampleWelcome, ...sampleWelcome],
+    // ?long=1 swaps in the longest realistic text, to check the cards keep one size.
+    welcomeAboard: new URLSearchParams(window.location.search).get('long') === '1' ? [...sampleWelcome, { ...sampleWelcome[0], name: 'Konstantinos Papadimitriou-Vasileiou', title: 'Senior Technical Superintendent Fleet', fields: sampleWelcome[0].fields.map(f => ({ ...f, value: f.value + ' and Maritime Compliance Division Greece' })) }] : [...sampleWelcome, ...sampleWelcome],
     promotions: [...samplePromotions, ...samplePromotions],
     anniversaries: sampleAnniversaries.map((a, i) => (i < 2 ? { ...a, photoUrl: samplePhoto(i) } : a))
   }),
-  document.getElementById('root')
+  document.getElementById('people-root')
 );
 ReactDom.render(React.createElement(Footer, { companyName: 'Compass', stockApiUrl, euronextApiUrl, contentOffsetX: 100, spHttpClient: fakeHolidaysClient as never, siteUrl: 'https://example.sharepoint.com/sites/demo' }), document.getElementById('chrome-bottom'));

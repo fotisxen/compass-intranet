@@ -208,7 +208,7 @@ export default class EventsWidget extends React.Component<IEventsWidgetProps, IE
               )}
             </div>
             <div className={styles.eventFooter}>
-              <a className={styles.pill} href={event.url}>Read more →</a>
+              <a className={styles.pill} href={event.url}>Read more</a>
             </div>
           </div>
         ) : (

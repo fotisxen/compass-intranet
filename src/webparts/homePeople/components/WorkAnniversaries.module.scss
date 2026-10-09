@@ -14,8 +14,8 @@
   margin: 0;
   font-family: 'Inter', sans-serif;
   font-weight: 400;
-  // 19px at the 1440px reference width.
-  font-size: 0.95em;
+  // 21px at the 1440px reference width.
+  font-size: 1.05em;
   color: #082244;
 }
 
@@ -29,7 +29,7 @@
   display: flex;
   align-items: center;
   gap: 11px;
-  min-height: 38px;
+  min-height: 44px;
   padding: 6px 0;
   flex-shrink: 0;
 
@@ -79,24 +79,24 @@
 .nameText {
   font-family: 'Inter', sans-serif;
   font-weight: 600;
-  // 12px at the 1440px reference width.
-  font-size: 0.6em;
+  // 14px at the 1440px reference width.
+  font-size: 0.7em;
   color: #082244;
 }
 
 .roleText {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
-  // 10px at the 1440px reference width.
-  font-size: 0.5em;
+  // 12px at the 1440px reference width.
+  font-size: 0.6em;
   color: #082244;
 }
 
 .years {
   font-family: 'Inter', sans-serif;
   font-weight: 700;
-  // 18px at the 1440px reference width.
-  font-size: 0.9em;
+  // 20px at the 1440px reference width.
+  font-size: 1em;
   color: #082244;
   flex-shrink: 0;
 }

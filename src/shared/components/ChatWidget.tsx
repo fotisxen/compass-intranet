@@ -190,7 +190,7 @@ export default class ChatWidget extends React.Component<IChatWidgetProps, IChatW
 
     return (
       <div className={styles.chatWidget}>
-        <h3>Ask the assistant</h3>
+        <h3>Ask the AI Assistant</h3>
         <div className={styles.messages}>
           {messages.length === 0 && <div className={styles.placeholder}>Ask a question to get started.</div>}
           {messages.map((m, i) => (

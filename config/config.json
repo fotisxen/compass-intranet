@@ -10,6 +10,14 @@
         }
       ]
     },
+    "home-people-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/homePeople/HomePeopleWebPart.js",
+          "manifest": "./src/webparts/homePeople/HomePeopleWebPart.manifest.json"
+        }
+      ]
+    },
     "news-web-part": {
       "components": [
         {
@@ -158,6 +166,7 @@
   "externals": {},
   "localizedResources": {
     "HelloWorldWebPartStrings": "lib/webparts/helloWorld/loc/{locale}.js",
+    "HomePeopleWebPartStrings": "lib/webparts/homePeople/loc/{locale}.js",
     "NewsWebPartStrings": "lib/webparts/news/loc/{locale}.js",
     "NewsCardWebPartStrings": "lib/webparts/newsCard/loc/{locale}.js",
     "ChatWebPartStrings": "lib/webparts/chat/loc/{locale}.js",

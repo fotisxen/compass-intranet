@@ -77,10 +77,13 @@
   font-size: 0.65em;
   cursor: pointer;
   white-space: nowrap;
+  // SharePoint underlines links; the pill is the affordance, so no underline.
+  text-decoration: none;
 
   &:hover {
     background: #ffffff;
     color: #082244;
+    text-decoration: none;
   }
 }
 

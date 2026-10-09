@@ -15,7 +15,7 @@
 .eventCard {
   background: #c7d7e6;
   border-radius: 20px;
-  padding: 26px;
+  padding: 22px 26px;
   box-sizing: border-box;
   // 304.5px — the "Upcoming Events" title card that used to sit above this
   // (also 304.5px) is gone, and the Fleet Map's height (--compass-map-h)
@@ -29,7 +29,7 @@
   // ends up — space-between let them touch once there was no extra height
   // left to distribute.
   justify-content: flex-start;
-  gap: 24px;
+  gap: 18px;
 }
 
 .textGroup {
@@ -40,12 +40,31 @@
 
 .eventDate,
 .eventTitle {
+  line-height: 1.2;
   font-family: 'Inter', sans-serif;
   font-weight: 400;
   // 20px at the 1440px reference width.
   font-size: 1em;
   color: #000000;
   margin: 0;
+}
+
+// The date is one line and the title always takes exactly 3 lines (shorter
+// ones leave blank space, longer ones are cut with an ellipsis), so the
+// image and button below sit at the same spot on every event.
+.eventDate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.eventTitle {
+  height: 3.6em;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
 }
 
 .mediaRow {
@@ -89,10 +108,13 @@
   font-size: 0.65em;
   cursor: pointer;
   white-space: nowrap;
+  // SharePoint underlines links; the pill is the affordance, so no underline.
+  text-decoration: none;
 
   &:hover {
     background: #082244;
     color: #ffffff;
+    text-decoration: none;
   }
 }
 

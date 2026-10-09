@@ -9,6 +9,8 @@ import { type INewsItem, loadPromotedNews, loadPageByPath, normalizePageUrl } fr
 const MAX_NEWS = 30;
 // Cards visible at once (first one wide, see .grid in the scss).
 const VISIBLE = 3;
+// How often the unpinned cards move on by themselves.
+const AUTO_ROTATE_MS = 5000;
 
 export interface INewsCarouselProps {
   spHttpClient: SPHttpClient;
@@ -18,23 +20,32 @@ export interface INewsCarouselProps {
 }
 
 export interface INewsCarouselState {
-  items: INewsItem[];
+  /** Pinned pages, in the order set in the property pane — they never move. */
+  pinnedItems: INewsItem[];
+  /** Everything else (newest first) — cycles through the slots the pinned cards leave free. */
+  rotating: INewsItem[];
+  /** Index into "rotating" of the first rotating card on screen. */
   start: number;
-  /** urls of the items that came from the pinned list. */
-  pinnedUrls: string[];
 }
 
 export default class NewsCarousel extends React.Component<INewsCarouselProps, INewsCarouselState> {
   constructor(props: INewsCarouselProps) {
     super(props);
-    this.state = { items: [], start: 0, pinnedUrls: [] };
+    this.state = { pinnedItems: [], rotating: [], start: 0 };
   }
+
+  private _wrapRef = React.createRef<HTMLDivElement>();
+  private _rotateTimer: number | undefined;
 
   public componentDidMount(): void {
     this._load().catch(() => {
       // News couldn't be loaded — leave the row empty rather than show
       // made-up articles.
     });
+  }
+
+  public componentWillUnmount(): void {
+    this._stopAutoRotate();
   }
 
   public componentDidUpdate(prev: INewsCarouselProps): void {
@@ -68,27 +79,85 @@ export default class NewsCarousel extends React.Component<INewsCarouselProps, IN
     }
 
     const rest = promoted.filter(n => !seen.has(normalizePageUrl(siteUrl, n.url)));
-    this.setState({ items: [...pinnedItems, ...rest], start: 0, pinnedUrls: pinnedItems.map(n => n.url) });
+    this.setState({ pinnedItems, rotating: rest, start: 0 }, this._startAutoRotate);
+  }
+
+  /** Slots left over once the pinned cards have taken theirs. */
+  private _freeSlots(): number {
+    return Math.max(0, VISIBLE - this.state.pinnedItems.length);
+  }
+
+  private _canRotate(): boolean {
+    return this.state.rotating.length > this._freeSlots() && this._freeSlots() > 0;
+  }
+
+  private _stopAutoRotate(): void {
+    if (this._rotateTimer !== undefined) {
+      window.clearInterval(this._rotateTimer);
+      this._rotateTimer = undefined;
+    }
+  }
+
+  // (Re)starts the countdown — after load and after every manual click, so a
+  // click is never followed by an instant jump.
+  private _startAutoRotate = (): void => {
+    this._stopAutoRotate();
+    const reduceMotion = typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!this._canRotate() || reduceMotion) {
+      return;
+    }
+    this._rotateTimer = window.setInterval(() => {
+      if (!document.hidden && !this._isBeingUsed()) {
+        this._step(1);
+      }
+    }, AUTO_ROTATE_MS);
+  };
+
+  // Asked fresh at every tick: the card someone is pointing at, or has
+  // focused, never changes under them.
+  private _isBeingUsed(): boolean {
+    const el = this._wrapRef.current;
+    return !!el && (el.matches(':hover') || el.contains(document.activeElement));
+  }
+
+  // Moves the unpinned cards one full set forward/back (wrapping round),
+  // leaving the pinned ones where they are.
+  private _step(direction: 1 | -1): void {
+    const free = this._freeSlots();
+    this.setState(prev => {
+      const n = prev.rotating.length;
+      return n > free && free > 0 ? { start: (((prev.start + direction * free) % n) + n) % n } : null;
+    });
   }
 
   private _prev = (): void => {
-    this.setState(prev => ({ start: Math.max(0, prev.start - 1) }));
+    this._step(-1);
+    this._startAutoRotate();
   };
 
   private _next = (): void => {
-    this.setState(prev => ({ start: Math.min(Math.max(0, prev.items.length - VISIBLE), prev.start + 1) }));
+    this._step(1);
+    this._startAutoRotate();
   };
 
   public render(): React.ReactElement {
-    const { items, start, pinnedUrls } = this.state;
-    const visible = items.slice(start, start + VISIBLE);
-    const canScroll = items.length > VISIBLE;
+    const { pinnedItems, rotating, start } = this.state;
+    const fixed = pinnedItems.slice(0, VISIBLE);
+    const free = this._freeSlots();
+    const shown: INewsItem[] = [];
+    for (let i = 0; i < Math.min(free, rotating.length); i++) {
+      shown.push(rotating[(start + i) % rotating.length]);
+    }
+    const canScroll = this._canRotate();
 
     return (
-      <div className={styles.wrap}>
+      <div className={styles.wrap} ref={this._wrapRef}>
         <div className={styles.grid}>
-          {visible.map(item => (
-            <NewsCardView key={item.url} item={item} pinned={pinnedUrls.indexOf(item.url) >= 0} />
+          {fixed.map(item => (
+            <NewsCardView key={item.url} item={item} pinned={true} />
+          ))}
+          {shown.map(item => (
+            <NewsCardView key={item.url} item={item} />
           ))}
         </div>
 
@@ -97,7 +166,6 @@ export default class NewsCarousel extends React.Component<INewsCarouselProps, IN
             <button
               className={`${styles.arrow} ${styles.arrowLeft}`}
               onClick={this._prev}
-              disabled={start === 0}
               aria-label="Previous news"
             >
               <ArrowIcon direction="left" />
@@ -105,7 +173,6 @@ export default class NewsCarousel extends React.Component<INewsCarouselProps, IN
             <button
               className={`${styles.arrow} ${styles.arrowRight}`}
               onClick={this._next}
-              disabled={start >= items.length - VISIBLE}
               aria-label="Next news"
             >
               <ArrowIcon direction="right" />
