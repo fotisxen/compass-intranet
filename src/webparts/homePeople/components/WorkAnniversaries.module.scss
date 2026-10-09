@@ -29,8 +29,11 @@
   display: flex;
   align-items: center;
   gap: 11px;
-  min-height: 44px;
-  padding: 6px 0;
+  // Same fixed row height as Open Positions, so both cards line up.
+  height: 3.6em;
+  box-sizing: border-box;
+  padding: 4px 0;
+  overflow: hidden;
   flex-shrink: 0;
 
   // Divider above every row but the first (not below every row but the last),
@@ -82,6 +85,12 @@
   // 14px at the 1440px reference width.
   font-size: 0.7em;
   color: #082244;
+  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
 }
 
 .roleText {
@@ -90,6 +99,12 @@
   // 12px at the 1440px reference width.
   font-size: 0.6em;
   color: #082244;
+  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
 }
 
 .years {
@@ -105,6 +120,10 @@
   display: flex;
   justify-content: center;
   gap: 12px;
+  // Pinned to the bottom of the card (both cards are the same height), so the
+  // arrows sit on one line across Open Positions and Work Anniversaries
+  // whatever the rows above them add up to.
+  margin-top: auto;
 }
 
 .arrowButton {

@@ -83,7 +83,7 @@ export default class OpenPositions extends React.Component<Record<string, never>
             </div>
           ))}
           {/* Invisible filler rows keep the list as tall as a full page, so the arrows below stay put on the last (shorter) page. */}
-          {this._pageCount > 1 && Array.from({ length: PAGE_SIZE - visible.length }, (_, i) => (
+          {Array.from({ length: PAGE_SIZE - visible.length }, (_, i) => (
             <div className={`${styles.row} ${styles.rowPlaceholder}`} key={`filler-${i}`} aria-hidden="true">
               <div className={styles.titleText}>&nbsp;</div>
               <div className={styles.departmentText}>&nbsp;</div>

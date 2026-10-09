@@ -8,12 +8,12 @@
   align-items: center;
   gap: 20px;
   box-sizing: border-box;
-  // Fixed size (190px at the 1440px reference, scaling with the page) so the
+  // Fixed size (204px at the 1440px reference, scaling with the page) so the
   // card no longer grows or shrinks with each person's text; anything that
   // still does not fit is clipped by overflow below. Two stacked cards plus
-  // their 16px gap come to 396px, just above the Open Positions card next
-  // to them.
-  height: 9.5em;
+  // their 16px gap come to 424px, exactly the height of the Open Positions
+  // and Work Anniversaries cards beside them.
+  height: 10.2em;
   // .nameBlock and .details together refuse to shrink below their natural
   // (nowrap) text width — when the card is narrower than that combined
   // width, without this the overflow spills out of the colored background
