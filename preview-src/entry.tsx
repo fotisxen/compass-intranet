@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import HomeNews from '../src/webparts/helloWorld/components/HomeNews';
+import NewsGrid from '../src/webparts/newsGrid/components/NewsGrid';
 import HomePeople from '../src/webparts/homePeople/components/HomePeople';
 import PublicHolidays from '../src/shared/components/PublicHolidays';
 import EventsWidget from '../src/shared/components/EventsWidget';
@@ -20,7 +21,7 @@ const fakeSpHttpClient = {
 
 // Home's news carousel: 6 sample promoted pages, plus one pinned page that
 // isn't promoted (fetched by path), so paging and pinning both show up.
-const sampleNews = ['Fleet renewal programme reaches a new milestone', 'Summer safety campaign results', 'New offices open in Limassol', 'Quarterly results announced', 'Crew welfare initiative expands', 'Sustainability report published']
+const sampleNews = ['Fleet renewal programme reaches a new milestone', 'Summer safety campaign results', 'New offices open in Limassol', 'Quarterly results announced', 'Crew welfare initiative expands', 'Sustainability report published', 'Port state control inspection results', 'New hires join the technical team', 'Charity run raises record amount', 'Fleet safety award received']
   .map((Title, i) => ({ Title, FileRef: '/sites/demo/SitePages/News-' + (i + 1) + '.aspx', Created: '2026-09-' + (20 - i) + 'T09:00:00Z', BannerImageUrl: null }));
 const samplePhoto = (i: number): string => 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="90" height="90"><rect width="90" height="90" fill="' + (i ? '#c2410c' : '#0f766e') + '"/><circle cx="45" cy="36" r="17" fill="#fde68a"/><rect x="16" y="58" width="58" height="40" rx="20" fill="#fde68a"/></svg>');
 const fakeHomeClient = {
@@ -266,6 +267,15 @@ ReactDom.render(
     pinnedNews: Array.from({ length: Number(new URLSearchParams(window.location.search).get('pinned') ?? 1) }, (_, i) => 'Pinned-' + (i + 1) + '.aspx')
   }),
   document.getElementById('root')
+);
+ReactDom.render(
+  React.createElement(NewsGrid, {
+    spHttpClient: fakeHomeClient as never,
+    siteUrl: 'https://example.sharepoint.com/sites/demo',
+    // ?gridPinned=N (0-8) pins that many sample pages in the News Grid; default 1.
+    pinnedNews: Array.from({ length: Number(new URLSearchParams(window.location.search).get('gridPinned') ?? 1) }, (_, i) => 'Pinned-' + (i + 1) + '.aspx')
+  }),
+  document.getElementById('news-grid-root')
 );
 ReactDom.render(
   React.createElement(HomePeople, {

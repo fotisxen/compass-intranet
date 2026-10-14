@@ -18,6 +18,14 @@
         }
       ]
     },
+    "news-grid-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/newsGrid/NewsGridWebPart.js",
+          "manifest": "./src/webparts/newsGrid/NewsGridWebPart.manifest.json"
+        }
+      ]
+    },
     "news-web-part": {
       "components": [
         {
@@ -167,6 +175,7 @@
   "localizedResources": {
     "HelloWorldWebPartStrings": "lib/webparts/helloWorld/loc/{locale}.js",
     "HomePeopleWebPartStrings": "lib/webparts/homePeople/loc/{locale}.js",
+    "NewsGridWebPartStrings": "lib/webparts/newsGrid/loc/{locale}.js",
     "NewsWebPartStrings": "lib/webparts/news/loc/{locale}.js",
     "NewsCardWebPartStrings": "lib/webparts/newsCard/loc/{locale}.js",
     "ChatWebPartStrings": "lib/webparts/chat/loc/{locale}.js",

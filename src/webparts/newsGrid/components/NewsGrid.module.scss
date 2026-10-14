@@ -1,0 +1,44 @@
+@use '../../../shared/styles/layout-tokens';
+
+.page {
+  background: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(14px, 1.38889vw, 20px);
+  // Cancels the 16px padding SharePoint puts around web parts, same as the
+  // other Compass web parts.
+  margin: -16px;
+}
+
+.wrap {
+  // Just wide enough for its 3 cards, so it lines up with the other 3-card rows.
+  width: fit-content;
+  max-width: 100%;
+}
+
+// 3 columns of one news card each. The first card is the large one (same
+// width as the others, as tall as two rows plus the gap between them); the
+// rest fill the grid left to right, row by row, in the order they arrive.
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, var(--compass-card-w));
+  gap: var(--compass-gap);
+  align-items: stretch;
+
+  > :first-child {
+    grid-row: span 2;
+  }
+}
+
+@media (max-width: 900px) {
+  .wrap {
+    width: 100%;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+
+    > :first-child {
+      grid-row: auto;
+    }
+  }
+}
