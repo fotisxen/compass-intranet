@@ -57,8 +57,8 @@ export default class PersonSpotlightCard extends React.Component<IPersonSpotligh
       return <></>;
     }
 
-    const titleFontSize = fitFontSize(person.title, 15, 11, 20, 0.15);
-    const newTitleFontSize = person.newTitle ? fitFontSize(person.newTitle, 15, 11, 18, 0.15) : undefined;
+    const titleFontSize = 15;
+    const newTitleFontSize = person.newTitle ? 15 : undefined;
 
     return (
       <div className={styles.card} style={{ background }}>

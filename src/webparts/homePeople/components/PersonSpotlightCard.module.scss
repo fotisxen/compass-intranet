@@ -122,7 +122,9 @@
   font-size: 0.6875em;
   color: rgba(8, 34, 68, 0.6);
   margin: 3px 0 0;
-  white-space: nowrap;
+  // A long role wraps onto a second line instead of being cut off.
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
 .newTitle {
@@ -131,7 +133,8 @@
   font-size: 0.6875em;
   color: #082244;
   margin: 2px 0 0;
-  white-space: nowrap;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
 .details {

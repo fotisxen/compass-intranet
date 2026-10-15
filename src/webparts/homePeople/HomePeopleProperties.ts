@@ -1,4 +1,5 @@
 import type { IAnniversary, IPersonSpotlight } from './components/data/mockData';
+import { SEED_WELCOME_ABOARD, SEED_PROMOTIONS, SEED_ANNIVERSARIES } from './seedData';
 
 // Raw shapes stored in the web part's properties (edited via the property
 // pane's PropertyFieldCollectionData panels). Kept flat (field1/2/3 instead
@@ -70,7 +71,7 @@ export function mapAnniversaryItems(items: IAnniversaryItem[] | undefined): IAnn
 // Seeds a freshly-added web part (and any already-placed instance from
 // before these properties existed) with the same content that used to be
 // hard-coded in data/mockData.ts.
-export const DEFAULT_WELCOME_ABOARD: IPersonSpotlightItem[] = [
+const SAMPLE_WELCOME_ABOARD: IPersonSpotlightItem[] = [
   {
     name: 'Maria Papadopoulou',
     title: 'Crew Manager',
@@ -83,7 +84,7 @@ export const DEFAULT_WELCOME_ABOARD: IPersonSpotlightItem[] = [
   }
 ];
 
-export const DEFAULT_PROMOTIONS: IPersonSpotlightItem[] = [
+const SAMPLE_PROMOTIONS: IPersonSpotlightItem[] = [
   {
     name: 'Christos Markou',
     title: 'Deck Superintendent',
@@ -97,7 +98,7 @@ export const DEFAULT_PROMOTIONS: IPersonSpotlightItem[] = [
   }
 ];
 
-export const DEFAULT_ANNIVERSARIES: IAnniversaryItem[] = [
+const SAMPLE_ANNIVERSARIES: IAnniversaryItem[] = [
   { name: 'Dimitris Perivolakis', role: 'HR Generalist', years: 1 },
   { name: 'Eleni Vasiliou', role: 'Chartering Analyst', years: 3 },
   { name: 'Nikos Andreou', role: 'Technical Superintendent', years: 10 },
@@ -105,3 +106,8 @@ export const DEFAULT_ANNIVERSARIES: IAnniversaryItem[] = [
   { name: 'Giorgos Stefanidis', role: 'Operations Manager', years: 20 },
   { name: 'Anna Georgiou', role: 'Finance Controller', years: 1 }
 ];
+
+// seedData.ts (empty in the repository) wins over the built-in samples.
+export const DEFAULT_WELCOME_ABOARD: IPersonSpotlightItem[] = SEED_WELCOME_ABOARD.length > 0 ? SEED_WELCOME_ABOARD : SAMPLE_WELCOME_ABOARD;
+export const DEFAULT_PROMOTIONS: IPersonSpotlightItem[] = SEED_PROMOTIONS.length > 0 ? SEED_PROMOTIONS : SAMPLE_PROMOTIONS;
+export const DEFAULT_ANNIVERSARIES: IAnniversaryItem[] = SEED_ANNIVERSARIES.length > 0 ? SEED_ANNIVERSARIES : SAMPLE_ANNIVERSARIES;
