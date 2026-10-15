@@ -69,7 +69,9 @@
 
 .columnLabel {
   font-weight: 600;
-  font-size: 0.6875em;
+  // 14px at the 1440px reference width — same size as every footer text.
+  font-size: 0.7em;
+  line-height: 17px;
   letter-spacing: 1.1px;
   color: rgba(255, 255, 255, 0.55);
 }
@@ -90,11 +92,6 @@
   justify-content: center;
   flex-shrink: 0;
 
-  // White tile for icons drawn in the footer itself (no logo image).
-  &.iconLinkWhite {
-    background: #ffffff;
-  }
-
   img {
     width: 100%;
     height: 100%;
@@ -102,54 +99,59 @@
   }
 }
 
-// Extra space on top of .linksGroup's own 32px gap, so Public Holidays sits
-// clearly apart from Quick Access.
-// Grid so the date column lines up across both rows, like the standalone
-// Public Holidays widget. No width cap or truncation — names show in full.
+// Public Holidays: the label sits to the left of the list (level with its
+// first row), and the whole block hugs the tickers on the right.
+.holidays {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-left: auto;
+}
+
+.holidaysLabel {
+  font-weight: 600;
+  font-size: 0.7em;
+  letter-spacing: 1.1px;
+  line-height: 17px;
+  color: rgba(255, 255, 255, 0.55);
+  white-space: nowrap;
+}
+
+// Grid so the date column lines up across rows. No width cap or truncation.
 .holidayList {
   display: grid;
   grid-template-columns: auto auto;
-  column-gap: 20px;
+  column-gap: 14px;
+  // 17px rows 10px apart: the same rhythm as the two ticker rows beside it.
+  row-gap: 10px;
 }
 
 .holidayRow {
   display: contents;
 }
 
-// 12px at the 1440px reference width. Two 16px rows = 32px, the same height
-// as the icon row beside it, so both rows read as level with the icons.
 .holidayDate,
 .holidayLabel {
-  box-sizing: border-box;
-  height: 16px;
-  line-height: 15px;
-  font-size: 0.6em;
+  height: 17px;
+  line-height: 17px;
+  font-size: 0.7em;
+  font-weight: 600;
   color: #ffffff;
-  padding: 0;
   white-space: nowrap;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.35);
-}
-
-.holidayDate {
-  font-weight: 700;
-}
-
-.holidayLabel {
-  font-weight: 400;
-}
-
-.holidayRow:last-child .holidayDate,
-.holidayRow:last-child .holidayLabel {
-  border-bottom: none;
 }
 
 .tickers {
   display: grid;
   grid-template-columns: auto auto auto;
   column-gap: 14px;
-  row-gap: 8px;
+  row-gap: 10px;
   align-items: center;
   margin-left: auto;
+}
+
+// Right after the holidays block (which already pushes itself right).
+.holidays + .tickers {
+  margin-left: 0;
 }
 
 // display: contents lets each row's own symbol/change/price spans become
@@ -161,8 +163,9 @@
 
 .tickerSymbol {
   font-weight: 600;
-  font-size: 0.8125em;
-  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.7em;
+  line-height: 17px;
+  color: rgba(255, 255, 255, 0.55);
   font-variant-numeric: tabular-nums;
   // "NASDAQ:SBLK"/"EURONEXT:SBLK" are long enough to wrap if squeezed —
   // always one line, same as the price/change columns beside it.
@@ -170,8 +173,9 @@
 }
 
 .tickerChange {
-  font-weight: 700;
-  font-size: 0.875em;
+  font-weight: 600;
+  font-size: 0.7em;
+  line-height: 17px;
   color: #ffffff;
   text-align: right;
   font-variant-numeric: tabular-nums;
@@ -179,7 +183,8 @@
 
 .tickerPrice {
   font-weight: 600;
-  font-size: 1em;
+  font-size: 0.7em;
+  line-height: 17px;
   text-align: right;
   font-variant-numeric: tabular-nums;
   color: #ffffff;
