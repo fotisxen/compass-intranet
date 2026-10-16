@@ -1,0 +1,232 @@
+$navy: #082244;
+$line: #dfe5ee;
+
+// The blue call-to-action card.
+.card {
+  background: $navy;
+  color: #ffffff;
+  border-radius: 1.2em;
+  padding: 1.1em 1.2em 1.2em;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.7em;
+  box-sizing: border-box;
+}
+
+.eyebrow {
+  font-size: 0.5em;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+}
+
+.heading {
+  margin: 0;
+  font-size: 0.75em;
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+.postButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.35em 1.1em;
+  border: none;
+  border-radius: 999px;
+  background: #ffffff;
+  color: $navy;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6em;
+  font-weight: 500;
+  cursor: pointer;
+
+  &:hover {
+    background: #e8edf5;
+  }
+}
+
+// ------------------------------------------------------------ the form
+
+.formModal {
+  width: min(34em, 100%);
+  padding: 1.4em 1.6em 1.2em;
+  box-sizing: border-box;
+}
+
+.formTitle {
+  margin: 0 0 0.8em;
+  font-size: 1em;
+  font-weight: 600;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+  margin-bottom: 0.8em;
+}
+
+.label {
+  font-size: 0.6em;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  color: #3a4a63;
+}
+
+.input,
+.select,
+.textarea {
+  border: 1px solid #b9c3d3;
+  border-radius: 0.5em;
+  padding: 0.45em 0.7em;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7em;
+  color: $navy;
+  background: #ffffff;
+  box-sizing: border-box;
+  width: 100%;
+
+  &:focus {
+    outline: 2px solid rgba(8, 34, 68, 0.35);
+    border-color: $navy;
+  }
+}
+
+.textarea {
+  min-height: 6em;
+  resize: vertical;
+}
+
+.photos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
+
+.photoAdd {
+  width: 5em;
+  height: 5em;
+  white-space: nowrap;
+  border: 1.5px dashed #9aa7ba;
+  border-radius: 0.6em;
+  background: #f4f7fb;
+  color: #3a4a63;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6em;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2em;
+
+  &:hover {
+    background: #e8edf5;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+}
+
+.thumb {
+  position: relative;
+  width: 5em;
+  height: 5em;
+  border-radius: 0.6em;
+  overflow: hidden;
+  background: #e8edf5;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.thumbRemove {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 1.6em;
+  height: 1.6em;
+  border: none;
+  border-radius: 50%;
+  background: rgba(8, 34, 68, 0.8);
+  color: #ffffff;
+  font-size: 0.5em;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+}
+
+.hint {
+  font-size: 0.55em;
+  color: #6b7a8f;
+}
+
+.error {
+  font-size: 0.65em;
+  color: #a4262c;
+  margin: 0 0 0.7em;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6em;
+  margin-top: 0.4em;
+  border-top: 1px solid $line;
+  padding-top: 0.9em;
+}
+
+.cancel {
+  border: 1px solid $navy;
+  border-radius: 999px;
+  background: transparent;
+  color: $navy;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65em;
+  padding: 0.35em 1.2em;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(8, 34, 68, 0.08);
+  }
+}
+
+.submit {
+  border: 1px solid $navy;
+  border-radius: 999px;
+  background: $navy;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65em;
+  padding: 0.35em 1.4em;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.55;
+    cursor: default;
+  }
+}
+
+.done {
+  text-align: center;
+  padding: 1.4em 0.6em 0.8em;
+}
+
+.doneTitle {
+  margin: 0 0 0.4em;
+  font-size: 1em;
+  font-weight: 600;
+}
+
+.doneText {
+  margin: 0 0 1.1em;
+  font-size: 0.7em;
+  line-height: 1.5;
+  color: #3a4a63;
+}

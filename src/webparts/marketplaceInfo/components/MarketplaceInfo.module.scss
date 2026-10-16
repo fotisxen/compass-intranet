@@ -1,0 +1,127 @@
+$navy: #082244;
+$line: #dfe5ee;
+$muted: #6b7a8f;
+
+.row {
+  display: flex;
+  align-items: flex-start;
+  gap: 2em;
+  flex-wrap: wrap;
+  // The web part keeps its own distance from whatever sits to its left (the
+  // Post card), instead of relying on the page layout's column spacing.
+  padding-left: 1.6em;
+}
+
+.col {
+  flex: 1 1 10em;
+  min-width: 0;
+}
+
+.contactCol {
+  flex: 0 0 auto;
+}
+
+.heading {
+  margin: 0 0 0.7em;
+  padding-bottom: 0.45em;
+  border-bottom: 1px solid $line;
+  font-size: 0.5em;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+}
+
+// ----------------------------------------------------------- my listings
+
+.myList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55em;
+}
+
+.myItem {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.8em;
+  font-size: 0.6em;
+}
+
+.myTitle {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.myStatus {
+  flex-shrink: 0;
+  font-size: 0.9em;
+  color: $muted;
+}
+
+.statusLive {
+  color: #17653a;
+}
+
+.statusPending {
+  color: #8a5a00;
+}
+
+.statusRejected {
+  color: #a4262c;
+}
+
+.empty {
+  font-size: 0.6em;
+  color: $muted;
+}
+
+.manage {
+  display: inline-block;
+  margin-top: 0.8em;
+  font-size: 0.6em;
+  color: $navy;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// ----------------------------------------------------------------- rules
+
+.rules {
+  margin: 0;
+  padding: 0 0 0 1.1em;
+  font-size: 0.55em;
+  line-height: 1.6;
+  color: #3a4a63;
+
+  li {
+    margin-bottom: 0.15em;
+  }
+}
+
+// --------------------------------------------------------------- contact
+
+.contact {
+  display: inline-block;
+  font-size: 0.6em;
+  font-weight: 500;
+  color: $navy;
+  text-decoration: none;
+  white-space: nowrap;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.editHint {
+  font-size: 0.55em;
+  color: $muted;
+  font-style: italic;
+}

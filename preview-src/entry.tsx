@@ -2,6 +2,10 @@ import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import HomeNews from '../src/webparts/helloWorld/components/HomeNews';
 import NewsGrid from '../src/webparts/newsGrid/components/NewsGrid';
+import MarketplaceFilters from '../src/webparts/marketplaceFilters/components/MarketplaceFilters';
+import MarketplacePost from '../src/webparts/marketplacePost/components/MarketplacePost';
+import MarketplaceInfo from '../src/webparts/marketplaceInfo/components/MarketplaceInfo';
+import MarketplaceListings from '../src/webparts/marketplaceListings/components/MarketplaceListings';
 import HomePeople from '../src/webparts/homePeople/components/HomePeople';
 import PublicHolidays from '../src/shared/components/PublicHolidays';
 import EventsWidget from '../src/shared/components/EventsWidget';
@@ -23,6 +27,43 @@ const fakeSpHttpClient = {
 // isn't promoted (fetched by path), so paging and pinning both show up.
 const sampleNews = ['Fleet renewal programme reaches a new milestone', 'Summer safety campaign results', 'New offices open in Limassol', 'Quarterly results announced', 'Crew welfare initiative expands', 'Sustainability report published', 'Port state control inspection results', 'New hires join the technical team', 'Charity run raises record amount', 'Fleet safety award received']
   .map((Title, i) => ({ Title, FileRef: '/sites/demo/SitePages/News-' + (i + 1) + '.aspx', Created: '2026-09-' + (20 - i) + 'T09:00:00Z', BannerImageUrl: null }));
+
+// ---- Marketplace: an in-memory stand-in for the two SharePoint lists.
+const mpPhoto = (c1: string, c2: string, label: string): string => 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="640" height="400"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="' + c1 + '"/><stop offset="1" stop-color="' + c2 + '"/></linearGradient></defs><rect width="640" height="400" fill="url(#g)"/><text x="320" y="215" font-size="40" text-anchor="middle" fill="#ffffff" font-family="Arial">' + label + '</text></svg>');
+const mpDay = (n: number): string => new Date(Date.now() - n * 86400000).toISOString();
+const mpCategories = ['For sale', 'Free', 'Wanted', 'Swap', 'Housing', 'Carpool', 'Lost & found'];
+const mpRow = (id: number, title: string, price: string, area: string, cat: string, days: number, author: string, photos: number, status = 0, details = 'Good condition, pick up from the office. Message me on Teams if interested.') => ({
+  Id: id, Title: title, Price: price, Area: area, Details: details, ListingCategory: cat, Created: mpDay(days), OData__ModerationStatus: status,
+  Author: { Title: author, EMail: author.toLowerCase().replace(/\s+/g, '.') + '@example.com' },
+  AttachmentFiles: Array.from({ length: photos }, (_, i) => ({ FileName: 'p' + i + '.jpg', ServerRelativeUrl: mpPhoto(['#1d4d9a', '#0f6b63', '#9b2c52', '#8a5a00'][(id + i) % 4], '#082244', title.slice(0, 18) + ' ' + (i + 1)) }))
+});
+const mpListings = [
+  mpRow(1, 'Baby car seat, 0–4 years', 'Free', 'Athens HQ', 'Free', 3, 'Giorgos Tsimpoukelis', 3),
+  mpRow(2, 'IKEA desk lamp', '€8', 'Piraeus', 'For sale', 4, 'Maria Papadopoulou', 1),
+  mpRow(3, "Kids' bike, 16 inch", '€40 or best offer', 'Athens HQ', 'For sale', 6, 'Nikos Andreou', 2),
+  mpRow(4, 'Looking for a 2-bedroom flat near the office', 'Up to €700/month', 'Kifissia', 'Wanted', 7, 'Eleni Vasiliou', 0, 0, 'Moving to Athens in January. Happy to share, no pets.'),
+  mpRow(5, 'Carpool Glyfada to Marousi, mornings', '€3 per ride', 'Glyfada', 'Carpool', 9, 'Dimitris Perivolakis', 0),
+  mpRow(6, 'Swap: PlayStation 4 for Nintendo Switch', 'Swap', 'Athens HQ', 'Swap', 12, 'Anna Georgiou', 4),
+  mpRow(7, 'Studio to rent, Piraeus port', '€450/month', 'Piraeus', 'Housing', 14, 'Giorgos Stefanidis', 3),
+  mpRow(8, 'Found: black umbrella at reception', 'Free', 'Athens HQ', 'Lost & found', 15, 'Reception Desk', 1),
+  mpRow(9, 'Standing desk, adjustable', '€120', 'Athens HQ', 'For sale', 18, 'Maria Dirla', 2),
+  mpRow(10, 'Board games bundle (6 games)', 'Free', 'Kifissia', 'Free', 21, 'Nikos Kallinikos', 1)
+];
+const mpMine = [mpRow(11, 'Winter tyres 205/55 R16', '€150', 'Athens HQ', 'For sale', 1, 'Fotis Xenos', 1, 2), mpRow(12, 'IKEA desk lamp', '€8', 'Piraeus', 'For sale', 4, 'Fotis Xenos', 1, 0), mpRow(13, 'Old monitor', 'Free', 'Athens HQ', 'Free', 5, 'Fotis Xenos', 0, 1)];
+const fakeMarketplaceClient = {
+  get: async (url: string) => {
+    const u = decodeURIComponent(url);
+    if (u.indexOf('currentuser') !== -1) return { ok: true, status: 200, json: async () => ({ Id: 7 }) };
+    if (u.indexOf("Compass Marketplace Categories')/items") !== -1) return { ok: true, status: 200, json: async () => ({ value: mpCategories.map((c, i) => ({ Id: i + 1, Title: c, SortOrder: i + 1 })) }) };
+    if (u.indexOf("Compass Marketplace')/items") !== -1) return { ok: true, status: 200, json: async () => ({ value: u.indexOf('AuthorId') !== -1 ? mpMine : mpListings }) };
+    if (u.indexOf("Compass Marketplace')") !== -1) return { ok: true, status: 200, json: async () => ({ Id: 'x', ListItemEntityTypeFullName: 'SP.Data.CompassMarketplaceListItem', DefaultViewUrl: '/sites/demo/Lists/Compass Marketplace/AllItems.aspx' }) };
+    return { ok: false, status: 404 };
+  },
+  post: async (url: string) => {
+    if (url.indexOf('AttachmentFiles/add') !== -1) return { ok: true, status: 200, json: async () => ({}) };
+    return { ok: true, status: 201, json: async () => ({ Id: 99 }) };
+  }
+};
 const samplePhoto = (i: number): string => 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="90" height="90"><rect width="90" height="90" fill="' + (i ? '#c2410c' : '#0f766e') + '"/><circle cx="45" cy="36" r="17" fill="#fde68a"/><rect x="16" y="58" width="58" height="40" rx="20" fill="#fde68a"/></svg>');
 const fakeHomeClient = {
   get: async (url: string) => {
@@ -268,6 +309,11 @@ ReactDom.render(
   }),
   document.getElementById('root')
 );
+const mpSite = 'https://example.sharepoint.com/sites/demo';
+ReactDom.render(React.createElement(MarketplaceFilters, { spHttpClient: fakeMarketplaceClient as never, siteUrl: mpSite, canManageLists: true }), document.getElementById('mp-filters-root'));
+ReactDom.render(React.createElement(MarketplacePost, { spHttpClient: fakeMarketplaceClient as never, siteUrl: mpSite, canManageLists: true, eyebrow: 'SELL · GIVE · SWAP', heading: "Got something you don't need anymore? Post it in under a minute.", buttonLabel: 'Post an item', maxPhotos: 5 }), document.getElementById('mp-post-root'));
+ReactDom.render(React.createElement(MarketplaceInfo, { spHttpClient: fakeMarketplaceClient as never, siteUrl: mpSite, isEditMode: false, rulesTitle: 'MARKETPLACE RULES', rulesText: 'Personal items only, no running a business\nNothing prohibited or unsafe\nListings expire after 30 days\nDeals are between colleagues; the company is not responsible for transactions', contactLabel: 'Questions? Contact HR', contactEmail: 'hr@example.com', contactSubject: 'Marketplace question', contactBody: 'Hello HR,\n\nI have a question about the Marketplace:\n\n', manageUrl: '', expiryDays: 30 }), document.getElementById('mp-info-root'));
+ReactDom.render(React.createElement(MarketplaceListings, { spHttpClient: fakeMarketplaceClient as never, siteUrl: mpSite, canManageLists: true, expiryDays: 30 }), document.getElementById('mp-listings-root'));
 ReactDom.render(
   React.createElement(NewsGrid, {
     spHttpClient: fakeHomeClient as never,

@@ -1,0 +1,36 @@
+@use '../../../shared/styles/layout-tokens';
+
+$navy: #082244;
+
+// 3 cards per row, the same card width and gap as the other 3-card rows.
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, var(--compass-card-w));
+  gap: var(--compass-gap);
+  width: fit-content;
+  max-width: 100%;
+}
+
+.more {
+  margin-top: 1.4em;
+}
+
+.empty {
+  font-size: 0.7em;
+  color: #6b7a8f;
+  padding: 1em 0;
+}
+
+// Tablet: two cards per row; phone: one.
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+}
+
+@media (max-width: 560px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

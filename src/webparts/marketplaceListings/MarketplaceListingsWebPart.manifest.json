@@ -1,0 +1,22 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+  "id": "abfd7ad0-63d3-4ee3-a4d2-2e6bca7201e9",
+  "alias": "MarketplaceListingsWebPart",
+  "componentType": "WebPart",
+
+  "version": "*",
+  "manifestVersion": 2,
+
+  "requiresCustomScript": false,
+  "supportedHosts": ["SharePointWebPart", "TeamsPersonalApp", "TeamsTab", "SharePointFullPage"],
+  "supportsThemeVariants": true,
+
+  "preconfiguredEntries": [{
+    "groupId": "5c03119e-3074-46fd-976b-c60198311f70", // Advanced
+    "group": { "default": "Advanced" },
+    "title": { "default": "Compass Marketplace Listings" },
+    "description": { "default": "The approved Marketplace listings as cards (3 per row, 6 at first and a Load more button). Reacts to the Marketplace Filters web part on the same page." },
+    "officeFabricIconFontName": "ShoppingCart",
+    "properties": {}
+  }]
+}

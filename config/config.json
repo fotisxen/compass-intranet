@@ -26,6 +26,38 @@
         }
       ]
     },
+    "marketplace-filters-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/marketplaceFilters/MarketplaceFiltersWebPart.js",
+          "manifest": "./src/webparts/marketplaceFilters/MarketplaceFiltersWebPart.manifest.json"
+        }
+      ]
+    },
+    "marketplace-post-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/marketplacePost/MarketplacePostWebPart.js",
+          "manifest": "./src/webparts/marketplacePost/MarketplacePostWebPart.manifest.json"
+        }
+      ]
+    },
+    "marketplace-info-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/marketplaceInfo/MarketplaceInfoWebPart.js",
+          "manifest": "./src/webparts/marketplaceInfo/MarketplaceInfoWebPart.manifest.json"
+        }
+      ]
+    },
+    "marketplace-listings-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/marketplaceListings/MarketplaceListingsWebPart.js",
+          "manifest": "./src/webparts/marketplaceListings/MarketplaceListingsWebPart.manifest.json"
+        }
+      ]
+    },
     "news-web-part": {
       "components": [
         {

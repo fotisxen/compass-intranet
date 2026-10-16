@@ -1,0 +1,62 @@
+$navy: #082244;
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
+
+.chip {
+  padding: 0.3em 1em;
+  border: 1px solid $navy;
+  border-radius: 999px;
+  background: #ffffff;
+  color: $navy;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65em;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover {
+    background: rgba(8, 34, 68, 0.08);
+  }
+}
+
+.chipActive,
+.chipActive:hover {
+  background: $navy;
+  color: #ffffff;
+}
+
+.search {
+  position: relative;
+  margin-top: 1.1em;
+  width: 15em;
+  max-width: 100%;
+  border-bottom: 1px solid $navy;
+  display: flex;
+  align-items: center;
+}
+
+.searchInput {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 0.35em 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6em;
+  color: $navy;
+
+  &::placeholder {
+    color: #6b7a8f;
+  }
+}
+
+.searchIcon {
+  width: 0.75em;
+  height: 0.75em;
+  color: $navy;
+  flex-shrink: 0;
+}
