@@ -8,9 +8,9 @@ import { type INewsItem, loadPromotedNews, loadPageByPath, normalizePageUrl } fr
 // How many of the newest promoted pages the carousel can page through.
 const MAX_NEWS = 30;
 // Cards visible at once (first one wide, see .grid in the scss): 3 on desktop
-// and tablet, 2 on a phone (the same width as the scss's phone layout).
+// and tablet, 1 on a phone (the same width as the scss's phone layout).
 const VISIBLE = 3;
-const PHONE_VISIBLE = 2;
+const PHONE_VISIBLE = 1;
 const PHONE_QUERY = '(max-width: 600px)';
 
 function visibleSlots(): number {
