@@ -210,3 +210,154 @@ a.dropdownHeading:hover {
     min-width: 0;
   }
 }
+
+// ------------------------------------------------------------------
+// Phone: the menu row is replaced by a burger button that opens a panel
+// under the bar (sections expand one at a time). The AI assistant button
+// keeps only its round arrow so everything fits next to the logo.
+// ------------------------------------------------------------------
+.burger {
+  display: none;
+}
+
+.mobilePanel {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .bar {
+    flex-wrap: nowrap;
+    padding: 14px 16px;
+    gap: 12px;
+  }
+
+  .nav {
+    display: none;
+  }
+
+  .assistant {
+    margin-left: auto;
+  }
+
+  .assistantLabel {
+    display: none;
+  }
+
+  .assistantSubmit {
+    width: 36px;
+    height: 36px;
+  }
+
+  .burger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 36px;
+    height: 36px;
+    padding: 0 7px;
+    box-sizing: border-box;
+    border: 1px solid #082244;
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .burgerLine {
+    display: block;
+    height: 2px;
+    border-radius: 1px;
+    background: #082244;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+  }
+
+  // Burger turns into an X while the panel is open.
+  .burgerLineTop {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .burgerLineMiddle {
+    opacity: 0;
+  }
+
+  .burgerLineBottom {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  .mobilePanel {
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+    background: #ffffff;
+    border-top: 1px solid #e3e8ef;
+    box-shadow: 0 16px 30px rgba(8, 34, 68, 0.18);
+    padding: 6px 16px 18px;
+  }
+
+  .mobileItem {
+    border-bottom: 1px solid #eef1f5;
+  }
+
+  .mobileSectionButton,
+  .mobileSectionLink {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 14px 0;
+    border: none;
+    background: transparent;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    font-size: 1.05em;
+    color: #082244;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .mobileChevron {
+    font-size: 1.4em;
+    line-height: 1;
+    transition: transform 0.15s ease;
+  }
+
+  .mobileChevronOpen {
+    transform: rotate(90deg);
+  }
+
+  .mobileSectionBody {
+    padding: 0 0 14px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .mobileGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .mobileGroupHeading {
+    display: block;
+    font-weight: 600;
+    font-size: 0.8em;
+    letter-spacing: 1.1px;
+    color: #082244;
+    text-decoration: none;
+    padding: 4px 0;
+  }
+
+  .mobileLink {
+    display: block;
+    padding: 7px 0;
+    font-size: 0.95em;
+    color: #082244;
+    text-decoration: none;
+  }
+}

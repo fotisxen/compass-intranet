@@ -13,6 +13,10 @@ export interface IHeaderProps {
 
 export interface IHeaderState {
   openItem?: string;
+  /** Phone layout: whether the burger menu panel is open. */
+  mobileOpen?: boolean;
+  /** Phone layout: which section of the burger menu is expanded. */
+  mobileSection?: string;
 }
 
 export default class Header extends React.Component<IHeaderProps, IHeaderState> {
@@ -51,8 +55,16 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
     this.setState(prev => ({ openItem: prev.openItem === label ? undefined : label }));
   };
 
+  private _toggleMobile = (): void => {
+    this.setState(prev => ({ mobileOpen: !prev.mobileOpen, mobileSection: undefined }));
+  };
+
+  private _toggleMobileSection = (label: string): void => {
+    this.setState(prev => ({ mobileSection: prev.mobileSection === label ? undefined : label }));
+  };
+
   public render(): React.ReactElement<IHeaderProps> {
-    const { openItem } = this.state;
+    const { openItem, mobileOpen, mobileSection } = this.state;
     const { homeUrl } = this.props;
     const navItems = this.props.navItems || NAV_ITEMS;
 
@@ -131,7 +143,61 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             <span className={styles.assistantLabel}>Ask Your AI Assistant</span>
             <span className={styles.assistantSubmit} aria-hidden="true"><ArrowIcon direction="right" /></span>
           </button>
+
+          <button
+            type="button"
+            className={styles.burger}
+            onClick={this._toggleMobile}
+            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={!!mobileOpen}
+          >
+            <span className={`${styles.burgerLine} ${mobileOpen ? styles.burgerLineTop : ''}`} />
+            <span className={`${styles.burgerLine} ${mobileOpen ? styles.burgerLineMiddle : ''}`} />
+            <span className={`${styles.burgerLine} ${mobileOpen ? styles.burgerLineBottom : ''}`} />
+          </button>
         </div>
+
+        {mobileOpen && (
+          <nav className={styles.mobilePanel} aria-label="Main menu">
+            {navItems.map(item => (
+              <div className={styles.mobileItem} key={item.label}>
+                {item.columns ? (
+                  <>
+                    <button
+                      type="button"
+                      className={styles.mobileSectionButton}
+                      onClick={() => this._toggleMobileSection(item.label)}
+                      aria-expanded={mobileSection === item.label}
+                    >
+                      <span>{item.label}</span>
+                      <span className={`${styles.mobileChevron} ${mobileSection === item.label ? styles.mobileChevronOpen : ''}`} aria-hidden="true">›</span>
+                    </button>
+                    {mobileSection === item.label && (
+                      <div className={styles.mobileSectionBody}>
+                        {item.columns.map(column => column.map((group, groupIndex) => (
+                          <div className={styles.mobileGroup} key={`${group.heading || ''}-${groupIndex}`}>
+                            {group.heading && (
+                              group.headingHref ? (
+                                <a href={group.headingHref} className={styles.mobileGroupHeading}>{group.heading}</a>
+                              ) : (
+                                <div className={styles.mobileGroupHeading}>{group.heading}</div>
+                              )
+                            )}
+                            {group.items.map(link => (
+                              <a key={link.label} href={link.href} className={styles.mobileLink}>{link.label}</a>
+                            ))}
+                          </div>
+                        )))}
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <a href={item.href || '#'} className={styles.mobileSectionLink}>{item.label}</a>
+                )}
+              </div>
+            ))}
+          </nav>
+        )}
       </header>
     );
   }

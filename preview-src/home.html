@@ -57,6 +57,15 @@
   // ?pad=68 gives the page a 68px side margin (the tablet design); ?pad=52 the phone design.
   var pad = new URLSearchParams(location.search).get('pad');
   if (pad) { document.body.style.padding = '0 ' + pad + 'px'; }
+  // ?header=1 shows the Compass menu bar above the page (it is hidden by default, like in the mock-ups).
+  if (new URLSearchParams(location.search).get('header')) {
+    window.addEventListener('DOMContentLoaded', function () {
+      var top = document.getElementById('chrome-top');
+      document.body.insertBefore(top, document.body.firstChild);
+      // the header spans the whole device width, so it ignores the page's side margin
+      top.style.margin = '0 -' + (pad || 0) + 'px';
+    });
+  }
 </script>
 <script src="dist/bundle.js"></script>
 </body>
