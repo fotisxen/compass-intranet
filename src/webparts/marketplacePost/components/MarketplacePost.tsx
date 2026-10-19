@@ -151,7 +151,7 @@ function PostForm(props: IFormProps): React.ReactElement {
             <h3 className={styles.doneTitle}>Thank you!</h3>
             <p className={styles.doneText}>
               Your listing was sent to HR for approval. It will appear on the Marketplace as soon as it is approved.
-              {done.failedPhotos > 0 ? ` ${done.failedPhotos} photo(s) could not be uploaded — you can add them later from "My listings".` : ''}
+              {done.failedPhotos > 0 ? ` ${done.failedPhotos} photo(s) could not be uploaded. Open "Manage listings" on this page, edit your listing and attach them there.` : ''}
             </p>
             <button type="button" className={styles.submit} onClick={onClose}>Close</button>
           </div>

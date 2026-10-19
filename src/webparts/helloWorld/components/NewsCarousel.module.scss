@@ -67,12 +67,42 @@
   right: 6px;
 }
 
-@media (max-width: 900px) {
+// Tablet: one wide card on top, two side by side below it. The arrows would
+// float over the cards here, so they are hidden; the unpinned cards still
+// rotate by themselves. Card shape follows the tablet/phone design: 376px
+// tall (whatever the width), 50px corners, 27px between cards.
+@media (max-width: 1000px) {
   .wrap {
     width: 100%;
   }
 
   .grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 27px;
+
+    > div {
+      min-height: 0;
+      height: 376px;
+      border-radius: 50px;
+    }
+
+    > div:first-child {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .arrow {
+    display: none;
+  }
+}
+
+// Phone: two cards, one under the other.
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+
+    > div:nth-child(n + 3) {
+      display: none;
+    }
   }
 }

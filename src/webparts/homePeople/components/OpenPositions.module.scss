@@ -120,3 +120,16 @@
     background: rgba(8, 34, 68, 0.1);
   }
 }
+
+// Tablet/phone: 391px tall with 20px corners, rows tall enough to fill it; the
+// arrows stay pinned to the bottom like on the desktop.
+@media (max-width: 1000px) {
+  .card {
+    height: 391px;
+    border-radius: 20px;
+  }
+
+  .row {
+    height: 4.5em;
+  }
+}

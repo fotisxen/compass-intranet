@@ -29,16 +29,24 @@
   }
 }
 
-@media (max-width: 900px) {
+// Tablet: two cards per row; phone: one. The large card is just another card.
+@media (max-width: 1000px) {
   .wrap {
     width: 100%;
   }
 
   .grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
 
     > :first-child {
       grid-row: auto;
     }
+  }
+}
+
+@media (max-width: 560px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

@@ -32,6 +32,27 @@
   margin-left: calc(-16px + var(--compass-map-nudge-x));
 }
 
+// Tablet: the same size and corners as the Events card beside it — it starts
+// ~14px in from its column's edge so the two are ~29px apart (the -1.5px
+// is the -16px zone margin plus that inset).
+@media (max-width: 1000px) {
+  .mapWrap {
+    width: calc(100% + 17px);
+    margin-left: -1.5px;
+    border-radius: 20px;
+  }
+}
+
+// Phone: fills its column, 316px tall, 30px corners.
+@media (max-width: 600px) {
+  .mapWrap {
+    width: calc(100% + 32px);
+    margin-left: -16px;
+    height: 316px;
+    border-radius: 30px;
+  }
+}
+
 .map {
   height: 100%;
   width: 100%;

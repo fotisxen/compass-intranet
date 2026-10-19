@@ -190,8 +190,53 @@
   color: #ffffff;
 }
 
-@media (max-width: 720px) {
+// Tablet: Stay Connected + Quick Access on the left; Public Holidays above
+// the tickers on the right. (The property pane's alignment offset is a desktop
+// nicety — it is switched off here so nothing is pushed off the screen.)
+@media (max-width: 1000px) {
   .inner {
-    flex-direction: column;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 24px;
+    row-gap: 20px;
+    padding: 28px 20px;
+    margin-left: 0 !important;
+  }
+
+  .linksGroup {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+  }
+
+  .holidays {
+    grid-column: 2;
+    grid-row: 1;
+    margin-left: 0;
+    justify-self: end;
+  }
+
+  .tickers,
+  .holidays + .tickers {
+    grid-column: 2;
+    grid-row: 2;
+    margin-left: 0;
+    justify-self: end;
+  }
+}
+
+// Phone: Stay Connected | Quick Access, then Public Holidays, then the tickers.
+@media (max-width: 600px) {
+  .inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .linksGroup,
+  .holidays,
+  .tickers,
+  .holidays + .tickers {
+    grid-column: 1;
+    grid-row: auto;
+    justify-self: start;
   }
 }

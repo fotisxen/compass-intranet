@@ -20,6 +20,17 @@
      sections on the real page, but here they stack tight and the cards'
      negative margin covers the map's bottom edge. Not part of the package. */
   #root { padding-top: 40px; }
+  /* Harness only: what SharePoint does on narrow screens — the page gets its
+     16px side padding (which every web part's -16px margin cancels), two-column
+     sections keep two equal columns on a tablet and stack on a phone. */
+  @media (max-width: 1000px) {
+    body { padding: 0 16px; box-sizing: border-box; }
+    #fleet-map-root > div { gap: 0 !important; }
+    #fleet-map-root .zone { flex: 1 1 0 !important; min-width: 0; padding: 0 16px; box-sizing: border-box; }
+  }
+  @media (max-width: 600px) {
+    #fleet-map-root > div { flex-direction: column !important; }
+  }
 </style>
 <link rel="stylesheet" href="dist/bundle.css" />
 </head>
@@ -33,7 +44,7 @@
 <div style="display: flex; flex-wrap: wrap; gap: 4px; padding: 24px 0 0; max-width: 1077px"><div style="width: 335px; flex-shrink: 0; padding: 16px"><div id="mp-post-root"></div></div><div style="flex: 1 1 260px; min-width: 0; padding: 16px"><div id="mp-info-root"></div></div></div>
 <div style="padding: 8px 16px 0"><div id="mp-listings-root"></div></div>
 <div id="news-grid-root" style="padding-top: 40px"></div>
-<div id="people-root" style="padding-top: 40px"></div>
+<div id="people-root" style="padding: 40px 0 16px"></div>
 <div id="chrome-bottom"></div>
 <script src="dist/bundle.js"></script>
 </body>

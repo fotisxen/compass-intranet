@@ -175,3 +175,59 @@
   overflow-wrap: break-word;
   max-width: 100%;
 }
+
+// Tablet/phone: the card stands up — heading, photo, name, then the details
+// in two columns, with both arrows centred at the bottom. A fixed height
+// keeps Welcome Aboard and Promotions identical whatever the text.
+@media (max-width: 1000px) {
+  .card {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.9em;
+    height: 391px;
+    padding: 1.3em 1.4em 3.4em;
+  }
+
+  .heading {
+    width: 100%;
+    // The heading size is set inline in px for the desktop card.
+    font-size: 1.05em !important;
+  }
+
+  .avatar,
+  .avatarPhoto {
+    width: 5.4em;
+    height: 5.4em;
+  }
+
+  .nameBlock {
+    flex: none;
+    width: 100%;
+    text-align: center;
+  }
+
+  .details {
+    flex: none;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6em 1em;
+  }
+
+  .arrowLeft,
+  .arrowRight {
+    top: auto;
+    bottom: 0.9em;
+    transform: none;
+  }
+
+  .arrowLeft {
+    left: calc(50% - 26px);
+  }
+
+  .arrowRight {
+    right: auto;
+    left: calc(50% + 7px);
+  }
+}
