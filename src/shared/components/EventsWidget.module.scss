@@ -16,7 +16,7 @@
 // tablet, full width on a phone) instead of the fixed 220px.
 // (+17px: the card ends ~14px short of its column's edge, so Events and the
 // map end up ~29px apart. The +32px on a phone fills the whole column.)
-@media (max-width: 1000px) {
+@media (max-width: 1279px) {
   .wrap {
     width: calc(100% + 17px);
   }

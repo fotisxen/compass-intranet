@@ -150,9 +150,9 @@
 
 // Tablet/phone: 391px tall with 20px corners, rows tall enough to fill it; the
 // arrows stay pinned to the bottom like on the desktop.
-@media (max-width: 1000px) {
+@media (max-width: 1279px) {
   .card {
-    height: 391px;
+    height: 27.93em; // = 391px at the 14px tablet text size, growing with the text on wider tablets
     border-radius: 20px;
   }
 

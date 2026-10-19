@@ -35,7 +35,7 @@
 // Tablet: the same size and corners as the Events card beside it — it starts
 // ~14px in from its column's edge so the two are ~29px apart (the -1.5px
 // is the -16px zone margin plus that inset).
-@media (max-width: 1000px) {
+@media (max-width: 1279px) {
   .mapWrap {
     width: calc(100% + 17px);
     margin-left: -1.5px;

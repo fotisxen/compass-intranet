@@ -179,13 +179,13 @@
 // Tablet/phone: the card stands up — heading, photo, name, then the details
 // in two columns, with both arrows centred at the bottom. A fixed height
 // keeps Welcome Aboard and Promotions identical whatever the text.
-@media (max-width: 1000px) {
+@media (max-width: 1279px) {
   .card {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     gap: 0.9em;
-    height: 391px;
+    height: 27.93em; // = 391px at the 14px tablet text size, growing with the text on wider tablets
     padding: 1.3em 1.4em 3.4em;
   }
 

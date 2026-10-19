@@ -71,7 +71,7 @@
 // float over the cards here, so they are hidden; the unpinned cards still
 // rotate by themselves. Card shape follows the tablet/phone design: 376px
 // tall (whatever the width), 50px corners, 27px between cards.
-@media (max-width: 1000px) {
+@media (max-width: 1279px) {
   .wrap {
     width: 100%;
   }

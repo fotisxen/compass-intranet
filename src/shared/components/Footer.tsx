@@ -189,7 +189,7 @@ export default class Footer extends React.Component<IFooterProps, IFooterState> 
     return (
       <footer className={styles.footer}>
         <div className={styles.outer}>
-        <div className={styles.inner} style={contentOffsetX ? { marginLeft: contentOffsetX } : undefined}>
+        <div className={styles.inner} style={contentOffsetX ? ({ '--compass-footer-offset': `${contentOffsetX}px` } as React.CSSProperties) : undefined}>
           <div className={styles.linksGroup}>
             <div className={styles.column}>
               <span className={styles.columnLabel}>STAY CONNECTED</span>

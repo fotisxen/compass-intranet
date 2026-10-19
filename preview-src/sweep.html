@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Width sweep</title>
+<style>
+  body { font: 12px/1.4 Consolas, monospace; margin: 12px; }
+  iframe { position: absolute; left: 0; top: 0; border: 0; background: #fff; visibility: hidden; }
+  pre { white-space: pre-wrap; }
+</style>
+</head>
+<body>
+<!--
+  Loads the home page (or the Marketplace page) at many widths and reports anything that
+  breaks: horizontal overflow, a block poking out of the screen, text cut off inside a card,
+  or cards overlapping each other.
+  Open as sweep.html?page=home&w=320,360,375  (page = home | market)
+-->
+<pre id="out">running…</pre>
+<script>
+(function () {
+  var params = new URLSearchParams(location.search);
+  var page = params.get('page') || 'home';
+  var widths = (params.get('w') || '320,360,375,390,414,440,480,520,560,600,601,640,680,700,701,740,768,800,834,900,960,1000,1001,1024,1080,1100,1150,1200,1280,1366,1440,1600,1920').split(',').map(Number);
+  var pad = params.get('pad') || '16';
+  var src = page === 'market' ? 'marketplace.html' : page === 'all' ? 'index.html?pinned=1&events=1' : 'home.html?pinned=1&events=1&header=1&pad=' + pad;
+
+  // blocks that must stay completely inside the screen
+  var ROOTS = page === 'market'
+    ? ['[class*="MarketplaceFilters__chips"]', '[class*="MarketplacePost__card"]', '[class*="MarketplaceInfo__row"]', '[class*="MarketplaceListings__grid"]']
+    : ['[class*="Header__bar"]', '[class*="NewsCarousel__grid"]', '[class*="EventsWidget__eventCard"]', '[class*="FleetMap__mapWrap"]', '[class*="HomePeople__peopleContent"]', '[class*="Footer__inner"]'];
+  // blocks whose own content must not be cut off or spill out
+  var CLIP = page === 'market'
+    ? ['[class*="Marketplace__card"]', '[class*="MarketplaceInfo__row"]', '[class*="MarketplaceFilters__chips"]']
+    : ['[class*="PersonSpotlightCard__card"]', '[class*="PersonSpotlightCard__nameBlock"]', '[class*="PersonSpotlightCard__details"]', '[class*="Footer__inner"]', '[class*="Footer__linksGroup"]', '[class*="Footer__holidays"]', '[class*="Footer__tickers"]', '[class*="Header__bar"]', '[class*="EventsWidget__eventCard"]', '[class*="OpenPositions__card"]', '[class*="WorkAnniversaries__card"]', '[class*="NewsCard__body"]'];
+  // blocks that must not overlap each other
+  var CARDS = page === 'market'
+    ? ['[class*="Marketplace__card"]', '[class*="MarketplacePost__card"]', '[class*="MarketplaceInfo__col"]', '[class*="MarketplaceInfo__contactCol"]']
+    : ['[class*="NewsCarousel__grid"] > div', '[class*="EventsWidget__eventCard"]', '[class*="FleetMap__mapWrap"]', '[class*="PersonSpotlightCard__card"]', '[class*="OpenPositions__card"]', '[class*="WorkAnniversaries__card"]', '[class*="Footer__linksGroup"]', '[class*="Footer__holidays"]', '[class*="Footer__tickers"]'];
+
+  function visible(el) { var r = el.getBoundingClientRect(); return r.width > 0 && r.height > 0; }
+  function all(d, sels) { var out = []; sels.forEach(function (s) { Array.prototype.forEach.call(d.querySelectorAll(s), function (el) { if (visible(el)) { out.push({ el: el, sel: s }); } }); }); return out; }
+  function name(el) { return String(el.className).split(' ')[0].replace(/^.*?([A-Za-z]+__[A-Za-z]+).*$/, '$1'); }
+
+  // page=all: every web part the preview can show, judged only on "does anything stick out of the screen"
+  function checkAll(d, w) {
+    var issues = [];
+    var docW = d.documentElement.scrollWidth;
+    if (docW > w + 1) { issues.push('PAGE scrolls sideways: page is ' + docW + 'px wide'); }
+    var seen = {};
+    Array.prototype.forEach.call(d.querySelectorAll('body *'), function (el) {
+      var r = el.getBoundingClientRect();
+      if (r.width <= 0 || r.right <= w + 1) { return; }
+      if (el.closest('[class*="leaflet"], [class*="maplibre"], [class*="FleetMap"], [hidden], script, style, svg')) { return; }
+      if (el.parentElement && el.parentElement.getBoundingClientRect().right > w + 1) { return; }
+      // inside a scroller or clipping box that itself fits on screen (a carousel track, say): fine
+      for (var p = el.parentElement; p && p !== d.body; p = p.parentElement) {
+        var ox = d.defaultView.getComputedStyle(p).overflowX;
+        if (ox !== 'visible' && p.getBoundingClientRect().right <= w + 1) { return; }
+      }
+      var n = name(el);
+      if (!seen[n]) { seen[n] = true; issues.push('STICKS OUT ' + n + ' right=' + Math.round(r.right) + ' (screen ' + w + ')'); }
+    });
+    return issues;
+  }
+
+  function check(d, w) {
+    if (page === 'all') { return checkAll(d, w); }
+    var issues = [];
+    var docW = d.documentElement.scrollWidth;
+    if (docW > w + 1) { issues.push('PAGE scrolls sideways: page is ' + docW + 'px wide'); }
+    all(d, ROOTS).forEach(function (x) {
+      var r = x.el.getBoundingClientRect();
+      if (r.right > w + 1 || r.left < -1) { issues.push('OUT OF SCREEN ' + name(x.el) + ' left=' + Math.round(r.left) + ' right=' + Math.round(r.right)); }
+    });
+    all(d, CLIP).forEach(function (x) {
+      var e = x.el;
+      if (e.scrollWidth > e.clientWidth + 2) { issues.push('CUT/SPILLS (sideways) ' + name(e) + ' content ' + e.scrollWidth + ' > box ' + e.clientWidth); }
+      if (e.scrollHeight > e.clientHeight + 2 && getComputedStyle(e).overflowY !== 'visible') { issues.push('CUT (height) ' + name(e) + ' content ' + e.scrollHeight + ' > box ' + e.clientHeight); }
+    });
+    var rects = all(d, CARDS).map(function (x) { return { n: name(x.el), r: x.el.getBoundingClientRect(), el: x.el }; });
+    for (var i = 0; i < rects.length; i++) {
+      for (var j = i + 1; j < rects.length; j++) {
+        var a = rects[i].r, b = rects[j].r;
+        if (rects[i].el.contains(rects[j].el) || rects[j].el.contains(rects[i].el)) { continue; }
+        var ow = Math.min(a.right, b.right) - Math.max(a.left, b.left);
+        var oh = Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top);
+        if (ow > 3 && oh > 3) { issues.push('OVERLAP ' + rects[i].n + ' x ' + rects[j].n + ' by ' + Math.round(ow) + 'x' + Math.round(oh)); }
+      }
+    }
+    return issues;
+  }
+
+  var results = {};
+  var out = document.getElementById('out');
+  window.__SWEEP = results;
+  window.__DONE = false;
+
+  function runOne(index) {
+    if (index >= widths.length) {
+      var lines = [];
+      Object.keys(results).forEach(function (k) { lines.push(k + 'px: ' + (results[k].length ? '\n   ' + results[k].join('\n   ') : 'OK')); });
+      out.textContent = lines.join('\n');
+      window.__DONE = true;
+      return;
+    }
+    var w = widths[index];
+    var f = document.createElement('iframe');
+    f.style.width = w + 'px';
+    f.style.height = '1000px';
+    f.src = src + (src.indexOf('?') === -1 ? '?' : '&') + 't=' + Date.now();
+    document.body.appendChild(f);
+    f.addEventListener('load', function () {
+      setTimeout(function () {
+        try { results[w] = check(f.contentDocument, w); } catch (e) { results[w] = ['sweep error: ' + e.message]; }
+        f.remove();
+        out.textContent = 'running… ' + (index + 1) + '/' + widths.length;
+        runOne(index + 1);
+      }, 3200);
+    });
+  }
+  runOne(0);
+})();
+</script>
+</body>
+</html>

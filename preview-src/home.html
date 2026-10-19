@@ -23,10 +23,10 @@
   /* Harness only: what SharePoint does on narrow screens — the page gets its
      16px side padding (which every web part's -16px margin cancels), two-column
      sections keep two equal columns on a tablet and stack on a phone. */
-  @media (max-width: 1000px) {
+  @media (max-width: 1279px) {
     body { padding: 0 16px; box-sizing: border-box; }
     #fleet-map-root > div { gap: 0 !important; }
-    #fleet-map-root .zone { flex: 1 1 0 !important; min-width: 0; padding: 0 16px; box-sizing: border-box; }
+    #fleet-map-root .zone { flex: 1 1 0 !important; min-width: 0; padding: 16px; box-sizing: border-box; }
   }
   @media (max-width: 600px) {
     #fleet-map-root > div { flex-direction: column !important; }
@@ -40,7 +40,8 @@
   html { scrollbar-width: none; }
   html::-webkit-scrollbar { display: none; }
   /* SharePoint wraps every web part in a 16px zone padding, which each web part's own -16px margin cancels; give every root the same wrapper so the sizes match the real page. */
-  #root, #people-root, #chrome-bottom { padding-left: 16px !important; padding-right: 16px !important; box-sizing: border-box; }
+  #root, #people-root { padding: 16px !important; box-sizing: border-box; }
+  #chrome-bottom { padding: 0 16px 16px !important; box-sizing: border-box; }
 </style>
 <!-- Everything the bundle renders into but this page does not show. -->
 <div hidden>

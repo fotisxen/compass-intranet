@@ -12,3 +12,14 @@
     min-height: 0;
   }
 }
+
+// Tablet/phone: a viewport-based width would shrink the card to a sliver, so it
+// takes its column instead (never wider than the 335px design) and keeps the
+// 335 x 781 proportions.
+@media (max-width: 1279px) {
+  .wrap {
+    width: min(100%, 335px);
+    height: auto;
+    aspect-ratio: 335 / 781;
+  }
+}

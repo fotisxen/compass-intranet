@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8" /><title>Public Holidays position</title></head>
+<body>
+<!-- Reports where the Public Holidays list (and the footer content) sits at several screen widths. Open measure-holidays.html -->
+<pre id="out">running…</pre>
+<script>
+(function () {
+  var widths = [1280, 1340, 1440, 1600, 1920];
+  var out = [];
+  var i = 0;
+  function next() {
+    if (i >= widths.length) { document.getElementById('out').textContent = out.join('\n'); window.__DONE = true; return; }
+    var w = widths[i++];
+    var f = document.createElement('iframe');
+    f.style.cssText = 'position:absolute;left:0;top:0;border:0;height:900px;width:' + w + 'px';
+    f.src = 'index.html?pinned=1&events=1&t=' + Date.now();
+    document.body.appendChild(f);
+    f.addEventListener('load', function () {
+      setTimeout(function () {
+        var d = f.contentDocument, R = function (e) { return e && e.getBoundingClientRect(); };
+        var h = d.querySelector('[class*="PublicHolidays__heading"]'), l = d.querySelector('[class*="PublicHolidays__list"]');
+        var inner = d.querySelector('[class*="Footer__inner"]');
+        var tick = d.querySelector('[class*="Footer__tickers"]');
+        var hr = R(h), lr = R(l), ir = R(inner), tr = R(tick);
+        out.push(w + 'px  holidays heading: ' + Math.round(hr.left) + '..' + Math.round(hr.right) + '   list: ' + Math.round(lr.left) + '..' + Math.round(lr.right) + '   footer inner: ' + Math.round(ir.left) + '..' + Math.round(ir.right) + '   tickers right: ' + Math.round(tr.right) + '   page ' + d.documentElement.scrollWidth + 'px');
+        f.remove();
+        next();
+      }, 2500);
+    });
+  }
+  next();
+})();
+</script>
+</body>
+</html>

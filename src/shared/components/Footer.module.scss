@@ -40,7 +40,12 @@
   // to fit the real zone when it's narrower than --compass-row-w's formula
   // assumes, instead of always forcing that exact width and pushing the
   // ticker out into empty space past where the real row actually ends.
-  width: 100%;
+  // The property pane's alignment offset arrives as --compass-footer-offset: it
+  // shifts the box right AND takes the same amount off its width (capped by
+  // max-width above, so nothing changes while there is room), so the right
+  // edge never leaves the screen on a narrower window.
+  margin-left: var(--compass-footer-offset, 0px);
+  width: calc(100% - var(--compass-footer-offset, 0px));
   padding: 40px 0;
   // A horizontal offset (property pane field, "Alignment" group) is
   // applied inline here from Footer.tsx — shifts Stay Connected/Quick
@@ -193,7 +198,7 @@
 // Tablet: Stay Connected + Quick Access on the left; Public Holidays above
 // the tickers on the right. (The property pane's alignment offset is a desktop
 // nicety — it is switched off here so nothing is pushed off the screen.)
-@media (max-width: 1000px) {
+@media (max-width: 1279px) {
   .inner {
     box-sizing: border-box;
     display: grid;
@@ -201,7 +206,9 @@
     column-gap: 24px;
     row-gap: 20px;
     padding: 28px 20px;
-    margin-left: 0 !important;
+    // The desktop alignment offset does not apply here.
+    width: 100%;
+    margin-left: 0;
   }
 
   .linksGroup {
@@ -225,10 +232,16 @@
   }
 }
 
-// Phone: Stay Connected | Quick Access, then Public Holidays, then the tickers.
-@media (max-width: 600px) {
+// Phone and narrow tablet: Stay Connected | Quick Access, then Public Holidays,
+// then the tickers, one under the other.
+@media (max-width: 760px) {
   .inner {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .holidays {
+    flex-wrap: wrap;
+    row-gap: 6px;
   }
 
   .linksGroup,
