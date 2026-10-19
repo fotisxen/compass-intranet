@@ -102,13 +102,28 @@ export default class NewsCarousel extends React.Component<INewsCarouselProps, IN
     this.setState({ pinnedItems, rotating: rest, start: 0 }, this._startAutoRotate);
   }
 
+  /**
+   * What stays put and what rotates. On desktop and tablet the pinned cards
+   * keep their slots and only the others rotate. On a phone there are only 2
+   * slots, so pinned cards would leave nothing (or one card) to rotate and
+   * the rest of the news could never be reached — there they simply come
+   * first and then page through together with everything else.
+   */
+  private _lists(): { fixed: INewsItem[]; rotating: INewsItem[] } {
+    const { pinnedItems, rotating, slots } = this.state;
+    if (slots === PHONE_VISIBLE) {
+      return { fixed: [], rotating: [...pinnedItems, ...rotating] };
+    }
+    return { fixed: pinnedItems.slice(0, slots), rotating };
+  }
+
   /** Slots left over once the pinned cards have taken theirs. */
   private _freeSlots(): number {
-    return Math.max(0, this.state.slots - this.state.pinnedItems.length);
+    return Math.max(0, this.state.slots - this._lists().fixed.length);
   }
 
   private _canRotate(): boolean {
-    return this.state.rotating.length > this._freeSlots() && this._freeSlots() > 0;
+    return this._lists().rotating.length > this._freeSlots() && this._freeSlots() > 0;
   }
 
   private _stopAutoRotate(): void {
@@ -144,10 +159,8 @@ export default class NewsCarousel extends React.Component<INewsCarouselProps, IN
   // leaving the pinned ones where they are.
   private _step(direction: 1 | -1): void {
     const free = this._freeSlots();
-    this.setState(prev => {
-      const n = prev.rotating.length;
-      return n > free && free > 0 ? { start: (((prev.start + direction * free) % n) + n) % n } : null;
-    });
+    const n = this._lists().rotating.length;
+    this.setState(prev => (n > free && free > 0 ? { start: (((prev.start + direction * free) % n) + n) % n } : null));
   }
 
   private _prev = (): void => {
@@ -161,8 +174,8 @@ export default class NewsCarousel extends React.Component<INewsCarouselProps, IN
   };
 
   public render(): React.ReactElement {
-    const { pinnedItems, rotating, start } = this.state;
-    const fixed = pinnedItems.slice(0, this.state.slots);
+    const { start } = this.state;
+    const { fixed, rotating } = this._lists();
     const free = this._freeSlots();
     const shown: INewsItem[] = [];
     for (let i = 0; i < Math.min(free, rotating.length); i++) {
