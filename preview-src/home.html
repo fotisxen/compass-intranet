@@ -58,6 +58,8 @@
   // ?pad=68 gives the page a 68px side margin (the tablet design); ?pad=52 the phone design.
   var pad = new URLSearchParams(location.search).get('pad');
   if (pad) { document.body.style.padding = '0 ' + pad + 'px'; }
+  // the footer is a full-width section: it runs to the edges of the screen, past the page's side margin
+  if (pad) { window.addEventListener('DOMContentLoaded', function () { var b = document.getElementById('chrome-bottom'); b.style.setProperty('margin', '0 -' + pad + 'px', 'important'); b.style.setProperty('padding', '0 16px 16px', 'important'); }); }
   // ?header=1 shows the Compass menu bar above the page (it is hidden by default, like in the mock-ups).
   if (new URLSearchParams(location.search).get('header')) {
     window.addEventListener('DOMContentLoaded', function () {

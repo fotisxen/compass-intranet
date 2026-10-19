@@ -7,8 +7,15 @@ import { type INewsItem, loadPromotedNews, loadPageByPath, normalizePageUrl } fr
 
 // How many of the newest promoted pages the carousel can page through.
 const MAX_NEWS = 30;
-// Cards visible at once (first one wide, see .grid in the scss).
+// Cards visible at once (first one wide, see .grid in the scss): 3 on desktop
+// and tablet, 2 on a phone (the same width as the scss's phone layout).
 const VISIBLE = 3;
+const PHONE_VISIBLE = 2;
+const PHONE_QUERY = '(max-width: 600px)';
+
+function visibleSlots(): number {
+  return typeof window.matchMedia === 'function' && window.matchMedia(PHONE_QUERY).matches ? PHONE_VISIBLE : VISIBLE;
+}
 // How often the unpinned cards move on by themselves.
 const AUTO_ROTATE_MS = 5000;
 
@@ -26,18 +33,21 @@ export interface INewsCarouselState {
   rotating: INewsItem[];
   /** Index into "rotating" of the first rotating card on screen. */
   start: number;
+  /** How many cards fit on screen at the current width. */
+  slots: number;
 }
 
 export default class NewsCarousel extends React.Component<INewsCarouselProps, INewsCarouselState> {
   constructor(props: INewsCarouselProps) {
     super(props);
-    this.state = { pinnedItems: [], rotating: [], start: 0 };
+    this.state = { pinnedItems: [], rotating: [], start: 0, slots: visibleSlots() };
   }
 
   private _wrapRef = React.createRef<HTMLDivElement>();
   private _rotateTimer: number | undefined;
 
   public componentDidMount(): void {
+    window.addEventListener('resize', this._onResize);
     this._load().catch(() => {
       // News couldn't be loaded — leave the row empty rather than show
       // made-up articles.
@@ -45,8 +55,18 @@ export default class NewsCarousel extends React.Component<INewsCarouselProps, IN
   }
 
   public componentWillUnmount(): void {
+    window.removeEventListener('resize', this._onResize);
     this._stopAutoRotate();
   }
+
+  // Turning a tablet sideways or resizing the window can change how many cards
+  // fit; start again from the first set so no card is skipped.
+  private _onResize = (): void => {
+    const slots = visibleSlots();
+    if (slots !== this.state.slots) {
+      this.setState({ slots, start: 0 }, this._startAutoRotate);
+    }
+  };
 
   public componentDidUpdate(prev: INewsCarouselProps): void {
     if (prev.pinned.join('|') !== this.props.pinned.join('|')) {
@@ -84,7 +104,7 @@ export default class NewsCarousel extends React.Component<INewsCarouselProps, IN
 
   /** Slots left over once the pinned cards have taken theirs. */
   private _freeSlots(): number {
-    return Math.max(0, VISIBLE - this.state.pinnedItems.length);
+    return Math.max(0, this.state.slots - this.state.pinnedItems.length);
   }
 
   private _canRotate(): boolean {
@@ -142,7 +162,7 @@ export default class NewsCarousel extends React.Component<INewsCarouselProps, IN
 
   public render(): React.ReactElement {
     const { pinnedItems, rotating, start } = this.state;
-    const fixed = pinnedItems.slice(0, VISIBLE);
+    const fixed = pinnedItems.slice(0, this.state.slots);
     const free = this._freeSlots();
     const shown: INewsItem[] = [];
     for (let i = 0; i < Math.min(free, rotating.length); i++) {

@@ -229,6 +229,7 @@ export default class Footer extends React.Component<IFooterProps, IFooterState> 
 
           </div>
 
+          <div className={styles.infoBlock}>
           {holidays.length > 0 && (
             <div className={styles.holidays}>
               <span className={styles.holidaysLabel}>PUBLIC HOLIDAYS</span>
@@ -254,6 +255,7 @@ export default class Footer extends React.Component<IFooterProps, IFooterState> 
               ))}
             </div>
           )}
+          </div>
         </div>
         </div>
       </footer>

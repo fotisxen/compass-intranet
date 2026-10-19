@@ -67,13 +67,16 @@
   right: 6px;
 }
 
-// Tablet: one wide card on top, two side by side below it. The arrows would
-// float over the cards here, so they are hidden; the unpinned cards still
-// rotate by themselves. Card shape follows the tablet/phone design: 376px
-// tall (whatever the width), 50px corners, 27px between cards.
+// Tablet: one wide card on top, two side by side below it. The arrows sit as a
+// pair centred under the cards (like the other cards' arrows) instead of floating
+// over the photos; the unpinned cards also still rotate by themselves. Card shape
+// follows the tablet/phone design: 376px tall (whatever the width), 50px corners,
+// 27px between cards.
 @media (max-width: 1279px) {
   .wrap {
     width: 100%;
+    // room for the arrow pair under the cards
+    padding-bottom: 2.8em;
   }
 
   .grid {
@@ -92,7 +95,25 @@
   }
 
   .arrow {
-    display: none;
+    top: auto;
+    bottom: 0.4em;
+    transform: none;
+    background: transparent;
+    border: 0.7px solid rgba(8, 34, 68, 0.5);
+    box-shadow: none;
+
+    &:hover:not(:disabled) {
+      background: rgba(8, 34, 68, 0.08);
+    }
+  }
+
+  .arrowLeft {
+    left: calc(50% - 26px);
+  }
+
+  .arrowRight {
+    right: auto;
+    left: calc(50% + 7px);
   }
 }
 
@@ -100,9 +121,5 @@
 @media (max-width: 600px) {
   .grid {
     grid-template-columns: minmax(0, 1fr);
-
-    > div:nth-child(n + 3) {
-      display: none;
-    }
   }
 }

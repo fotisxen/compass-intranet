@@ -195,17 +195,25 @@
   color: #ffffff;
 }
 
-// Tablet: Stay Connected + Quick Access on the left; Public Holidays above
-// the tickers on the right. (The property pane's alignment offset is a desktop
-// nicety — it is switched off here so nothing is pushed off the screen.)
+.infoBlock {
+  display: contents;
+}
+
+// Tablet and phone: Stay Connected | Quick Access, plus a block that holds the
+// Public Holidays and the tickers in ONE grid of three columns — label / symbol
+// (the symbols right-aligned under the label), then date / change, then name /
+// price — so the two lists line up with each other. On a tablet that block sits
+// on the right of the links; on a phone it goes under them.
+// (The property pane's alignment offset is a desktop nicety — it is switched off
+// here so nothing is pushed off the screen.)
 @media (max-width: 1279px) {
   .inner {
     box-sizing: border-box;
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
     column-gap: 24px;
-    row-gap: 20px;
-    padding: 28px 20px;
+    row-gap: 40px;
+    padding: 44px 20px;
     // The desktop alignment offset does not apply here.
     width: 100%;
     margin-left: 0;
@@ -213,41 +221,71 @@
 
   .linksGroup {
     grid-column: 1;
-    grid-row: 1 / span 2;
+    grid-row: 1;
   }
 
-  .holidays {
+  .infoBlock {
     grid-column: 2;
     grid-row: 1;
-    margin-left: 0;
     justify-self: end;
+    display: grid;
+    grid-template-columns: auto auto minmax(0, 1fr);
+    column-gap: 14px;
+    row-gap: 10px;
+    align-items: start;
   }
 
-  .tickers,
-  .holidays + .tickers {
+  // lifted into infoBlock's grid, so every label, date, name, symbol and price is one cell of it
+  .infoBlock .holidays,
+  .infoBlock .holidayList,
+  .infoBlock .tickers {
+    display: contents;
+  }
+
+  .holidaysLabel {
+    grid-column: 1;
+  }
+
+  .holidayDate {
     grid-column: 2;
-    grid-row: 2;
-    margin-left: 0;
-    justify-self: end;
+  }
+
+  .holidayLabel {
+    grid-column: 3;
+    white-space: normal;
+  }
+
+  .tickerSymbol {
+    grid-column: 1;
+    text-align: right;
+  }
+
+  .tickerChange {
+    grid-column: 2;
+    text-align: left;
+  }
+
+  .tickerPrice {
+    grid-column: 3;
+    text-align: left;
+  }
+
+  // a clear gap between the holidays and the tickers
+  .tickerRow:first-child > * {
+    margin-top: 20px;
   }
 }
 
-// Phone and narrow tablet: Stay Connected | Quick Access, then Public Holidays,
-// then the tickers, one under the other.
+// Phone and narrow tablet: everything in one column, the links first and the
+// holidays/tickers block under them.
 @media (max-width: 760px) {
   .inner {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .holidays {
-    flex-wrap: wrap;
-    row-gap: 6px;
+    padding: 44px clamp(20px, 11.5vw, 52px);
   }
 
   .linksGroup,
-  .holidays,
-  .tickers,
-  .holidays + .tickers {
+  .infoBlock {
     grid-column: 1;
     grid-row: auto;
     justify-self: start;
