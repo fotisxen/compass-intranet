@@ -5,8 +5,8 @@ import { ensureInterFont } from '../../../shared/components/ensureFonts';
 import { NewsCardView } from '../../../shared/components/NewsCard';
 import { type INewsItem, loadPromotedNews, loadPageByPath, normalizePageUrl } from '../../../shared/components/newsApi';
 
-// Cards on screen at once: 1 large + 7 small.
-const SLOTS = 8;
+// Cards on screen at once: 3 rows of 3, all the same size.
+const SLOTS = 9;
 // How many of the newest promoted pages are fetched to rotate through.
 const MAX_NEWS = 30;
 // How often the unpinned cards move on by themselves.

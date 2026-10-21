@@ -1,0 +1,27 @@
+.page {
+  // Cancels the 16px padding SharePoint puts around web parts.
+  margin: -16px;
+}
+
+.frame {
+  width: 100%;
+  background: #082244;
+  overflow: hidden;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.hint {
+  display: inline-block;
+  margin: 8px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.85);
+  color: #323130;
+  font: 12px/1.4 'Segoe UI', sans-serif;
+}

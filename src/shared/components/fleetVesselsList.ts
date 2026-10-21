@@ -12,6 +12,8 @@ export interface IVessel {
   id: number;
   name: string;
   type: string;
+  /** Size class (MR, LR1, Kamsarmax …) — what the filter buttons are built from. Empty when the list has no Class column or the row leaves it blank. */
+  vesselClass: string;
   dwt?: number;
   built: string;
   shipyard: string;
@@ -22,6 +24,7 @@ interface IVesselListItem {
   Id: number;
   Title?: string;
   VesselType?: string;
+  VesselClass?: string;
   Dwt?: number;
   BuiltYear?: string;
   Shipyard?: string;
@@ -31,6 +34,10 @@ const FLEET_COLUMNS: IColumnDef[] = [
   {
     name: 'VesselType',
     schemaXml: () => '<Field Type="Text" Name="VesselType" StaticName="VesselType" DisplayName="Vessel type" MaxLength="100" />'
+  },
+  {
+    name: 'VesselClass',
+    schemaXml: () => '<Field Type="Text" Name="VesselClass" StaticName="VesselClass" DisplayName="Class" MaxLength="50" />'
   },
   {
     name: 'Dwt',
@@ -47,26 +54,34 @@ const FLEET_COLUMNS: IColumnDef[] = [
   }
 ];
 
-export type FleetListResult = { vessels: IVessel[] } | 'missing' | 'unreadable';
+export type FleetListResult = { vessels: IVessel[]; hasClassColumn: boolean } | 'missing' | 'unreadable';
 
 /** 'missing' = no such list, 'unreadable' = exists but can't be read as expected (e.g. columns not added yet). */
 export async function loadVessels(client: SPHttpClient, siteUrl: string, listTitle: string): Promise<FleetListResult> {
-  const select = 'Id,Title,VesselType,Dwt,BuiltYear,Shipyard';
-  const response = await client.get(`${listItemsUrl(siteUrl, listTitle)}?$select=${select}&$top=500`, SPHttpClient.configurations.v1);
+  const base = 'Id,Title,VesselType,Dwt,BuiltYear,Shipyard';
+  let hasClassColumn = true;
+  let response = await client.get(`${listItemsUrl(siteUrl, listTitle)}?$select=${base},VesselClass&$top=500`, SPHttpClient.configurations.v1);
   if (response.status === 404) {
     return 'missing';
   }
   if (!response.ok) {
-    return 'unreadable';
+    // A list created before the Class column existed: read it without that column.
+    hasClassColumn = false;
+    response = await client.get(`${listItemsUrl(siteUrl, listTitle)}?$select=${base}&$top=500`, SPHttpClient.configurations.v1);
+    if (!response.ok) {
+      return 'unreadable';
+    }
   }
   const data: { value: IVesselListItem[] } = await response.json();
   return {
+    hasClassColumn,
     vessels: (data.value || [])
       .filter(r => !!r.Title && !!r.Title.trim())
       .map(r => ({
         id: r.Id,
         name: (r.Title || '').trim(),
         type: (r.VesselType || '').trim(),
+        vesselClass: (r.VesselClass || '').trim(),
         dwt: typeof r.Dwt === 'number' ? r.Dwt : undefined,
         built: (r.BuiltYear || '').trim(),
         shipyard: (r.Shipyard || '').trim()
@@ -114,4 +129,36 @@ export function sortVessels(vessels: IVessel[], field: VesselSortField, descendi
 /** 209537 -> "209.537" (dot as the thousands separator, as in the reference design). */
 export function formatDwt(value: number): string {
   return String(Math.round(value)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
+
+/** The classes the filter buttons offer: smallest ships first (by their smallest DWT), classes without a size last. */
+export function vesselClasses(vessels: IVessel[]): string[] {
+  const smallest: Record<string, number> = {};
+  vessels.forEach(v => {
+    if (!v.vesselClass) {
+      return;
+    }
+    const dwt = v.dwt === undefined ? Number.MAX_VALUE : v.dwt;
+    smallest[v.vesselClass] = smallest[v.vesselClass] === undefined ? dwt : Math.min(smallest[v.vesselClass], dwt);
+  });
+  return Object.keys(smallest).sort((a, b) => (smallest[a] - smallest[b]) || a.localeCompare(b));
+}
+
+/** 74999 -> "74,999" (comma, as in the reference design's summary line; the rows keep the dot). */
+export function formatDwtComma(value: number): string {
+  return String(Math.round(value)).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+/** "9 TANKERS RANGING FROM 45,750 to 74,999 DWT" */
+export function fleetSummary(vessels: IVessel[], noun: string): string {
+  const label = (noun || 'VESSELS').toUpperCase();
+  const dwts = vessels.map(v => v.dwt).filter((d): d is number => d !== undefined);
+  if (dwts.length === 0) {
+    return `${vessels.length} ${label}`;
+  }
+  const min = Math.min.apply(null, dwts);
+  const max = Math.max.apply(null, dwts);
+  return min === max
+    ? `${vessels.length} ${label} OF ${formatDwtComma(min)} DWT`
+    : `${vessels.length} ${label} RANGING FROM ${formatDwtComma(min)} to ${formatDwtComma(max)} DWT`;
 }

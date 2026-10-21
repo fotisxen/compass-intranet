@@ -6,6 +6,12 @@ import MarketplaceFilters from '../src/webparts/marketplaceFilters/components/Ma
 import MarketplacePost from '../src/webparts/marketplacePost/components/MarketplacePost';
 import MarketplaceInfo from '../src/webparts/marketplaceInfo/components/MarketplaceInfo';
 import MarketplaceListings from '../src/webparts/marketplaceListings/components/MarketplaceListings';
+import BackgroundBox from '../src/webparts/backgroundBox/components/BackgroundBox';
+import SectionHeading from '../src/webparts/sectionHeading/components/SectionHeading';
+import EventsGrid from '../src/webparts/eventsGrid/components/EventsGrid';
+import EventImage from '../src/webparts/eventImage/components/EventImage';
+import EventDetails from '../src/webparts/eventDetails/components/EventDetails';
+import LinkButton from '../src/webparts/linkButton/components/LinkButton';
 import HomePeople from '../src/webparts/homePeople/components/HomePeople';
 import PublicHolidays from '../src/shared/components/PublicHolidays';
 import EventsWidget from '../src/shared/components/EventsWidget';
@@ -62,6 +68,44 @@ const fakeMarketplaceClient = {
   post: async (url: string) => {
     if (url.indexOf('AttachmentFiles/add') !== -1) return { ok: true, status: 200, json: async () => ({}) };
     return { ok: true, status: 201, json: async () => ({ Id: 99 }) };
+  }
+};
+
+// ---- Events: an in-memory stand-in for the site's Events (calendar) list.
+const evPhoto = (c1: string, c2: string): string => 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="' + c1 + '"/><stop offset="1" stop-color="' + c2 + '"/></linearGradient></defs><rect width="800" height="450" fill="url(#g)"/><circle cx="560" cy="120" r="46" fill="#ffffff" opacity=".35"/><rect x="0" y="330" width="800" height="120" fill="#000000" opacity=".25"/></svg>');
+const evRow = (id: number, title: string, startIso: string, endIso: string, allDay: boolean, category: string, location: string, withImage: boolean, about: string) => ({
+  Id: id, Title: title, EventDate: startIso, EndDate: endIso, fAllDayEvent: allDay, Category: category, Location: location, Description: about,
+  BannerUrl: withImage ? JSON.stringify({ serverRelativeUrl: evPhoto(['#1d4d9a', '#0f6b63', '#9b2c52', '#8a5a00'][id % 4], '#082244') }) : null
+});
+const evRows = [
+  evRow(20, 'Summer BBQ (past)', '2026-09-12T10:00:00Z', '2026-09-12T14:00:00Z', false, 'Company', 'Roof terrace', true, ''),
+  evRow(21, 'Quarterly Review (past)', '2026-10-05T08:00:00Z', '2026-10-05T09:00:00Z', false, 'Company', 'Online', false, ''),
+  evRow(1, 'Blood Donation', '2026-10-30T07:00:00Z', '2026-10-30T11:00:00Z', false, 'Volunteering', 'B51 area (2nd floor, SPS kitchen)', true, '<p>Give blood and save lives. No appointment needed.</p>'),
+  evRow(2, 'Safety Drill — Piraeus office', '2026-10-30T09:00:00Z', '2026-10-30T10:00:00Z', false, 'Safety', 'Piraeus office, lobby', true, '<p>Everyone meets at the <b>main lobby</b>.</p>'),
+  evRow(3, 'Quarterly Town Hall', '2026-10-31T08:00:00Z', '2026-10-31T09:30:00Z', false, 'Company', 'Online (Teams)', false, '<p>Results and priorities for Q4.</p>'),
+  evRow(4, 'Beach Clean-up', '2026-11-03T06:00:00Z', '2026-11-03T09:00:00Z', false, 'Volunteering', 'Glyfada beach', true, '<p>Gloves and bags are provided.</p>'),
+  evRow(5, 'Athens Authentic Marathon', '2026-11-06T22:00:00Z', '2026-11-08T21:59:00Z', true, 'Sports', 'Athens', true, '<p>42km & 10km Sunday, 8 November</p><p>5km Saturday, 7 November</p>'),
+  evRow(6, 'Wellbeing Workshop', '2026-11-12T10:00:00Z', '2026-11-12T12:00:00Z', false, 'Wellbeing', 'Meeting room 3', true, '<p>Stress and sleep, with a guest speaker.</p>'),
+  evRow(7, 'Crew Family Day', '2026-11-14T07:00:00Z', '2026-11-14T15:00:00Z', false, 'Company', 'Kifissia', true, '<p>Games and lunch for the families of our seafarers.</p>'),
+  evRow(8, 'Cyber Security Training', '2026-11-18T08:00:00Z', '2026-11-18T09:00:00Z', false, 'Training', 'Online (Teams)', false, '<p>Mandatory for all staff.</p>'),
+  evRow(9, 'Charity Run', '2026-11-22T07:30:00Z', '2026-11-22T10:00:00Z', false, 'Sports', 'Pedion tou Areos', true, '<p>Register with HR.</p>'),
+  evRow(10, 'Christmas Concert', '2026-12-04T17:00:00Z', '2026-12-04T19:00:00Z', false, 'Culture', 'Concert hall', true, '<p>Tickets at reception.</p>'),
+  evRow(11, 'Year-end Dinner', '2026-12-18T18:00:00Z', '2026-12-18T22:00:00Z', false, 'Company', 'To be announced', true, '<p>Details soon.</p>'),
+  evRow(12, 'Office Closed', '2026-12-25T00:00:00Z', '2026-12-25T21:59:00Z', true, 'Holiday', '', false, ''),
+  evRow(13, 'Sustainability Webinar', '2026-12-09T09:00:00Z', '2026-12-09T10:00:00Z', false, 'Training', 'Online (Teams)', true, '<p>Our 2027 targets.</p>'),
+  evRow(14, 'New Year Reception', '2027-01-08T09:00:00Z', '2027-01-08T11:00:00Z', false, 'Company', 'Head office', true, '<p>Welcome back drinks.</p>')
+];
+const fakeEventsListClient = {
+  get: async (url: string) => {
+    const u = decodeURIComponent(url);
+    if (u.indexOf('/fields?') !== -1) return { ok: true, status: 200, json: async () => ({ value: ['Id', 'Title', 'EventDate', 'EndDate', 'Location', 'Description', 'fAllDayEvent', 'Category', 'BannerUrl'].map(n => ({ InternalName: n })) }) };
+    const one = /items\((\d+)\)/.exec(u);
+    if (one) { const row = evRows.find(r => r.Id === Number(one[1])); return row ? { ok: true, status: 200, json: async () => row } : { ok: false, status: 404 }; }
+    if (u.indexOf('/items?') !== -1) {
+      const top = /\$top=(\d+)/.exec(u); const rows = u.indexOf('$filter') !== -1 ? evRows.filter(r => new Date(r.EventDate).getTime() >= new Date(new Date().setHours(0, 0, 0, 0)).getTime()) : evRows;
+      return { ok: true, status: 200, json: async () => ({ value: rows.slice(0, top ? Number(top[1]) : 100) }) };
+    }
+    return { ok: false, status: 404 };
   }
 };
 const samplePhoto = (i: number): string => 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="90" height="90"><rect width="90" height="90" fill="' + (i ? '#c2410c' : '#0f766e') + '"/><circle cx="45" cy="36" r="17" fill="#fde68a"/><rect x="16" y="58" width="58" height="40" rx="20" fill="#fde68a"/></svg>');
@@ -212,12 +256,12 @@ ReactDom.render(React.createElement(StatFeature, {
 // adds entries, to see the dynamic menu react; without it, no client is passed
 // and the header shows the built-in menu, as before.
 const fleetSample = [
-  ['Goliath', 'Newcastlemax', 209537, '2015', 'NACKS China'], ['Gargantua', 'Newcastlemax', 209529, '2015', 'NACKS China'],
-  ['Star Gina 2GR', 'Newcastlemax', 209475, '2016', 'NACKS China'], ['Maharaj', 'Newcastlemax', 209472, '2015', 'NACKS China'],
-  ['Star Leo', 'Newcastlemax', 207939, '2018', 'SWS China'], ['Star Laetitia', 'Newcastlemax', 207896, '2017', 'SWS, China'],
-  ['Star Ariadne', 'Newcastlemax', 207812, '2017', 'SWS China'], ['Star Virgo', 'Newcastlemax', 207810, '2017', 'SWS China'],
-  ['Star Libra', 'Newcastlemax', 207765, '2016', 'SWS China']
-].map((v, i) => ({ Id: i + 1, Title: v[0], VesselType: v[1], Dwt: v[2], BuiltYear: v[3], Shipyard: v[4] }));
+  ['Okyroe', 'Oil Tanker', 74999, '2004', 'Hyundai Heavy Industries', 'LR1'], ['Res Cogitans', 'Oil Tanker', 74999, '2004', 'Hyundai Heavy Industries', 'LR1'],
+  ['Orwell', 'Oil / Chemical Tanker', 51745, '2010', 'Hyunday Mipo Dockyard - Ulsan South Korea', 'MR'], ['Jane', 'Oil / Chemical Tanker IMO III', 51505, '2008', 'STX Ship Building Co LTD', 'MR'],
+  ['Janine K.', 'Oil Tanker', 48045, '2009', 'Japan', 'MR'], ['Joyce', 'Oil Tanker', 47344, '2007', 'Onomichi Dockyard CO LTD', 'MR'],
+  ['Evgenia S.', 'Oil / Chemical Tanker IMO III', 46609, '2008', 'South Korea', 'MR'], ['Yume', 'Oil Tanker', 45994, '2010', 'Shin Kurushima Japan', 'MR'],
+  ['Twinkle Star', 'Oil Tanker', 45750, '2006', 'Minaminippon Shipbuilding CO. LTD', 'MR']
+].map((v, i) => ({ Id: i + 1, Title: v[0], VesselType: v[1], Dwt: v[2], BuiltYear: v[3], Shipyard: v[4], VesselClass: v[5] }));
 const navRows = [
   { Id: 1, Title: 'Fleet', NavUrl: '/fleet', SortOrder: 10, DropdownColumn: 1, ShowInMenu: true },
   { Id: 2, Title: 'Safety', NavUrl: '', SortOrder: 20, DropdownColumn: 1, ShowInMenu: true },
@@ -228,6 +272,9 @@ const navRows = [
 const fakeListClient = {
   get: async (url: string) => {
     if (url.indexOf('Compass%20Fleet') !== -1 || url.indexOf('Compass Fleet') !== -1) {
+      if (url.indexOf('VesselClass') !== -1 && new URLSearchParams(window.location.search).get('noClass') === '1') {
+        return { ok: false, status: 400, json: async () => ({}) };
+      }
       return { ok: true, status: 200, json: async () => ({ value: fleetSample }) };
     }
     if (url.indexOf('Compass%20Navigation') !== -1 || url.indexOf('Compass Navigation') !== -1) {
@@ -249,7 +296,7 @@ const fakeEventsClient = {
 };
 const useFakeEvents = new URLSearchParams(window.location.search).get('events') === '1';
 const useFakeNav = new URLSearchParams(window.location.search).get('navList') === '1';
-ReactDom.render(React.createElement(FleetTable, { spHttpClient: fakeListClient as never, siteUrl: 'https://example.sharepoint.com/sites/demo', sortBy: 'dwt', sortDescending: true, maxRows: 0, canManageLists: true }), newRoot());
+ReactDom.render(React.createElement(FleetTable, { spHttpClient: fakeListClient as never, siteUrl: 'https://example.sharepoint.com/sites/demo', sortBy: 'dwt', sortDescending: true, maxRows: 0, showFilters: true, showSummary: true, summaryNoun: 'TANKERS', canManageLists: true }), newRoot());
 
 ReactDom.render(React.createElement(ChromeRoot, useFakeNav
   ? { chatApiUrl: '', spHttpClient: fakeListClient as never, siteUrl: 'https://example.sharepoint.com/sites/demo' }
@@ -309,6 +356,23 @@ ReactDom.render(
   }),
   document.getElementById('root')
 );
+// events.html / event.html only: the five Events web parts
+const evSite = 'https://example.sharepoint.com/sites/demo';
+const evList = 'dd3316a0-3bc0-4d4c-acff-71851299dad7';
+const evAt = (id: string): HTMLElement | null => document.getElementById(id);
+const evRoot = (id: string, el: React.ReactElement): void => { const r = evAt(id); if (r) { ReactDom.render(el, r); } };
+evRoot('ev-heading-root', React.createElement(SectionHeading, { title: 'Coming up', linkText: 'See all', linkUrl: '/sites/demo/SitePages/Events.aspx', showArrow: true, newTab: false, titleSize: 24, isEditMode: false }));
+evRoot('ev-grid-root', React.createElement(EventsGrid, { spHttpClient: fakeEventsListClient as never, siteUrl: evSite, listRef: evList, eventPageUrl: '/event.html', maxEvents: 48, emptyText: 'No upcoming events.' }));
+evRoot('ev-image-root', React.createElement(EventImage, { spHttpClient: fakeEventsListClient as never, siteUrl: evSite, listRef: evList, aspectRatio: '5 / 3', radius: 0, isEditMode: false }));
+evRoot('ev-details-root', React.createElement(EventDetails, { spHttpClient: fakeEventsListClient as never, siteUrl: evSite, listRef: evList, showTitle: true, titleSize: 40, showWhen: true, showTimezone: true, showCategory: true, showLocation: true, showAbout: true, isEditMode: false }));
+evRoot('ev-button-root', React.createElement(LinkButton, { label: 'See All Events', url: '/events.html', showArrow: true, newTab: false, color: '#A5192D', textColor: '#FFFFFF', align: 'left', spaceAbove: 40 }));
+
+// box.html only: two sample Background Box web parts
+const boxDefaults = { widthMode: 'column' as const, widthValue: 600, widthUnit: 'px' as const, align: 'left' as const, heightValue: 240, heightUnit: 'px' as const, color: '#082244', useGradient: false, colorEnd: '#123963', gradientAngle: 135, opacity: 100, radius: 30, perCorner: false, radiusTopLeft: 30, radiusTopRight: 30, radiusBottomRight: 30, radiusBottomLeft: 30, borderWidth: 0, borderColor: '#082244', shadow: false, pullUp: 0, isEditMode: false };
+const boxA = document.getElementById('box-a-root');
+if (boxA) { ReactDom.render(React.createElement(BackgroundBox, { ...boxDefaults, widthMode: 'full', useGradient: true, radius: 0, heightValue: 220, pullUp: 120 }), boxA); }
+const boxB = document.getElementById('box-b-root');
+if (boxB) { ReactDom.render(React.createElement(BackgroundBox, { ...boxDefaults, widthMode: 'custom', widthValue: 60, widthUnit: '%', align: 'center', color: '#C7D7E6', perCorner: true, radiusTopLeft: 80, radiusTopRight: 10, radiusBottomRight: 80, radiusBottomLeft: 10, shadow: true, borderWidth: 3, borderColor: '#082244', heightValue: 160 }), boxB); }
 const mpSite = 'https://example.sharepoint.com/sites/demo';
 ReactDom.render(React.createElement(MarketplaceFilters, { spHttpClient: fakeMarketplaceClient as never, siteUrl: mpSite, canManageLists: true }), document.getElementById('mp-filters-root'));
 ReactDom.render(React.createElement(MarketplacePost, { spHttpClient: fakeMarketplaceClient as never, siteUrl: mpSite, canManageLists: true, eyebrow: 'SELL · GIVE · SWAP', heading: "Got something you don't need anymore? Post it in under a minute.", buttonLabel: 'Post an item', maxPhotos: 5 }), document.getElementById('mp-post-root'));

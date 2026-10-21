@@ -1,0 +1,75 @@
+$navy: #082244;
+
+.page {
+  font-family: 'Inter', sans-serif;
+  color: $navy;
+  font-size: clamp(14px, 1.38889vw, 20px);
+  // Cancels the 16px padding SharePoint puts around web parts.
+  margin: -16px;
+}
+
+.title {
+  margin: 0 0 1em;
+  font-weight: 700;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+// A label column and a value column, like a small table.
+.rows {
+  display: grid;
+  grid-template-columns: 6em minmax(0, 1fr);
+  column-gap: 1.2em;
+  row-gap: 1.1em;
+}
+
+.label {
+  font-size: 0.7em;
+  font-weight: 700;
+}
+
+.value {
+  font-size: 0.7em;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.line {
+  display: block;
+}
+
+.lineGap {
+  margin-top: 0.6em;
+}
+
+.about {
+  p {
+    margin: 0 0 0.6em;
+  }
+
+  a {
+    color: $navy;
+  }
+}
+
+.hint {
+  display: inline-block;
+  margin: 0 0 8px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: #fff4ce;
+  color: #323130;
+  font: 12px/1.4 'Segoe UI', sans-serif;
+}
+
+// Phone: the labels sit above their values.
+@media (max-width: 480px) {
+  .rows {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 0.2em;
+  }
+
+  .value {
+    margin-bottom: 0.9em;
+  }
+}

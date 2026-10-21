@@ -1,0 +1,35 @@
+.page {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(14px, 1.38889vw, 20px);
+  // Cancels the 16px padding SharePoint puts around web parts.
+  margin: -16px;
+  display: flex;
+}
+
+.left {
+  justify-content: flex-start;
+}
+
+.center {
+  justify-content: center;
+}
+
+.right {
+  justify-content: flex-end;
+}
+
+.button {
+  display: inline-block;
+  padding: 0.55em 1.7em;
+  border-radius: 999px;
+  font-size: 0.7em;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: filter 0.15s ease;
+
+  &:hover {
+    filter: brightness(1.12);
+    text-decoration: none;
+  }
+}

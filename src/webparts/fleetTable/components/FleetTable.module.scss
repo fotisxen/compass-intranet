@@ -1,3 +1,62 @@
+// Filter buttons, summary line and the list below them.
+.wrap {
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(14px, 1.38889vw, 20px);
+  color: #0b1b33;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6em;
+  margin-bottom: 0.9em;
+}
+
+.filter {
+  min-width: 7em;
+  padding: 0.45em 1.2em;
+  border: 1px solid #0a2342;
+  border-radius: 0.5em;
+  background: #ffffff;
+  color: #0a2342;
+  font-family: inherit;
+  font-size: 0.7em;
+  font-weight: 500;
+  cursor: pointer;
+
+  &:hover {
+    background: #eef2f8;
+  }
+}
+
+.filterActive,
+.filterActive:hover {
+  background: #0a2342;
+  color: #ffffff;
+}
+
+.summary {
+  background: #ffffff;
+  padding: 1.1em 1em;
+  text-align: center;
+  font-size: 0.75em;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: #0a2342;
+  text-transform: uppercase;
+}
+
+.ownerHint {
+  margin-bottom: 0.9em;
+  padding: 0.6em 0.9em;
+  border: 1px dashed #7a8ba5;
+  border-radius: 8px;
+  background: #f5f7fb;
+  font-size: 0.65em;
+  color: #3d4a5c;
+}
+
 // Striped fleet list: ship icon, vessel name, type, DWT, built year, shipyard.
 .table {
   width: 100%;

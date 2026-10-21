@@ -4,9 +4,11 @@ import styles from './FleetTable.module.scss';
 import {
   FLEET_LIST_TITLE,
   ensureFleetList,
+  fleetSummary,
   formatDwt,
   loadVessels,
   sortVessels,
+  vesselClasses,
   type IVessel,
   type VesselSortField
 } from '../../../shared/components/fleetVesselsList';
@@ -19,6 +21,12 @@ export interface IFleetTableProps {
   sortDescending: boolean;
   /** 0 = show every vessel. */
   maxRows: number;
+  /** The row of filter buttons (All Types + one per Class). */
+  showFilters: boolean;
+  /** The "9 TANKERS RANGING FROM … DWT" line above the rows. */
+  showSummary: boolean;
+  /** Plural name used in the summary line, e.g. TANKERS. */
+  summaryNoun: string;
   /** Whether the signed-in user can create lists — only then is the "create the list" button offered. */
   canManageLists: boolean;
 }
@@ -28,6 +36,10 @@ type Status = 'loading' | 'ready' | 'missing' | 'unreadable';
 export interface IFleetTableState {
   status: Status;
   vessels: IVessel[];
+  /** Whether the list has the Class column the filter buttons need. */
+  hasClassColumn: boolean;
+  /** The class chosen with the filter buttons; empty = All Types. */
+  selectedClass: string;
   listUrl?: string;
   busy: boolean;
   error?: string;
@@ -54,7 +66,7 @@ function ShipIcon(): React.ReactElement {
 export default class FleetTable extends React.Component<IFleetTableProps, IFleetTableState> {
   constructor(props: IFleetTableProps) {
     super(props);
-    this.state = { status: 'loading', vessels: [], busy: false };
+    this.state = { status: 'loading', vessels: [], hasClassColumn: true, selectedClass: '', busy: false };
   }
 
   public componentDidMount(): void {
@@ -79,7 +91,7 @@ export default class FleetTable extends React.Component<IFleetTableProps, IFleet
       this.setState({ status: result });
       return;
     }
-    this.setState({ status: 'ready', vessels: result.vessels });
+    this.setState({ status: 'ready', vessels: result.vessels, hasClassColumn: result.hasClassColumn, selectedClass: '' });
   }
 
   private _createList = (): void => {
@@ -93,9 +105,20 @@ export default class FleetTable extends React.Component<IFleetTableProps, IFleet
       .catch((err: Error) => this.setState({ busy: false, error: err.message }));
   };
 
+  private _addClassColumn = (): void => {
+    const { spHttpClient, siteUrl } = this.props;
+    this.setState({ busy: true, error: undefined });
+    ensureFleetList(spHttpClient, siteUrl, this._listTitle)
+      .then(() => {
+        this.setState({ busy: false });
+        return this._load();
+      })
+      .catch((err: Error) => this.setState({ busy: false, error: err.message }));
+  };
+
   public render(): React.ReactElement {
-    const { status, vessels, busy, error, listUrl } = this.state;
-    const { sortBy, sortDescending, maxRows, canManageLists } = this.props;
+    const { status, vessels, busy, error, listUrl, hasClassColumn, selectedClass } = this.state;
+    const { sortBy, sortDescending, maxRows, canManageLists, showFilters, showSummary, summaryNoun } = this.props;
 
     if (status === 'loading') {
       return <div className={styles.table} aria-busy="true" />;
@@ -136,10 +159,41 @@ export default class FleetTable extends React.Component<IFleetTableProps, IFleet
       ) : <></>;
     }
 
-    const sorted = sortVessels(vessels, sortBy, sortDescending);
+    // The filter buttons, then the summary and the rows of whatever they select.
+    const classes = showFilters ? vesselClasses(vessels) : [];
+    const active = classes.indexOf(selectedClass) !== -1 ? selectedClass : '';
+    const shown = active ? vessels.filter(v => v.vesselClass === active) : vessels;
+    const sorted = sortVessels(shown, sortBy, sortDescending);
     const rows = maxRows > 0 ? sorted.slice(0, maxRows) : sorted;
 
     return (
+      <div className={styles.wrap}>
+        {classes.length > 0 && (
+          <div className={styles.filters} role="group" aria-label="Filter by type">
+            {['', ...classes].map(c => (
+              <button
+                key={c || 'all'}
+                type="button"
+                className={`${styles.filter} ${c === active ? styles.filterActive : ''}`}
+                aria-pressed={c === active}
+                onClick={() => this.setState({ selectedClass: c })}
+              >
+                {c || 'All Types'}
+              </button>
+            ))}
+          </div>
+        )}
+        {showFilters && canManageLists && !hasClassColumn && (
+          <div className={styles.ownerHint}>
+            The fleet list has no &quot;Class&quot; column yet, so the filter buttons cannot show.{' '}
+            <button type="button" className={styles.noticeButton} onClick={this._addClassColumn} disabled={busy}>{busy ? 'Adding…' : 'Add the Class column'}</button>
+            {error && <span className={styles.noticeError}> {error}</span>}
+          </div>
+        )}
+        {showFilters && canManageLists && hasClassColumn && classes.length === 0 && (
+          <div className={styles.ownerHint}>Fill in the &quot;Class&quot; column of the vessels (e.g. MR, LR1) and the filter buttons appear here.</div>
+        )}
+        {showSummary && rows.length > 0 && <div className={styles.summary}>{fleetSummary(shown, summaryNoun)}</div>}
       <div className={styles.table} role="table" aria-label="Fleet">
         {rows.map(v => (
           <div className={styles.row} role="row" key={v.id}>
@@ -151,6 +205,7 @@ export default class FleetTable extends React.Component<IFleetTableProps, IFleet
             <div className={styles.cell} role="cell">{v.shipyard ? `Shipyard: ${v.shipyard}` : ''}</div>
           </div>
         ))}
+      </div>
       </div>
     );
   }

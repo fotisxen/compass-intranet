@@ -58,6 +58,54 @@
         }
       ]
     },
+    "background-box-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/backgroundBox/BackgroundBoxWebPart.js",
+          "manifest": "./src/webparts/backgroundBox/BackgroundBoxWebPart.manifest.json"
+        }
+      ]
+    },
+    "section-heading-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/sectionHeading/SectionHeadingWebPart.js",
+          "manifest": "./src/webparts/sectionHeading/SectionHeadingWebPart.manifest.json"
+        }
+      ]
+    },
+    "events-grid-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/eventsGrid/EventsGridWebPart.js",
+          "manifest": "./src/webparts/eventsGrid/EventsGridWebPart.manifest.json"
+        }
+      ]
+    },
+    "event-image-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/eventImage/EventImageWebPart.js",
+          "manifest": "./src/webparts/eventImage/EventImageWebPart.manifest.json"
+        }
+      ]
+    },
+    "event-details-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/eventDetails/EventDetailsWebPart.js",
+          "manifest": "./src/webparts/eventDetails/EventDetailsWebPart.manifest.json"
+        }
+      ]
+    },
+    "link-button-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/linkButton/LinkButtonWebPart.js",
+          "manifest": "./src/webparts/linkButton/LinkButtonWebPart.manifest.json"
+        }
+      ]
+    },
     "news-web-part": {
       "components": [
         {

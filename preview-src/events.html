@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Events — preview</title>
+<style>
+  :root {
+    --bodyText: #323130;
+    --bodyBackground: #ffffff;
+    --link: #03787c;
+    --linkHovered: #014446;
+  }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+  }
+  /* Preview harness only: the map and the news cards are separate SharePoint
+     sections on the real page, but here they stack tight and the cards'
+     negative margin covers the map's bottom edge. Not part of the package. */
+  #root { padding-top: 40px; }
+  /* Harness only: what SharePoint does on narrow screens — the page gets its
+     16px side padding (which every web part's -16px margin cancels), two-column
+     sections keep two equal columns on a tablet and stack on a phone. */
+  @media (max-width: 1279px) {
+    body { padding: 0 16px; box-sizing: border-box; }
+    #fleet-map-root > div { gap: 0 !important; }
+    #fleet-map-root .zone { flex: 1 1 0 !important; min-width: 0; padding: 16px; box-sizing: border-box; }
+  }
+  @media (max-width: 600px) {
+    #fleet-map-root > div { flex-direction: column !important; }
+  }
+</style>
+<link rel="stylesheet" href="dist/bundle.css" />
+</head>
+<body>
+<style>
+  /* Phones and tablets have overlay scrollbars; hide this one so the width is the full device width. */
+  html { scrollbar-width: none; }
+  html::-webkit-scrollbar { display: none; }
+  /* SharePoint wraps every web part in a 16px zone padding, which each web part's own -16px margin cancels; give every root the same wrapper so the sizes match the real page. */
+  #root, #people-root { padding: 16px !important; box-sizing: border-box; }
+  #chrome-bottom { padding: 0 16px 16px !important; box-sizing: border-box; }
+</style>
+<!-- Everything the bundle renders into but this page does not show. -->
+<div hidden>
+  <div id="chrome-top"></div><div id="holidays-root"></div>
+  <div id="mp-filters-root"></div><div id="mp-post-root"></div><div id="mp-info-root"></div><div id="mp-listings-root"></div>
+  <div id="news-grid-root"></div>
+</div>
+<div style="max-width: 1280px; margin: 0 auto; padding: 24px 32px">
+<div style="padding: 16px"><div id="ev-heading-root"></div></div>
+<div style="padding: 16px"><div id="ev-grid-root"></div></div>
+</div>
+<div hidden><div id="root"></div><div id="fleet-map-root"></div><div id="people-root"></div><div id="chrome-bottom"></div></div>
+<script>
+  // ?pad=68 gives the page a 68px side margin (the tablet design); ?pad=52 the phone design.
+  var pad = new URLSearchParams(location.search).get('pad');
+  if (pad) { document.body.style.padding = '0 ' + pad + 'px'; }
+  // the footer is a full-width section: it runs to the edges of the screen, past the page's side margin
+  if (pad) { window.addEventListener('DOMContentLoaded', function () { var b = document.getElementById('chrome-bottom'); b.style.setProperty('margin', '0 -' + pad + 'px', 'important'); b.style.setProperty('padding', '0 16px 16px', 'important'); }); }
+  // ?header=1 shows the Compass menu bar above the page (it is hidden by default, like in the mock-ups).
+  if (new URLSearchParams(location.search).get('header')) {
+    window.addEventListener('DOMContentLoaded', function () {
+      var top = document.getElementById('chrome-top');
+      document.body.insertBefore(top, document.body.firstChild);
+      // the header spans the whole device width, so it ignores the page's side margin
+      top.style.margin = '0 -' + (pad || 0) + 'px';
+    });
+  }
+</script>
+<script src="dist/bundle.js"></script>
+</body>
+</html>

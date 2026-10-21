@@ -1,0 +1,22 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+  "id": "43b9868e-b93f-4794-ac1a-b3b3b77c9fa9",
+  "alias": "EventsGridWebPart",
+  "componentType": "WebPart",
+
+  "version": "*",
+  "manifestVersion": 2,
+
+  "requiresCustomScript": false,
+  "supportedHosts": ["SharePointWebPart", "TeamsPersonalApp", "TeamsTab", "SharePointFullPage"],
+  "supportsThemeVariants": true,
+
+  "preconfiguredEntries": [{
+    "groupId": "5c03119e-3074-46fd-976b-c60198311f70", // Advanced
+    "group": { "default": "Advanced" },
+    "title": { "default": "Compass Events Grid" },
+    "description": { "default": "Events from today onwards from the site's Events list as cards grouped by month (image, category, title, date, place, Add to calendar). A click opens the event's own page." },
+    "officeFabricIconFontName": "Calendar",
+    "properties": {}
+  }]
+}

@@ -21,6 +21,9 @@ export interface IFleetTableWebPartProps {
   sortBy?: VesselSortField;
   sortDescending?: boolean;
   maxRows?: number;
+  showFilters?: boolean;
+  showSummary?: boolean;
+  summaryNoun?: string;
 }
 
 export default class FleetTableWebPart extends BaseClientSideWebPart<IFleetTableWebPartProps> {
@@ -30,6 +33,9 @@ export default class FleetTableWebPart extends BaseClientSideWebPart<IFleetTable
     this.properties.sortBy = this.properties.sortBy ?? 'dwt';
     this.properties.sortDescending = this.properties.sortDescending ?? true;
     this.properties.maxRows = this.properties.maxRows ?? 0;
+    this.properties.showFilters = this.properties.showFilters ?? true;
+    this.properties.showSummary = this.properties.showSummary ?? true;
+    this.properties.summaryNoun = this.properties.summaryNoun ?? 'VESSELS';
     return super.onInit();
   }
 
@@ -41,6 +47,9 @@ export default class FleetTableWebPart extends BaseClientSideWebPart<IFleetTable
       sortBy: this.properties.sortBy || 'dwt',
       sortDescending: this.properties.sortDescending !== false,
       maxRows: this.properties.maxRows || 0,
+      showFilters: this.properties.showFilters !== false,
+      showSummary: this.properties.showSummary !== false,
+      summaryNoun: this.properties.summaryNoun || 'VESSELS',
       canManageLists: this.context.pageContext.web.permissions.hasPermission(SPPermission.manageLists)
     });
     ReactDom.render(element, this.domElement);
@@ -84,6 +93,13 @@ export default class FleetTableWebPart extends BaseClientSideWebPart<IFleetTable
             }),
             PropertyPaneToggle('sortDescending', { label: strings.SortDescendingFieldLabel }),
             PropertyPaneSlider('maxRows', { label: strings.MaxRowsFieldLabel, min: 0, max: 100, step: 1, showValue: true })
+          ]
+        }, {
+          groupName: 'Filters and summary',
+          groupFields: [
+            PropertyPaneToggle('showFilters', { label: 'Filter buttons (All Types, MR, LR1 …) from the list\'s Class column', onText: 'Show', offText: 'Hide' }),
+            PropertyPaneToggle('showSummary', { label: 'Summary line ("9 TANKERS RANGING FROM … DWT")', onText: 'Show', offText: 'Hide' }),
+            PropertyPaneTextField('summaryNoun', { label: 'Name of the vessels in the summary (plural)', description: 'e.g. TANKERS, BULKERS, VESSELS' })
           ]
         }]
       }]

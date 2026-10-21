@@ -15,21 +15,16 @@
   max-width: 100%;
 }
 
-// 3 columns of one news card each. The first card is the large one (same
-// width as the others, as tall as two rows plus the gap between them); the
-// rest fill the grid left to right, row by row, in the order they arrive.
+// 3 columns of one news card each, all the same size, filled left to right,
+// row by row, in the order they arrive (up to 9: three rows of three).
 .grid {
   display: grid;
   grid-template-columns: repeat(3, var(--compass-card-w));
   gap: var(--compass-gap);
   align-items: stretch;
-
-  > :first-child {
-    grid-row: span 2;
-  }
 }
 
-// Tablet: two cards per row; phone: one. The large card is just another card.
+// Tablet: two cards per row; phone: one.
 @media (max-width: 1279px) {
   .wrap {
     width: 100%;
@@ -38,10 +33,6 @@
   .grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
-
-    > :first-child {
-      grid-row: auto;
-    }
   }
 }
 

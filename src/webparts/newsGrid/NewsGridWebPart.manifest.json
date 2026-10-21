@@ -15,7 +15,7 @@
     "groupId": "5c03119e-3074-46fd-976b-c60198311f70", // Advanced
     "group": { "default": "Advanced" },
     "title": { "default": "Compass News Grid" },
-    "description": { "default": "Up to 8 news cards: one large card next to a grid of smaller ones, newest first. Pinned pages stay in place, the others rotate automatically." },
+    "description": { "default": "Up to 9 news cards of the same size in a grid of 3 columns, newest first. Pinned pages stay in place, the others rotate automatically." },
     "officeFabricIconFontName": "GridViewMedium",
     "properties": {}
   }]

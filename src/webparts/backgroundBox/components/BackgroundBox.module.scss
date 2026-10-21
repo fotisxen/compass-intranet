@@ -1,0 +1,18 @@
+// Deliberately not positioned (no position/z-index): content placed after it
+// in the page then paints on top of it, which is what lets it work as a background.
+.box {
+  display: block;
+  box-sizing: border-box;
+  max-width: none;
+}
+
+// Shown only while editing, so an otherwise empty box can still be found.
+.hint {
+  display: inline-block;
+  margin: 8px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.85);
+  color: #323130;
+  font: 12px/1.4 'Segoe UI', sans-serif;
+}
