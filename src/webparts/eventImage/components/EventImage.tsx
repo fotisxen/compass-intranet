@@ -26,7 +26,7 @@ export default function EventImage(props: IEventImageProps): React.ReactElement 
     <div className={styles.page}>
       <div className={styles.frame} style={{ aspectRatio: props.aspectRatio, borderRadius: props.radius }}>
         {event && event.imageUrl && <img src={event.imageUrl} alt={event.title} />}
-        {props.isEditMode && state.status === 'ready' && state.preview && <span className={styles.hint}>Event image — showing the next event; the real page uses ?id=</span>}
+        {props.isEditMode && state.status === 'ready' && state.preview && <span className={styles.hint}>Event image — showing the next event; the real page uses ?eventId=</span>}
       </div>
     </div>
   );

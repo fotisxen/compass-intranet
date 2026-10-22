@@ -10,9 +10,12 @@
 }
 
 .wrap {
-  // Just wide enough for its 3 cards, so it lines up with the other 3-card rows.
+  // Just wide enough for its 3 cards.
   width: fit-content;
   max-width: 100%;
+  // Centred in its section when that is wider than the 3 cards.
+  margin-left: auto;
+  margin-right: auto;
 }
 
 // 3 columns of one news card each, all the same size, filled left to right,

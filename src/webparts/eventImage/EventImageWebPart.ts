@@ -45,7 +45,7 @@ export default class EventImageWebPart extends BaseClientSideWebPart<IEventImage
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
     return {
       pages: [{
-        header: { description: 'Shows the image of the event in the page address (?id=). While editing, it shows the next upcoming event.' },
+        header: { description: 'Shows the image of the event in the page address (?eventId=). While editing, it shows the next upcoming event.' },
         groups: [{
           groupName: 'Image',
           groupFields: [

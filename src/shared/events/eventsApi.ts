@@ -148,17 +148,17 @@ export async function loadNextEvent(client: SPHttpClient, siteUrl: string, listR
   return events[0];
 }
 
-/** The id a detail page was opened with: …/Event.aspx?id=12 (or ItemId=12, as SharePoint's own page uses). */
+/** The id a detail page was opened with: …/Event.aspx?eventId=12 (id= and ItemId= also work; SharePoint reserves id= on its own pages, so links use eventId). */
 export function eventIdFromUrl(search: string = window.location.search): number | undefined {
   const params = new URLSearchParams(search);
-  const raw = params.get('id') || params.get('ItemId') || params.get('itemid');
+  const raw = params.get('eventId') || params.get('id') || params.get('ItemId') || params.get('itemid');
   const id = raw ? parseInt(raw, 10) : NaN;
   return isNaN(id) ? undefined : id;
 }
 
 /** Link to the detail page for an event. */
 export function eventUrl(pageUrl: string, id: number): string {
-  return `${pageUrl}${pageUrl.indexOf('?') === -1 ? '?' : '&'}id=${id}`;
+  return `${pageUrl}${pageUrl.indexOf('?') === -1 ? '?' : '&'}eventId=${id}`;
 }
 
 // ---------------------------------------------------------------- formatting

@@ -16,6 +16,7 @@ export interface IEventDetailsWebPartProps {
   showCategory?: boolean;
   showLocation?: boolean;
   showAbout?: boolean;
+  spaceLeft?: number;
 }
 
 export default class EventDetailsWebPart extends BaseClientSideWebPart<IEventDetailsWebPartProps> {
@@ -30,6 +31,7 @@ export default class EventDetailsWebPart extends BaseClientSideWebPart<IEventDet
     p.showCategory = p.showCategory ?? true;
     p.showLocation = p.showLocation ?? true;
     p.showAbout = p.showAbout ?? true;
+    p.spaceLeft = p.spaceLeft ?? 32;
     return super.onInit();
   }
 
@@ -46,6 +48,7 @@ export default class EventDetailsWebPart extends BaseClientSideWebPart<IEventDet
       showCategory: p.showCategory !== false,
       showLocation: p.showLocation !== false,
       showAbout: p.showAbout !== false,
+      spaceLeft: p.spaceLeft ?? 32,
       isEditMode: this.displayMode === DisplayMode.Edit
     });
     ReactDom.render(element, this.domElement);
@@ -62,8 +65,12 @@ export default class EventDetailsWebPart extends BaseClientSideWebPart<IEventDet
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
     return {
       pages: [{
-        header: { description: 'Shows the event in the page address (?id=). While editing, it shows the next upcoming event.' },
+        header: { description: 'Shows the event in the page address (?eventId=). While editing, it shows the next upcoming event.' },
         groups: [
+          {
+            groupName: 'Layout',
+            groupFields: [PropertyPaneSlider('spaceLeft', { label: 'Space on the left, between this and the image next to it (px)', min: 0, max: 200, step: 4, value: this.properties.spaceLeft ?? 32 })]
+          },
           {
             groupName: 'Events list',
             groupFields: [PropertyPaneTextField('listRef', { label: 'Events list (name or id)' })]

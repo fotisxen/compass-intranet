@@ -8,8 +8,8 @@ export type EventState =
   | { status: 'ready'; event: IEventItem; preview: boolean };
 
 /**
- * The event a detail page was opened for (?id=…). While editing a page that has
- * no ?id= yet it shows the next upcoming event instead, so the author can see
+ * The event a detail page was opened for (?eventId=…). While editing a page that has
+ * no ?eventId= yet it shows the next upcoming event instead, so the author can see
  * the web part; a visitor without an id simply sees nothing.
  */
 export function useEvent(client: SPHttpClient, siteUrl: string, listRef: string, isEditMode: boolean): EventState {
