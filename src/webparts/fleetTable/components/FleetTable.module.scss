@@ -7,38 +7,71 @@
 }
 
 .filters {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(var(--fleet-columns, 6), minmax(0, 1fr));
+  gap: 0.6em;
+  margin-bottom: 1.2em;
+}
+
+// One ship picture per class with its count underneath, same column widths as the filter buttons.
+.classCards {
+  display: grid;
+  grid-template-columns: repeat(var(--fleet-columns, 6), minmax(0, 1fr));
   gap: 0.6em;
   margin-bottom: 0.9em;
 }
 
+.classCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+
+.classShip {
+  display: block;
+  width: 72%;
+  height: auto;
+  margin-bottom: 0.5em;
+}
+
+.classCount {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.7em 0.4em;
+  background: #0b1f3d;
+  color: #ffffff;
+  text-align: center;
+  font-size: 0.7em;
+  overflow-wrap: anywhere;
+}
+
 .filter {
-  min-width: 7em;
-  padding: 0.45em 1.2em;
-  border: 1px solid #0a2342;
-  border-radius: 0.5em;
-  background: #ffffff;
-  color: #0a2342;
+  min-width: 0;
+  padding: 0.7em 0.4em;
+  border: none;
+  border-radius: 0;
+  background: #0b1f3d;
+  color: #ffffff;
   font-family: inherit;
   font-size: 0.7em;
   font-weight: 500;
   cursor: pointer;
 
   &:hover {
-    background: #eef2f8;
+    background: #17305a;
   }
 }
 
 .filterActive,
 .filterActive:hover {
-  background: #0a2342;
+  background: #3b74e8;
   color: #ffffff;
 }
 
 .summary {
   background: #ffffff;
-  padding: 1.1em 1em;
+  padding: 1.1em 1em 1.6em;
   text-align: center;
   font-size: 0.75em;
   font-weight: 600;
@@ -71,11 +104,11 @@
 .row {
   display: grid;
   // icon | name | type | DWT | built | shipyard
-  grid-template-columns: 6em 1.9fr 1.3fr 1.2fr 1fr 1.7fr;
+  grid-template-columns: 0.6fr 1.5fr 1fr 0.9fr 0.8fr 1.2fr;
   align-items: center;
   column-gap: 1em;
-  min-height: 3.3em;
-  padding: 0.5em 0;
+  min-height: 2.6em;
+  padding: 0.35em 0;
   box-sizing: border-box;
   border-bottom: 1px solid #d5d8dc;
   background: #f5f7fb;
@@ -87,13 +120,13 @@
 
 .shipIcon {
   display: block;
-  width: 4.6em;
+  width: 2.2em;
   height: auto;
   color: #0a2342;
 }
 
 .cellIcon {
-  padding-left: 0.7em;
+  padding-left: 0.5em;
 }
 
 .cellName,
@@ -119,6 +152,11 @@
 }
 
 @media (max-width: 760px) {
+  .filters,
+  .classCards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .row {
     grid-template-columns: 4.5em 1fr 1fr;
     row-gap: 0.25em;

@@ -23,6 +23,7 @@ export interface IFleetTableWebPartProps {
   maxRows?: number;
   showFilters?: boolean;
   showSummary?: boolean;
+  showClassCards?: boolean;
   summaryNoun?: string;
 }
 
@@ -35,6 +36,7 @@ export default class FleetTableWebPart extends BaseClientSideWebPart<IFleetTable
     this.properties.maxRows = this.properties.maxRows ?? 0;
     this.properties.showFilters = this.properties.showFilters ?? true;
     this.properties.showSummary = this.properties.showSummary ?? true;
+    this.properties.showClassCards = this.properties.showClassCards ?? true;
     this.properties.summaryNoun = this.properties.summaryNoun ?? 'VESSELS';
     return super.onInit();
   }
@@ -49,6 +51,7 @@ export default class FleetTableWebPart extends BaseClientSideWebPart<IFleetTable
       maxRows: this.properties.maxRows || 0,
       showFilters: this.properties.showFilters !== false,
       showSummary: this.properties.showSummary !== false,
+      showClassCards: this.properties.showClassCards !== false,
       summaryNoun: this.properties.summaryNoun || 'VESSELS',
       canManageLists: this.context.pageContext.web.permissions.hasPermission(SPPermission.manageLists)
     });
@@ -99,6 +102,7 @@ export default class FleetTableWebPart extends BaseClientSideWebPart<IFleetTable
           groupFields: [
             PropertyPaneToggle('showFilters', { label: 'Filter buttons (All Types, MR, LR1 …) from the list\'s Class column', onText: 'Show', offText: 'Hide' }),
             PropertyPaneToggle('showSummary', { label: 'Summary line ("9 TANKERS RANGING FROM … DWT")', onText: 'Show', offText: 'Hide' }),
+            PropertyPaneToggle('showClassCards', { label: 'Ship pictures with the count of each class ("17 x Kamsarmax")', onText: 'Show', offText: 'Hide' }),
             PropertyPaneTextField('summaryNoun', { label: 'Name of the vessels in the summary (plural)', description: 'e.g. TANKERS, BULKERS, VESSELS' })
           ]
         }]

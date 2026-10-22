@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Fleet Table — preview</title>
+<style>
+  html, body { margin: 0; padding: 0; background: #ffffff; font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif; }
+  html { scrollbar-width: none; }
+  html::-webkit-scrollbar { display: none; }
+  /* SharePoint's 16px zone padding, cancelled by the web part's own margin */
+  #fleet-table-root { padding: 16px; box-sizing: border-box; }
+</style>
+<link rel="stylesheet" href="dist/bundle.css" />
+</head>
+<body data-only="fleet">
+<div hidden>
+  <div id="chrome-top"></div><div id="holidays-root"></div>
+  <div id="mp-filters-root"></div><div id="mp-post-root"></div><div id="mp-info-root"></div><div id="mp-listings-root"></div>
+  <div id="news-grid-root"></div><div id="root"></div><div id="fleet-map-root"></div><div id="people-root"></div><div id="chrome-bottom"></div>
+</div>
+<div id="fleet-table-root" style="padding-top: 24px"></div>
+<script>
+  // ?pad=68 gives the page a 68px side margin (the tablet design); ?pad=52 the phone design.
+  var pad = new URLSearchParams(location.search).get('pad');
+  if (pad) { document.body.style.padding = '0 ' + pad + 'px'; }
+</script>
+<script src="dist/bundle.js"></script>
+</body>
+</html>

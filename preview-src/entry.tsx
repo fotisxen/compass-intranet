@@ -192,6 +192,8 @@ import FleetTable from '../src/webparts/fleetTable/components/FleetTable';
 function newRoot(): HTMLElement {
   const el = document.createElement('div');
   el.style.marginBottom = '32px';
+  // fleet.html shows the Fleet Table alone
+  el.hidden = document.body.hasAttribute('data-only');
   document.body.appendChild(el);
   return el;
 }
@@ -296,7 +298,7 @@ const fakeEventsClient = {
 };
 const useFakeEvents = new URLSearchParams(window.location.search).get('events') === '1';
 const useFakeNav = new URLSearchParams(window.location.search).get('navList') === '1';
-ReactDom.render(React.createElement(FleetTable, { spHttpClient: fakeListClient as never, siteUrl: 'https://example.sharepoint.com/sites/demo', sortBy: 'dwt', sortDescending: true, maxRows: 0, showFilters: true, showSummary: true, summaryNoun: 'TANKERS', canManageLists: true }), newRoot());
+ReactDom.render(React.createElement(FleetTable, { spHttpClient: fakeListClient as never, siteUrl: 'https://example.sharepoint.com/sites/demo', sortBy: 'dwt', sortDescending: true, maxRows: 0, showFilters: true, showSummary: true, showClassCards: true, summaryNoun: 'TANKERS', canManageLists: true }), document.getElementById('fleet-table-root') || newRoot());
 
 ReactDom.render(React.createElement(ChromeRoot, useFakeNav
   ? { chatApiUrl: '', spHttpClient: fakeListClient as never, siteUrl: 'https://example.sharepoint.com/sites/demo' }

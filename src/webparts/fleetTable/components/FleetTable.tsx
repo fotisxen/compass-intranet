@@ -1,6 +1,7 @@
 import * as React from 'react';
 import type { SPHttpClient } from '@microsoft/sp-http';
 import styles from './FleetTable.module.scss';
+import classShipImage from '../../../shared/components/assets/fleet/ship-class.png';
 import {
   FLEET_LIST_TITLE,
   ensureFleetList,
@@ -25,6 +26,8 @@ export interface IFleetTableProps {
   showFilters: boolean;
   /** The "9 TANKERS RANGING FROM … DWT" line above the rows. */
   showSummary: boolean;
+  /** The row of ship pictures with "17 x Kamsarmax" under them, above the filter buttons. */
+  showClassCards: boolean;
   /** Plural name used in the summary line, e.g. TANKERS. */
   summaryNoun: string;
   /** Whether the signed-in user can create lists — only then is the "create the list" button offered. */
@@ -46,21 +49,7 @@ export interface IFleetTableState {
 }
 
 function ShipIcon(): React.ReactElement {
-  return (
-    <svg className={styles.shipIcon} viewBox="0 0 66 18" aria-hidden="true" focusable="false">
-      <g fill="currentColor">
-        <path d="M0 9.5h66l-5.5 7.5H5.2z" />
-        <rect x="47" y="2" width="9" height="7.5" />
-        <rect x="49" y="0" width="5" height="2" />
-        <rect x="6" y="6.2" width="7" height="3.3" />
-        <rect x="15" y="6.2" width="7" height="3.3" />
-        <rect x="24" y="6.2" width="7" height="3.3" />
-        <rect x="33" y="6.2" width="7" height="3.3" />
-        <rect x="9" y="3.4" width="1" height="2.8" />
-        <rect x="27" y="3.4" width="1" height="2.8" />
-      </g>
-    </svg>
-  );
+  return <img className={styles.shipIcon} src={classShipImage} alt="" />;
 }
 
 export default class FleetTable extends React.Component<IFleetTableProps, IFleetTableState> {
@@ -118,7 +107,7 @@ export default class FleetTable extends React.Component<IFleetTableProps, IFleet
 
   public render(): React.ReactElement {
     const { status, vessels, busy, error, listUrl, hasClassColumn, selectedClass } = this.state;
-    const { sortBy, sortDescending, maxRows, canManageLists, showFilters, showSummary, summaryNoun } = this.props;
+    const { sortBy, sortDescending, maxRows, canManageLists, showFilters, showSummary, showClassCards, summaryNoun } = this.props;
 
     if (status === 'loading') {
       return <div className={styles.table} aria-busy="true" />;
@@ -160,14 +149,33 @@ export default class FleetTable extends React.Component<IFleetTableProps, IFleet
     }
 
     // The filter buttons, then the summary and the rows of whatever they select.
-    const classes = showFilters ? vesselClasses(vessels) : [];
+    const allClasses = vesselClasses(vessels);
+    const classes = showFilters ? allClasses : [];
+    const columns = Math.max(allClasses.length + 1, 2);
+    const counts: Record<string, number> = {};
+    vessels.forEach(v => {
+      if (v.vesselClass) {
+        counts[v.vesselClass] = (counts[v.vesselClass] || 0) + 1;
+      }
+    });
     const active = classes.indexOf(selectedClass) !== -1 ? selectedClass : '';
     const shown = active ? vessels.filter(v => v.vesselClass === active) : vessels;
     const sorted = sortVessels(shown, sortBy, sortDescending);
     const rows = maxRows > 0 ? sorted.slice(0, maxRows) : sorted;
 
     return (
-      <div className={styles.wrap}>
+      <div className={styles.wrap} style={{ '--fleet-columns': columns } as React.CSSProperties}>
+        {showSummary && rows.length > 0 && <div className={styles.summary}>{fleetSummary(shown, summaryNoun)}</div>}
+        {showClassCards && allClasses.length > 0 && (
+          <div className={styles.classCards}>
+            {allClasses.map(c => (
+              <div className={styles.classCard} key={c}>
+                <img className={styles.classShip} src={classShipImage} alt="" />
+                <div className={styles.classCount}>{counts[c]} x {c}</div>
+              </div>
+            ))}
+          </div>
+        )}
         {classes.length > 0 && (
           <div className={styles.filters} role="group" aria-label="Filter by type">
             {['', ...classes].map(c => (
@@ -193,7 +201,6 @@ export default class FleetTable extends React.Component<IFleetTableProps, IFleet
         {showFilters && canManageLists && hasClassColumn && classes.length === 0 && (
           <div className={styles.ownerHint}>Fill in the &quot;Class&quot; column of the vessels (e.g. MR, LR1) and the filter buttons appear here.</div>
         )}
-        {showSummary && rows.length > 0 && <div className={styles.summary}>{fleetSummary(shown, summaryNoun)}</div>}
       <div className={styles.table} role="table" aria-label="Fleet">
         {rows.map(v => (
           <div className={styles.row} role="row" key={v.id}>
