@@ -21,6 +21,11 @@
   margin-bottom: 0.9em;
 }
 
+// The first card sits above the first class button, so the column of "All Types" stays free.
+.classCards > :first-child {
+  grid-column-start: 2;
+}
+
 .classCard {
   display: flex;
   flex-direction: column;
@@ -30,7 +35,7 @@
 
 .classShip {
   display: block;
-  width: 72%;
+  width: 36%;
   height: auto;
   margin-bottom: 0.5em;
 }
@@ -155,6 +160,10 @@
   .filters,
   .classCards {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .classCards > :first-child {
+    grid-column-start: auto;
   }
 
   .row {
