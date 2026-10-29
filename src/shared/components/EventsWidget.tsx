@@ -3,10 +3,13 @@ import { SPHttpClient, type SPHttpClientResponse } from '@microsoft/sp-http';
 import styles from './EventsWidget.module.scss';
 import ArrowIcon from './ArrowIcon';
 import { type IEvent } from './data/eventsMockData';
+import { eventUrl } from '../events/eventsApi';
 
 export interface IEventsWidgetProps {
   spHttpClient: SPHttpClient;
   siteUrl: string;
+  /** The page that shows one event (Event Image + Event Details); "Read more" opens it with ?eventId=<event>. */
+  eventPageUrl?: string;
 }
 
 export interface IEventsWidgetState {
@@ -105,6 +108,7 @@ export default class EventsWidget extends React.Component<IEventsWidgetProps, IE
 
   private async _loadEvents(): Promise<void> {
     const { spHttpClient, siteUrl } = this.props;
+    const eventPage = this.props.eventPageUrl || `${siteUrl}/SitePages/Event.aspx`;
     const today = new Date().toISOString();
     const endpoint =
       `${siteUrl}/_api/web/lists(guid'${UPCOMING_EVENTS_LIST_ID}')/items` +
@@ -125,10 +129,8 @@ export default class EventsWidget extends React.Component<IEventsWidgetProps, IE
       title: item.Title,
       initials: initialsFor(item.Title),
       imageUrl: parseThumbnailUrl(item.BannerUrl),
-      // Calendar-list items open through Event.aspx (not the generic
-      // listform.aspx display form) — confirmed against the real event's
-      // own "Read more" URL on the live site.
-      url: `${siteUrl}/_layouts/15/Event.aspx?ListGuid=${UPCOMING_EVENTS_LIST_ID}&ItemId=${item.Id}`
+      // Opens the site's own event page (Event Image + Event Details web parts).
+      url: eventUrl(eventPage, item.Id)
     }));
 
     this.setState({ events, index: 0 }, this._startAutoRotate);

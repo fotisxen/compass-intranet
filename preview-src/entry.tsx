@@ -339,7 +339,7 @@ ReactDom.render(
         background: '#ffffff'
       }
     },
-    React.createElement('div', { className: 'zone' }, React.createElement(EventsWidget, { spHttpClient: (useFakeEvents ? fakeEventsClient : fakeSpHttpClient) as never, siteUrl: 'https://example.sharepoint.com/sites/demo' })),
+    React.createElement('div', { className: 'zone' }, React.createElement(EventsWidget, { spHttpClient: (useFakeEvents ? fakeEventsClient : fakeSpHttpClient) as never, siteUrl: 'https://example.sharepoint.com/sites/demo', eventPageUrl: '/event.html' })),
     React.createElement(
       'div',
       { className: 'zone', style: { flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' } },

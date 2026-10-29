@@ -1,21 +1,29 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
-import { type IPropertyPaneConfiguration } from '@microsoft/sp-property-pane';
+import { type IPropertyPaneConfiguration, PropertyPaneTextField } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
 
 import * as strings from 'EventsWebPartStrings';
 import EventsWidget from '../../shared/components/EventsWidget';
 
-export type IEventsWebPartProps = Record<string, never>;
+export interface IEventsWebPartProps {
+  eventPageUrl?: string;
+}
 
 export default class EventsWebPart extends BaseClientSideWebPart<IEventsWebPartProps> {
+
+  protected onInit(): Promise<void> {
+    this.properties.eventPageUrl = this.properties.eventPageUrl ?? `${this.context.pageContext.web.absoluteUrl}/SitePages/Event.aspx`;
+    return super.onInit();
+  }
 
   public render(): void {
     const element: React.ReactElement = React.createElement(EventsWidget, {
       spHttpClient: this.context.spHttpClient,
-      siteUrl: this.context.pageContext.web.absoluteUrl
+      siteUrl: this.context.pageContext.web.absoluteUrl,
+      eventPageUrl: this.properties.eventPageUrl || undefined
     });
     ReactDom.render(element, this.domElement);
   }
@@ -49,7 +57,12 @@ export default class EventsWebPart extends BaseClientSideWebPart<IEventsWebPartP
           header: {
             description: strings.PropertyPaneDescription
           },
-          groups: []
+          groups: [{
+            groupName: 'Event page',
+            groupFields: [
+              PropertyPaneTextField('eventPageUrl', { label: 'Event page address', description: '"Read more" opens this page with ?eventId=<event> added. It is the page with the Event Image and Event Details web parts.', placeholder: '/sites/Intranet/SitePages/Event.aspx' })
+            ]
+          }]
         }
       ]
     };
