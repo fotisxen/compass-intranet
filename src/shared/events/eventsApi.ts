@@ -110,9 +110,20 @@ function toItem(row: IEventRow): IEventItem {
   };
 }
 
+/** Events are shown for the current month plus this many months after it. */
+export const EVENT_MONTHS_AHEAD = 3;
+
+/** The first moment after the window: the 1st of the month that follows (current month + monthsAhead). November + 3 -> 1 March, so November to February are inside. */
+export function eventWindowEnd(monthsAhead: number = EVENT_MONTHS_AHEAD): Date {
+  const now = new Date();
+  return new Date(now.getFullYear(), now.getMonth() + monthsAhead + 1, 1);
+}
+
 export interface ILoadEventsOptions {
   /** How many events to fetch (the soonest ones). */
   top: number;
+  /** Only events up to the end of the month this many months from now. Omitted = no upper limit. */
+  monthsAhead?: number;
 }
 
 export async function loadEvents(client: SPHttpClient, siteUrl: string, listRef: string, options: ILoadEventsOptions): Promise<IEventItem[]> {
@@ -120,7 +131,9 @@ export async function loadEvents(client: SPHttpClient, siteUrl: string, listRef:
   // Today and later only: an event counts by the day it starts.
   const startOfToday = new Date();
   startOfToday.setHours(0, 0, 0, 0);
-  const filter = `&$filter=${encodeURIComponent(`EventDate ge datetime'${startOfToday.toISOString()}'`)}`;
+  const windowEnd = options.monthsAhead === undefined ? undefined : eventWindowEnd(options.monthsAhead);
+  const condition = `EventDate ge datetime'${startOfToday.toISOString()}'` + (windowEnd ? ` and EventDate lt datetime'${windowEnd.toISOString()}'` : '');
+  const filter = `&$filter=${encodeURIComponent(condition)}`;
   const url = `${listApi(siteUrl, listRef)}/items?$select=${fields.join(',')}${filter}&$orderby=EventDate asc&$top=${options.top}`;
   const response = await client.get(url, SPHttpClient.configurations.v1);
   if (!response.ok) {
@@ -128,7 +141,7 @@ export async function loadEvents(client: SPHttpClient, siteUrl: string, listRef:
   }
   const data: { value: IEventRow[] } = await response.json();
   // Checked again here, so an event from the past can never get through.
-  return (data.value || []).filter(r => !!r.Title).map(toItem).filter(ev => ev.start.getTime() >= startOfToday.getTime());
+  return (data.value || []).filter(r => !!r.Title).map(toItem).filter(ev => ev.start.getTime() >= startOfToday.getTime() && (!windowEnd || ev.start.getTime() < windowEnd.getTime()));
 }
 
 /** One event by its list item id, or undefined when it does not exist. */

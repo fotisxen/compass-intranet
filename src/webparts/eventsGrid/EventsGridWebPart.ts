@@ -47,7 +47,7 @@ export default class EventsGridWebPart extends BaseClientSideWebPart<IEventsGrid
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
     return {
       pages: [{
-        header: { description: 'The events come from the site\'s Events (calendar) list. Only events from today onwards are shown, soonest first.' },
+        header: { description: 'The events come from the site\'s Events (calendar) list. Only events from today up to the end of the month three months ahead are shown (in November: November to February), soonest first.' },
         groups: [{
           groupName: 'Events',
           groupFields: [

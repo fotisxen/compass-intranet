@@ -3,7 +3,7 @@ import { SPHttpClient, type SPHttpClientResponse } from '@microsoft/sp-http';
 import styles from './EventsWidget.module.scss';
 import ArrowIcon from './ArrowIcon';
 import { type IEvent } from './data/eventsMockData';
-import { eventUrl } from '../events/eventsApi';
+import { EVENT_MONTHS_AHEAD, eventUrl, eventWindowEnd } from '../events/eventsApi';
 
 export interface IEventsWidgetProps {
   spHttpClient: SPHttpClient;
@@ -112,7 +112,7 @@ export default class EventsWidget extends React.Component<IEventsWidgetProps, IE
     const today = new Date().toISOString();
     const endpoint =
       `${siteUrl}/_api/web/lists(guid'${UPCOMING_EVENTS_LIST_ID}')/items` +
-      `?$select=Id,Title,EventDate,BannerUrl&$filter=EventDate ge datetime'${today}'&$orderby=EventDate asc&$top=${PAGE_SIZE}`;
+      `?$select=Id,Title,EventDate,BannerUrl&$filter=EventDate ge datetime'${today}' and EventDate lt datetime'${eventWindowEnd(EVENT_MONTHS_AHEAD).toISOString()}'&$orderby=EventDate asc&$top=${PAGE_SIZE}`;
 
     const response: SPHttpClientResponse = await spHttpClient.get(endpoint, SPHttpClient.configurations.v1);
     if (!response.ok) {

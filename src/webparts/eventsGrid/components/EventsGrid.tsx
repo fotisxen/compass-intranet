@@ -8,6 +8,7 @@ import {
   eventUrl,
   formatMonthHeading,
   formatShort,
+  EVENT_MONTHS_AHEAD,
   loadEvents
 } from '../../../shared/events/eventsApi';
 
@@ -47,7 +48,7 @@ export default function EventsGrid(props: IEventsGridProps): React.ReactElement 
 
   React.useEffect(() => {
     ensureInterFont();
-    loadEvents(spHttpClient, siteUrl, listRef, { top: maxEvents })
+    loadEvents(spHttpClient, siteUrl, listRef, { top: maxEvents, monthsAhead: EVENT_MONTHS_AHEAD })
       .then(setEvents)
       .catch(() => setFailed(true));
   }, [spHttpClient, siteUrl, listRef, maxEvents]);
