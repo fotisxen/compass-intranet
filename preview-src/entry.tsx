@@ -297,12 +297,14 @@ const fakeEventsClient = {
   })
 };
 const useFakeEvents = new URLSearchParams(window.location.search).get('events') === '1';
+// ?chatApi=/x makes the chat call that address (the page's own fetch can be faked in the console to test replies)
+const chatApi = new URLSearchParams(window.location.search).get('chatApi') || '';
 const useFakeNav = new URLSearchParams(window.location.search).get('navList') === '1';
 ReactDom.render(React.createElement(FleetTable, { spHttpClient: fakeListClient as never, siteUrl: 'https://example.sharepoint.com/sites/demo', sortBy: 'dwt', sortDescending: true, maxRows: 0, showFilters: true, showSummary: true, showClassCards: true, summaryNoun: 'TANKERS', canManageLists: true }), document.getElementById('fleet-table-root') || newRoot());
 
 ReactDom.render(React.createElement(ChromeRoot, useFakeNav
-  ? { chatApiUrl: '', spHttpClient: fakeListClient as never, siteUrl: 'https://example.sharepoint.com/sites/demo' }
-  : { chatApiUrl: '' }), document.getElementById('chrome-top'));
+  ? { chatApiUrl: chatApi, spHttpClient: fakeListClient as never, siteUrl: 'https://example.sharepoint.com/sites/demo' }
+  : { chatApiUrl: chatApi }), document.getElementById('chrome-top'));
 
 // Compass Holidays is its own standalone web part now, placed right under
 // the nav — same original position, own container/row. No sizing/alignment

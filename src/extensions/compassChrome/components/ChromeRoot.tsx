@@ -55,6 +55,25 @@ function writeCachedNav(siteUrl: string, items: INavItem[]): void {
   }
 }
 
+// If the chat ever fails while drawing, only the chat is replaced by a message — the header stays.
+class ChatErrorBoundary extends React.Component<{ children?: React.ReactNode }, { failed: boolean }> {
+  public state = { failed: false };
+
+  public static getDerivedStateFromError(): { failed: boolean } {
+    return { failed: true };
+  }
+
+  public componentDidCatch(error: Error): void {
+    console.warn('[Compass chat] The assistant panel failed to draw:', error);
+  }
+
+  public render(): React.ReactNode {
+    return this.state.failed
+      ? <div style={{ padding: 24, fontFamily: 'Inter, sans-serif' }}>Something went wrong with the assistant. Close this window and try again.</div>
+      : this.props.children;
+  }
+}
+
 export default class ChromeRoot extends React.Component<IChromeRootProps, IChromeRootState> {
   constructor(props: IChromeRootProps) {
     super(props);
@@ -114,12 +133,14 @@ export default class ChromeRoot extends React.Component<IChromeRootProps, IChrom
             <div className={styles.backdrop} onClick={this._closeChat} />
             <div className={styles.chatPanel}>
               <button className={styles.closeButton} onClick={this._closeChat} aria-label="Close assistant chat">✕</button>
-              <ChatWidget
-                apiUrl={this.props.chatApiUrl}
-                aadHttpClientFactory={this.props.aadHttpClientFactory}
-                chatResourceUri={this.props.chatResourceUri}
-                chatQueryUrl={this.props.chatQueryUrl}
-              />
+              <ChatErrorBoundary>
+                <ChatWidget
+                  apiUrl={this.props.chatApiUrl}
+                  aadHttpClientFactory={this.props.aadHttpClientFactory}
+                  chatResourceUri={this.props.chatResourceUri}
+                  chatQueryUrl={this.props.chatQueryUrl}
+                />
+              </ChatErrorBoundary>
             </div>
           </>
         )}

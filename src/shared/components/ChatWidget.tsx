@@ -32,9 +32,12 @@ export interface IChatWidgetState {
 }
 
 interface IAskStarBulkResponse {
-  answer: string;
-  citations?: IChatCitation[];
+  /** null (or empty) when the question is outside what the intranet covers. */
+  answer?: string | null;
+  citations?: IChatCitation[] | null;
 }
+
+const NO_ANSWER_TEXT = 'I couldn\'t find anything on the intranet about that. Try asking in a different way, or about something published on the intranet.';
 
 // Renders the small subset of markdown the real assistant actually sends
 // (#/##/### headings, **bold**, "- "/"* " bullets, "1. " numbered lists)
@@ -49,8 +52,8 @@ function renderInline(line: string, keyPrefix: string): React.ReactNode[] {
   });
 }
 
-function renderMarkdownLite(text: string): React.ReactNode {
-  const lines = text.split('\n');
+function renderMarkdownLite(text: string | null | undefined): React.ReactNode {
+  const lines = (text || '').split('\n');
   return lines.map((line, i) => {
     const key = `md-${i}`;
     const heading = /^#{1,6}\s+(.*)$/.exec(line);
@@ -138,9 +141,9 @@ export default class ChatWidget extends React.Component<IChatWidgetProps, IChatW
         }
         return response.json();
       })
-      .then((data: { reply: string }) => {
+      .then((data: { reply?: string | null }) => {
         this.setState(prev => ({
-          messages: [...prev.messages, { role: 'assistant', content: data.reply }],
+          messages: [...prev.messages, { role: 'assistant', content: data && data.reply && data.reply.trim() ? data.reply : NO_ANSWER_TEXT }],
           isLoading: false
         }));
       })
@@ -173,7 +176,12 @@ export default class ChatWidget extends React.Component<IChatWidgetProps, IChatW
       })
       .then((data: IAskStarBulkResponse) => {
         this.setState(prev => ({
-          messages: [...prev.messages, { role: 'assistant', content: data.answer, citations: data.citations }],
+          messages: [...prev.messages, {
+            role: 'assistant',
+            // An out-of-scope question comes back with answer: null — show a normal reply instead of failing.
+            content: data && typeof data.answer === 'string' && data.answer.trim() ? data.answer : NO_ANSWER_TEXT,
+            citations: data && Array.isArray(data.citations) ? data.citations : undefined
+          }],
           isLoading: false
         }));
       })
