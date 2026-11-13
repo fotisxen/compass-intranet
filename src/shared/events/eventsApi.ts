@@ -161,7 +161,7 @@ export async function loadNextEvent(client: SPHttpClient, siteUrl: string, listR
   return events[0];
 }
 
-/** The id a detail page was opened with: …/Event.aspx?eventId=12 (id= and ItemId= also work; SharePoint reserves id= on its own pages, so links use eventId). */
+/** The id a detail page was opened with: …/Event.aspx?ItemId=12 (eventId= and id= are read too). Links use ItemId, the parameter SharePoint's own event page uses; on the live site id= and eventId= gave a 404 there. */
 export function eventIdFromUrl(search: string = window.location.search): number | undefined {
   const params = new URLSearchParams(search);
   const raw = params.get('eventId') || params.get('id') || params.get('ItemId') || params.get('itemid');
@@ -171,7 +171,7 @@ export function eventIdFromUrl(search: string = window.location.search): number 
 
 /** Link to the detail page for an event. */
 export function eventUrl(pageUrl: string, id: number): string {
-  return `${pageUrl}${pageUrl.indexOf('?') === -1 ? '?' : '&'}eventId=${id}`;
+  return `${pageUrl}${pageUrl.indexOf('?') === -1 ? '?' : '&'}ItemId=${id}`;
 }
 
 // ---------------------------------------------------------------- formatting

@@ -7,10 +7,8 @@ import { type INewsItem, loadPromotedNews, loadPageByPath, normalizePageUrl } fr
 
 // Cards on screen at once: 3 rows of 3, all the same size.
 const SLOTS = 9;
-// How many of the newest promoted pages are fetched to rotate through.
-const MAX_NEWS = 30;
-// How often the unpinned cards move on by themselves.
-const AUTO_ROTATE_MS = 5000;
+// The newest promoted pages fetched; the grid always shows the newest ones that fit.
+const MAX_NEWS = SLOTS + 10;
 
 export interface INewsGridProps {
   spHttpClient: SPHttpClient;
@@ -28,8 +26,6 @@ export interface INewsGridState {
 }
 
 export default class NewsGrid extends React.Component<INewsGridProps, INewsGridState> {
-  private _wrapRef = React.createRef<HTMLDivElement>();
-  private _rotateTimer: number | undefined;
 
   constructor(props: INewsGridProps) {
     super(props);
@@ -49,10 +45,6 @@ export default class NewsGrid extends React.Component<INewsGridProps, INewsGridS
         // Same as componentDidMount.
       });
     }
-  }
-
-  public componentWillUnmount(): void {
-    this._stopAutoRotate();
   }
 
   private async _load(): Promise<void> {
@@ -78,53 +70,12 @@ export default class NewsGrid extends React.Component<INewsGridProps, INewsGridS
     }
 
     const rest = promoted.filter(n => !seen.has(normalizePageUrl(siteUrl, n.url)));
-    this.setState({ pinnedItems, rotating: rest, start: 0 }, this._startAutoRotate);
+    this.setState({ pinnedItems, rotating: rest, start: 0 });
   }
 
   /** Slots left over once the pinned cards have taken theirs. */
   private _freeSlots(): number {
     return Math.max(0, SLOTS - this.state.pinnedItems.length);
-  }
-
-  private _canRotate(): boolean {
-    const free = this._freeSlots();
-    return free > 0 && this.state.rotating.length > free;
-  }
-
-  private _stopAutoRotate(): void {
-    if (this._rotateTimer !== undefined) {
-      window.clearInterval(this._rotateTimer);
-      this._rotateTimer = undefined;
-    }
-  }
-
-  private _startAutoRotate = (): void => {
-    this._stopAutoRotate();
-    const reduceMotion = typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!this._canRotate() || reduceMotion) {
-      return;
-    }
-    this._rotateTimer = window.setInterval(() => {
-      if (!document.hidden && !this._isBeingUsed()) {
-        this._step();
-      }
-    }, AUTO_ROTATE_MS);
-  };
-
-  // Asked fresh at every tick: a card someone is pointing at, or has focused,
-  // never changes under them.
-  private _isBeingUsed(): boolean {
-    const el = this._wrapRef.current;
-    return !!el && (el.matches(':hover') || el.contains(document.activeElement));
-  }
-
-  // Moves the unpinned cards on by one full set, wrapping round; pinned stay.
-  private _step(): void {
-    const free = this._freeSlots();
-    this.setState(prev => {
-      const n = prev.rotating.length;
-      return n > free && free > 0 ? { start: (prev.start + free) % n } : null;
-    });
   }
 
   public render(): React.ReactElement {
@@ -138,7 +89,7 @@ export default class NewsGrid extends React.Component<INewsGridProps, INewsGridS
 
     return (
       <div className={styles.page}>
-        <div className={styles.wrap} ref={this._wrapRef}>
+        <div className={styles.wrap}>
           <div className={styles.grid}>
             {fixed.map(item => (
               <NewsCardView key={item.url} item={item} pinned={true} />

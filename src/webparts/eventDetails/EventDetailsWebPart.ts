@@ -65,7 +65,7 @@ export default class EventDetailsWebPart extends BaseClientSideWebPart<IEventDet
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
     return {
       pages: [{
-        header: { description: 'Shows the event in the page address (?eventId=). While editing, it shows the next upcoming event.' },
+        header: { description: 'Shows the event in the page address (?ItemId=). While editing, it shows the next upcoming event.' },
         groups: [
           {
             groupName: 'Layout',

@@ -8,7 +8,7 @@ import { EVENT_MONTHS_AHEAD, eventUrl, eventWindowEnd } from '../events/eventsAp
 export interface IEventsWidgetProps {
   spHttpClient: SPHttpClient;
   siteUrl: string;
-  /** The page that shows one event (Event Image + Event Details); "Read more" opens it with ?eventId=<event>. */
+  /** The page that shows one event (Event Image + Event Details); "Read more" opens it with ?ItemId=<event>. */
   eventPageUrl?: string;
 }
 

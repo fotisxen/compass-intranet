@@ -60,7 +60,7 @@ export default class EventsWebPart extends BaseClientSideWebPart<IEventsWebPartP
           groups: [{
             groupName: 'Event page',
             groupFields: [
-              PropertyPaneTextField('eventPageUrl', { label: 'Event page address', description: '"Read more" opens this page with ?eventId=<event> added. It is the page with the Event Image and Event Details web parts.', placeholder: '/sites/Intranet/SitePages/Event.aspx' })
+              PropertyPaneTextField('eventPageUrl', { label: 'Event page address', description: '"Read more" opens this page with ?ItemId=<event> added. It is the page with the Event Image and Event Details web parts.', placeholder: '/sites/Intranet/SitePages/Event.aspx' })
             ]
           }]
         }

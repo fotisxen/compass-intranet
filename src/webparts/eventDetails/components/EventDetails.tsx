@@ -32,7 +32,7 @@ export default function EventDetails(props: IEventDetailsProps): React.ReactElem
   if (state.status === 'none') {
     return (
       <div className={styles.page} style={{ paddingLeft: props.spaceLeft }}>
-        {props.isEditMode && <span className={styles.hint}>Event details — no event found. Open the page with ?eventId=&lt;event id&gt; at the end of its address.</span>}
+        {props.isEditMode && <span className={styles.hint}>Event details — no event found. Open the page with ?ItemId=&lt;event id&gt; at the end of its address.</span>}
       </div>
     );
   }
@@ -46,7 +46,7 @@ export default function EventDetails(props: IEventDetailsProps): React.ReactElem
 
   return (
     <div className={styles.page} style={{ paddingLeft: props.spaceLeft }}>
-      {props.isEditMode && preview && <span className={styles.hint}>Showing the next upcoming event — on the real page the event comes from ?eventId= in the address.</span>}
+      {props.isEditMode && preview && <span className={styles.hint}>Showing the next upcoming event — on the real page the event comes from ?ItemId= in the address.</span>}
       {props.showTitle && <h1 className={styles.title} style={{ fontSize: `${props.titleSize / 20}em` }}>{event.title}</h1>}
       <div className={styles.rows}>
         {props.showWhen && (
