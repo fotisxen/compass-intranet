@@ -1,4 +1,5 @@
 import { SPHttpClient, type SPHttpClientResponse } from '@microsoft/sp-http';
+import { downscaleImage } from './downscaleImage';
 
 export interface INewsItem {
   title: string;
@@ -26,6 +27,9 @@ interface ISpListItem {
 interface ISpListItemsResponse {
   value: ISpListItem[];
 }
+
+// Wide enough for a news card on a 2x screen.
+const NEWS_IMAGE_WIDTH = 900;
 
 const SELECT = '$select=Title,FileRef,Created,BannerImageUrl';
 
@@ -62,11 +66,9 @@ export function originalImageUrl(url: string | undefined): string | undefined {
 export function preloadImages(items: INewsItem[], maxWaitMs: number = 4000): Promise<void> {
   const loads = items
     .filter(i => !!i.imageUrl)
-    .map(i => new Promise<void>(resolve => {
-      const img = new Image();
-      img.onload = () => resolve();
-      img.onerror = () => resolve();
-      img.src = i.imageUrl as string;
+    // Also swaps each picture for a sharper copy shrunk to card size (see downscaleImage).
+    .map(i => downscaleImage(i.imageUrl, NEWS_IMAGE_WIDTH).then(url => {
+      i.imageUrl = url;
     }));
   return Promise.race([
     Promise.all(loads).then(() => undefined),

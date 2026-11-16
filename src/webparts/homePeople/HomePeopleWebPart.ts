@@ -8,7 +8,8 @@ import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import { PropertyFieldCollectionData, CustomCollectionFieldType, type ICustomCollectionField } from '@pnp/spfx-property-controls/lib/PropertyFieldCollectionData';
 
 import * as strings from 'HomePeopleWebPartStrings';
-import { loadPhotoFinder, type PhotoFinder } from './photoLibrary';
+import { shrunkOrOriginal } from '../../shared/components/downscaleImage';
+import { loadPhotoFinder, preloadPhotos, type PhotoFinder } from './photoLibrary';
 import HomePeople from './components/HomePeople';
 import {
   type IPersonSpotlightItem,
@@ -29,6 +30,8 @@ export interface IHomePeopleWebPartProps {
 export default class HomePeopleWebPart extends BaseClientSideWebPart<IHomePeopleWebPartProps> {
 
   private _findPhoto: PhotoFinder | undefined;
+  // The row is drawn once the pictures are in, so the text never shows up before its photo.
+  private _photosReady = false;
 
   protected onInit(): Promise<void> {
     // Seeds a freshly-added web part with the sample content, so it doesn't
@@ -36,21 +39,39 @@ export default class HomePeopleWebPart extends BaseClientSideWebPart<IHomePeople
     this.properties.welcomeAboard = this.properties.welcomeAboard || DEFAULT_WELCOME_ABOARD;
     this.properties.promotions = this.properties.promotions || DEFAULT_PROMOTIONS;
     this.properties.anniversaries = this.properties.anniversaries || DEFAULT_ANNIVERSARIES;
-    // Pictures for people without a Photo URL come from the employee photo folder; the row redraws once the list is in.
+    // Pictures for people without a Photo URL come from the employee photo folder. The row waits (at most a few seconds) for them, so the text never shows up before its photo.
     loadPhotoFinder(this.context.spHttpClient, this.context.pageContext.web.absoluteUrl)
       .then(find => {
         this._findPhoto = find;
+      })
+      .catch(() => undefined)
+      .then(() => {
+        const people = [
+          ...mapPersonItems(this.properties.welcomeAboard, this._findPhoto),
+          ...mapPersonItems(this.properties.promotions, this._findPhoto)
+        ];
+        const anniversaries = mapAnniversaryItems(this.properties.anniversaries, this._findPhoto);
+        return preloadPhotos([...people.map(p => p.photoUrl), ...anniversaries.map(a => a.photoUrl)]);
+      })
+      .then(() => {
+        this._photosReady = true;
         this.render();
       })
-      .catch(() => undefined);
+      .catch(() => {
+        this._photosReady = true;
+        this.render();
+      });
     return super.onInit();
   }
 
   public render(): void {
+    if (!this._photosReady) {
+      return;
+    }
     const element: React.ReactElement = React.createElement(HomePeople, {
-      welcomeAboard: mapPersonItems(this.properties.welcomeAboard, this._findPhoto),
-      promotions: mapPersonItems(this.properties.promotions, this._findPhoto),
-      anniversaries: mapAnniversaryItems(this.properties.anniversaries, this._findPhoto)
+      welcomeAboard: mapPersonItems(this.properties.welcomeAboard, this._findPhoto).map(p => ({ ...p, photoUrl: shrunkOrOriginal(p.photoUrl) })),
+      promotions: mapPersonItems(this.properties.promotions, this._findPhoto).map(p => ({ ...p, photoUrl: shrunkOrOriginal(p.photoUrl) })),
+      anniversaries: mapAnniversaryItems(this.properties.anniversaries, this._findPhoto).map(a => ({ ...a, photoUrl: shrunkOrOriginal(a.photoUrl) }))
     });
     ReactDom.render(element, this.domElement);
   }

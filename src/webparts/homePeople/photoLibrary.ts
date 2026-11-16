@@ -1,8 +1,12 @@
 import { SPHttpClient } from '@microsoft/sp-http';
+import { downscaleImage } from '../../shared/components/downscaleImage';
 
 // Where the employee pictures live. A person with no Photo URL typed in gets
 // the picture in this folder whose file name matches theirs.
 const PHOTO_FOLDER = 'Photo Gallery/Employees Photos';
+
+// The circles are 90px; this is plenty for a 2x screen.
+const PERSON_PHOTO_WIDTH = 300;
 
 export type PhotoFinder = (name: string) => string | undefined;
 
@@ -51,4 +55,16 @@ export async function loadPhotoFinder(spHttpClient: SPHttpClient, siteUrl: strin
     const found = exact || initial;
     return found ? found.url : undefined;
   };
+}
+
+/** Downloads the pictures ahead of time, so the cards draw with their photos in place. Never fails and never waits longer than maxWaitMs. */
+export function preloadPhotos(urls: (string | undefined)[], maxWaitMs: number = 4000): Promise<void> {
+  const loads = urls
+    .filter((u): u is string => !!u)
+    // Photos are shown as small circles, so a shrunk copy is both sharper and quicker.
+    .map(u => downscaleImage(u, PERSON_PHOTO_WIDTH).then(() => undefined));
+  return Promise.race([
+    Promise.all(loads).then(() => undefined),
+    new Promise<void>(resolve => window.setTimeout(resolve, maxWaitMs))
+  ]);
 }
