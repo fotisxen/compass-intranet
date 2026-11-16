@@ -3,7 +3,7 @@ import type { SPHttpClient } from '@microsoft/sp-http';
 import styles from './NewsCarousel.module.scss';
 import ArrowIcon from '../../../shared/components/ArrowIcon';
 import { NewsCardView } from '../../../shared/components/NewsCard';
-import { type INewsItem, loadPromotedNews, loadPageByPath, normalizePageUrl } from '../../../shared/components/newsApi';
+import { type INewsItem, loadPromotedNews, preloadImages, loadPageByPath, normalizePageUrl } from '../../../shared/components/newsApi';
 
 // How many of the newest promoted pages the carousel can page through.
 const MAX_NEWS = 30;
@@ -99,6 +99,7 @@ export default class NewsCarousel extends React.Component<INewsCarouselProps, IN
     }
 
     const rest = promoted.filter(n => !seen.has(normalizePageUrl(siteUrl, n.url)));
+    await preloadImages([...pinnedItems, ...rest]);
     this.setState({ pinnedItems, rotating: rest, start: 0 }, this._startAutoRotate);
   }
 

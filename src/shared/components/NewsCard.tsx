@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SPHttpClient, type SPHttpClientResponse } from '@microsoft/sp-http';
 import styles from './NewsCard.module.scss';
-import { type INewsItem, parseBannerImageUrl } from './newsApi';
+import { type INewsItem, originalImageUrl, parseBannerImageUrl } from './newsApi';
 
 // Real internal field name for the promoted news pages' category column,
 // confirmed from the "Internal Company Announcements" page's own News web
@@ -93,7 +93,7 @@ export default class NewsCard extends React.Component<INewsCardProps, INewsCardS
         title: spItem.Title,
         date: new Date(spItem.Created).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' }),
         url: spItem.FileRef,
-        imageUrl: parseBannerImageUrl(spItem.BannerImageUrl)
+        imageUrl: originalImageUrl(parseBannerImageUrl(spItem.BannerImageUrl))
       }
     });
   }

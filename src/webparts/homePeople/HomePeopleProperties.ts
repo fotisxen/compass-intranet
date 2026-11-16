@@ -1,4 +1,6 @@
 import type { IAnniversary, IPersonSpotlight } from './components/data/mockData';
+import type { PhotoFinder } from './photoLibrary';
+import { originalImageUrl } from '../../shared/components/newsApi';
 import { SEED_WELCOME_ABOARD, SEED_PROMOTIONS, SEED_ANNIVERSARIES } from './seedData';
 
 // Raw shapes stored in the web part's properties (edited via the property
@@ -41,13 +43,13 @@ function initialsFor(name: string): string {
 // Converts the property-pane's fixed field1/2/3 columns into the flexible
 // {label, value}[] shape PersonSpotlightCard renders, dropping any pair the
 // author left completely blank.
-export function mapPersonItems(items: IPersonSpotlightItem[] | undefined): IPersonSpotlight[] {
+export function mapPersonItems(items: IPersonSpotlightItem[] | undefined, findPhoto?: PhotoFinder): IPersonSpotlight[] {
   const source = items && items.length > 0 ? items : [];
   return source.map(item => ({
     name: item.name,
     title: item.title,
     newTitle: item.newTitle || undefined,
-    photoUrl: item.photoUrl || undefined,
+    photoUrl: originalImageUrl(item.photoUrl || (findPhoto ? findPhoto(item.name) : undefined) || undefined),
     initials: initialsFor(item.name),
     fields: [
       { label: item.field1Label, value: item.field1Value },
@@ -57,14 +59,14 @@ export function mapPersonItems(items: IPersonSpotlightItem[] | undefined): IPers
   }));
 }
 
-export function mapAnniversaryItems(items: IAnniversaryItem[] | undefined): IAnniversary[] {
+export function mapAnniversaryItems(items: IAnniversaryItem[] | undefined, findPhoto?: PhotoFinder): IAnniversary[] {
   const source = items && items.length > 0 ? items : [];
   return source.map(item => ({
     name: item.name,
     role: item.role,
     years: item.years,
     initials: initialsFor(item.name),
-    photoUrl: item.photoUrl || undefined
+    photoUrl: originalImageUrl(item.photoUrl || (findPhoto ? findPhoto(item.name) : undefined) || undefined)
   }));
 }
 

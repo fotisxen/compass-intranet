@@ -8,6 +8,7 @@ import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import { PropertyFieldCollectionData, CustomCollectionFieldType, type ICustomCollectionField } from '@pnp/spfx-property-controls/lib/PropertyFieldCollectionData';
 
 import * as strings from 'HomePeopleWebPartStrings';
+import { loadPhotoFinder, type PhotoFinder } from './photoLibrary';
 import HomePeople from './components/HomePeople';
 import {
   type IPersonSpotlightItem,
@@ -27,20 +28,29 @@ export interface IHomePeopleWebPartProps {
 
 export default class HomePeopleWebPart extends BaseClientSideWebPart<IHomePeopleWebPartProps> {
 
+  private _findPhoto: PhotoFinder | undefined;
+
   protected onInit(): Promise<void> {
     // Seeds a freshly-added web part with the sample content, so it doesn't
     // start out blank.
     this.properties.welcomeAboard = this.properties.welcomeAboard || DEFAULT_WELCOME_ABOARD;
     this.properties.promotions = this.properties.promotions || DEFAULT_PROMOTIONS;
     this.properties.anniversaries = this.properties.anniversaries || DEFAULT_ANNIVERSARIES;
+    // Pictures for people without a Photo URL come from the employee photo folder; the row redraws once the list is in.
+    loadPhotoFinder(this.context.spHttpClient, this.context.pageContext.web.absoluteUrl)
+      .then(find => {
+        this._findPhoto = find;
+        this.render();
+      })
+      .catch(() => undefined);
     return super.onInit();
   }
 
   public render(): void {
     const element: React.ReactElement = React.createElement(HomePeople, {
-      welcomeAboard: mapPersonItems(this.properties.welcomeAboard),
-      promotions: mapPersonItems(this.properties.promotions),
-      anniversaries: mapAnniversaryItems(this.properties.anniversaries)
+      welcomeAboard: mapPersonItems(this.properties.welcomeAboard, this._findPhoto),
+      promotions: mapPersonItems(this.properties.promotions, this._findPhoto),
+      anniversaries: mapAnniversaryItems(this.properties.anniversaries, this._findPhoto)
     });
     ReactDom.render(element, this.domElement);
   }

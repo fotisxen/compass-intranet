@@ -3,7 +3,7 @@ import type { SPHttpClient } from '@microsoft/sp-http';
 import styles from './NewsGrid.module.scss';
 import { ensureInterFont } from '../../../shared/components/ensureFonts';
 import { NewsCardView } from '../../../shared/components/NewsCard';
-import { type INewsItem, loadPromotedNews, loadPageByPath, normalizePageUrl } from '../../../shared/components/newsApi';
+import { type INewsItem, loadPromotedNews, preloadImages, loadPageByPath, normalizePageUrl } from '../../../shared/components/newsApi';
 
 // Cards on screen at once: 3 rows of 3, all the same size.
 const SLOTS = 9;
@@ -70,6 +70,7 @@ export default class NewsGrid extends React.Component<INewsGridProps, INewsGridS
     }
 
     const rest = promoted.filter(n => !seen.has(normalizePageUrl(siteUrl, n.url)));
+    await preloadImages([...pinnedItems, ...rest]);
     this.setState({ pinnedItems, rotating: rest, start: 0 });
   }
 

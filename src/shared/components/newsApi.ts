@@ -29,6 +29,51 @@ interface ISpListItemsResponse {
 
 const SELECT = '$select=Title,FileRef,Created,BannerImageUrl';
 
+/**
+ * SharePoint sometimes stores a banner/photo as a small generated preview
+ * ("/_layouts/15/getpreview.ashx?path=<file>", only a few hundred px wide),
+ * which looks blurry on a card. The file it points at is the full-size original,
+ * so use that directly.
+ */
+export function originalImageUrl(url: string | undefined): string | undefined {
+  if (!url) {
+    return url;
+  }
+  const match = /^(https?:\/\/[^/]+)?\/_layouts\/15\/getpreview\.ashx\?(.*)$/i.exec(url.trim());
+  if (!match) {
+    return url;
+  }
+  const pathParam = /(?:^|&)path=([^&]+)/i.exec(match[2]);
+  if (!pathParam) {
+    return url;
+  }
+  try {
+    return (match[1] || '') + encodeURI(decodeURIComponent(pathParam[1].replace(/\+/g, ' ')));
+  } catch {
+    return url;
+  }
+}
+
+/**
+ * Downloads the pictures into the browser cache ahead of time, so a card
+ * appears (or a rotation swaps in) with its photo already there instead of the
+ * text arriving first. Never fails and never waits longer than `maxWaitMs`.
+ */
+export function preloadImages(items: INewsItem[], maxWaitMs: number = 4000): Promise<void> {
+  const loads = items
+    .filter(i => !!i.imageUrl)
+    .map(i => new Promise<void>(resolve => {
+      const img = new Image();
+      img.onload = () => resolve();
+      img.onerror = () => resolve();
+      img.src = i.imageUrl as string;
+    }));
+  return Promise.race([
+    Promise.all(loads).then(() => undefined),
+    new Promise<void>(resolve => window.setTimeout(resolve, maxWaitMs))
+  ]);
+}
+
 export function parseBannerImageUrl(raw?: string | IBannerImageField): string | undefined {
   if (!raw) {
     return undefined;
@@ -56,7 +101,7 @@ function toNewsItem(spItem: ISpListItem): INewsItem {
     title: spItem.Title,
     date: new Date(spItem.Created).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' }),
     url: spItem.FileRef,
-    imageUrl: parseBannerImageUrl(spItem.BannerImageUrl)
+    imageUrl: originalImageUrl(parseBannerImageUrl(spItem.BannerImageUrl))
   };
 }
 
